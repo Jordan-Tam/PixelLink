@@ -12,4 +12,4 @@ const getCollectionFunction = (collection) => {
     };
 };
 
-// export const tbd = getCollectionFunction("tbd");
+export const users = getCollectionFunction("users");
