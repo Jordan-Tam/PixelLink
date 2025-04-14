@@ -4,7 +4,6 @@ import { checkString } from "../helpers.js";
 
 /*
     - Profile picture check in create/updateUser is not done
-    - Testing tomorrow
 */
 
 
@@ -13,22 +12,21 @@ const exportedMethods = {
 
         checkString(username, "username", "createUser");
         checkUsername(username);
-    
+
         checkString(email, "email", "createUser");
         checkEmail(email);
-        email = email.toLowerCase();
-    
+
         passwordCheck(password);
         if (password !== retype) throw 'passwords do not match'
           
         checkString(profile_picture, "profile picture", "createUser");
-        if (admin === undefined || typeof admin !== 'boolean') throw 'Invalid admin status (True or False).';
+        if (!admin || typeof admin !== 'boolean') throw 'Invalid admin status (True or False).';
     
         let takenUsernames = await getTakenNames();
-        if (takenUsernames.includes(username)) throw 'Username taken.'
+        if (takenUsernames.includes(username.toLowerCase())) throw 'Username taken.'
         let takenEmails = await getTakenEmails();
-        if (takenEmails.includes(email)) throw 'Email is already associated with an account.'
-    
+        if (takenEmails.includes(email.toLowerCase())) throw 'Email is already associated with an account.'
+        
         let newUser = {
             username,
             email,
@@ -54,18 +52,16 @@ const exportedMethods = {
     
         checkString(email, "email", "createUser");
         checkEmail(email);
-        email = email.toLowerCase();
     
         passwordCheck(password);
-        if (password !== retype) throw 'passwords do not match'
           
         checkString(profile_picture, "profile picture", "createUser");
-        if (admin === undefined || typeof admin !== 'boolean') throw 'Invalid admin status (True or False).';
+        if (!admin || typeof admin !== 'boolean') throw 'Invalid admin status (True or False).';
     
         let takenUsernames = await getTakenNames();
-        if (takenUsernames.includes(username)) throw 'Username taken.'
+        if (takenUsernames.includes(username.toLowerCase())) throw 'Username taken.'
         let takenEmails = await getTakenEmails();
-        if (takenEmails.includes(email)) throw 'Email is already associated with an account.'
+        if (takenEmails.includes(email.toLowerCase())) throw 'Email is already associated with an account.'
 
         if (typeof id !== "string") throw 'error: provide a string for ID';
         id = id.trim();
@@ -78,7 +74,6 @@ const exportedMethods = {
             username, 
             email, 
             password, 
-            retype, 
             profile_picture, 
             admin,
             friends: user.friends,
@@ -140,14 +135,14 @@ const exportedMethods = {
         const userCollection = await users();
         let userList = await userCollection.find({}).toArray();
         if (!userList) throw 'Could not get all users';
-        let usernames = userList.map((user) => user.username);
+        let usernames = userList.map((user) => user.username.toLowerCase());
         return usernames
     },
     async getTakenEmails(){
         const userCollection = await users();
         let userList = await userCollection.find({}).toArray();
         if (!userList) throw 'Could not get all users';
-        let emails = userList.map((user) => user.email);
+        let emails = userList.map((user) => user.email.toLowerCase());
         return emails;
     }
 };
