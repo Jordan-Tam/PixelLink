@@ -1,0 +1,13 @@
+h1 {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.centered {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

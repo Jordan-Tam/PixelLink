@@ -1,3 +1,10 @@
+/**
+ * Input validation for string parameters.
+ * @param {string} str
+ * @param {string} varName
+ * @param {string} funcName
+ * @returns {string} Trimmed str
+ */
 let checkString = (str, varName, funcName) => {
   if (!str) {
     throw `${funcName} Error: ${varName} is undefined.`;
@@ -12,6 +19,9 @@ let checkString = (str, varName, funcName) => {
   if (str.length === 0) {
     `${funcName} Error: ${varName} cannot be empty or just spaces.`;
   }
+
+  return str;
+
 };
 
 const checkDateReleased = (dateReleased, funcName) => {
