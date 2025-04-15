@@ -1,20 +1,25 @@
-h1 {
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.centered-form {
-    flex-direction: column;
-    display: flex;
+.centered-flex-column {
     align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     justify-content: center;
+    margin-top: 2rem;
 }
 
-.centered {
+.centered-flex-row {
+    align-items: center;
+    display: flex;
     flex-direction: row;
-    display: flex;
-    align-items: center;
+    gap: 1rem;
     justify-content: center;
+    margin-bottom: 2rem;
+}
+
+#submit {
+    font-size: 1rem;
 }

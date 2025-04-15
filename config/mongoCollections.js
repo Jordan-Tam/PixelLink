@@ -14,4 +14,3 @@ const getCollectionFunction = (collection) => {
 
 export const users = getCollectionFunction("users");
 export const games = getCollectionFunction("games");
-export const comments = getCollectionFunction("comments");

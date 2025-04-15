@@ -1,25 +1,20 @@
 <main>
-    <div class="centered-form">
-        <br> <br> <br>
-        <img src="/public/logo.png" width="500">
-        <br>
-        <h2>Login</h2>
+    <div class="centered-flex-column">
+        <img src="/public/images/logo.png" width="500">
+        <h1>Login</h1>
         <form>
-            <div class="centered">
+            <div class="centered-flex-row">
                 <label for="username">Username</label>
                 <input id="username" name="username" type="text">
             </div>
-            <br> <br>
-            <div class="centered">
+            <div class="centered-flex-row">
                 <label for="password">Password</label>
                 <input id="password" name="password" type="password">
             </div>
-            <br> <br>
-            <div class="centered">
-                <input type="submit" value="Login" />
+            <div class="centered-flex-row">
+                <input id="submit" type="submit" value="Login" />
             </div>
         </form>
-        <br>
         <p>Don't have an account? <a href="/register">Sign up.</a></p>
     </div>
 </main>
