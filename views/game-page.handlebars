@@ -1,0 +1,26 @@
+<header>
+    <img class="centered" src="{{game.imagePath}}">
+    <h1 class="centered">{{game.title}}</h1>
+</header>
+<main>
+    <div>
+        <h3>Release Date:</h3><p>{{game.release_date}}</p>
+        <br>
+        <h3>Description</h3><p>{{game.description}}</p>
+    </div>
+    <br>
+    <div>
+        <h3>Comments:</h3>
+        {{#if game.comments.length}}
+        <ul>
+            {{#each game.comments}}
+            <li>
+                <p>{{this.content}}</p><br>
+                <h4>
+                    {{this.date}}  {{this.time}}
+                </h4>
+            </li>
+        </ul>
+        {{/if}}
+    </div>
+</main>
