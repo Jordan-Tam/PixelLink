@@ -11,13 +11,13 @@ let checkString = (str, varName, funcName) => {
   }
 
   if (typeof str !== "string") {
-    `${funcName} Error: ${varName} must be a string.`;
+    throw `${funcName} Error: ${varName} must be a string.`;
   }
 
   str = str.trim();
 
   if (str.length === 0) {
-    `${funcName} Error: ${varName} cannot be empty or just spaces.`;
+    throw `${funcName} Error: ${varName} cannot be empty or just spaces.`;
   }
 
   return str;
@@ -132,7 +132,8 @@ const checkForm = (form, funcName) => {
 
 };
 
-const checkUsername = (username) => {
+const checkUsername = (username, funcName) => {
+    username = checkString(username, "username", funcName);
     for (let i = 0; i < username.length; i++){
         //Allowed characters: A-Z (case insensitive), 0-9, _ , . , -
         if (
@@ -142,7 +143,7 @@ const checkUsername = (username) => {
         !(username.charCodeAt(i) >= 48 && username.charCodeAt(i) <= 57) &&
         !(username.charCodeAt(i) >= 65 && username.charCodeAt(i) <= 90 ) &&
         !(username.charCodeAt(i) >= 97 && username.charCodeAt(i) <= 122)){
-            throw 'Invalid username.';
+            throw "Invalid username. Allowed characters: A-Z (case insensitive), 0-9, _ , . , -";
         } 
     }
     if (username.charCodeAt(0) === 46 || username.charCodeAt(username.length-1) === 46) throw 'Username cannot start or end with \'.\''; //Username cannot start/end with a . (ugly)
@@ -150,7 +151,8 @@ const checkUsername = (username) => {
     return username;
 }
 
-const checkEmail = (email) => {
+const checkEmail = (email, funcName) => {
+  email = checkString(email, "email", funcName);
     if (email === undefined || typeof email != 'string' || email.trim() === "") throw 'Invalid email.'; 
         let atSymbol = -1;
         for (let i = 0; i < email.length; i++){
@@ -168,7 +170,7 @@ const checkEmail = (email) => {
                 !(email.charCodeAt(i) >= 97 && email.charCodeAt(i) <= 122)){
                     throw 'Invalid email address.'; 
                 }
-            if (email.charCodeAt(i) === 46 && email.charCodeAt(i+1) === 46) throw 'invalid email address. '
+            if (email.charCodeAt(i) === 46 && email.charCodeAt(i+1) === 46) throw 'invalid email address.'
         }
         if (atSymbol === -1) throw 'Invalid email address. ' 
         let period = false;
@@ -192,11 +194,11 @@ const checkEmail = (email) => {
 }
 
 const passwordCheck = (password) => {
-    if (password === undefined || typeof password != 'string' || password.trim() === "") throw 'Invalid password.';
+    if (password === undefined || typeof password !== 'string' || password.trim() === "") throw 'Invalid password.';
         if (password.length < 8) throw 'Invalid password (8+ characters).'                        
         const characters = {lower: 0, upper: 0, special: 0, number: 0};                                              
         for (let i = 0; i < password.length; i++){
-            if (password.charCodeAt(i) > 48 && password.charCodeAt(i) < 57) characters['number']++;
+            if (password.charCodeAt(i) >= 48 && password.charCodeAt(i) <= 57) characters['number']++;
             else if (password.charCodeAt(i) >= 65 && password.charCodeAt(i) <= 90) characters['upper']++;
             else if (password.charCodeAt(i) >= 97 && password.charCodeAt(i) <= 122) characters['lower']++;
             else characters['special']++;                  

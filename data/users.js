@@ -1,6 +1,6 @@
 import {ObjectId} from 'mongodb';
 import {users} from '../config/mongoCollections.js'
-import { checkString } from "../helpers.js";
+import { checkString, checkUsername, checkEmail, passwordCheck,  } from "../helpers.js";
 
 /*
     - Profile picture check in create/updateUser is not done
@@ -10,22 +10,20 @@ import { checkString } from "../helpers.js";
 const exportedMethods = {
     async createUser (username, email, password, retype, profile_picture, admin) {
 
-        checkString(username, "username", "createUser");
-        checkUsername(username);
+        username = checkUsername(username, "createUser");
 
-        checkString(email, "email", "createUser");
-        checkEmail(email);
+        email = checkEmail(email, "createUser");
 
-        passwordCheck(password);
+        password = passwordCheck(password);
         if (password !== retype) throw 'passwords do not match'
           
-        checkString(profile_picture, "profile picture", "createUser");
-        if (!admin || typeof admin !== 'boolean') throw 'Invalid admin status (True or False).';
+        profile_picture = checkString(profile_picture, "profile picture", "createUser");
+        if (typeof admin !== 'boolean') throw 'createUser Error: Invalid admin status (True or False).';
     
-        let takenUsernames = await getTakenNames();
-        if (takenUsernames.includes(username.toLowerCase())) throw 'Username taken.'
-        let takenEmails = await getTakenEmails();
-        if (takenEmails.includes(email.toLowerCase())) throw 'Email is already associated with an account.'
+        let takenUsernames = await this.getTakenNames();
+        if (takenUsernames.includes(username.toLowerCase())) throw "createUser Error: Username taken.";
+        let takenEmails = await this.getTakenEmails();
+        if (takenEmails.includes(email.toLowerCase())) throw "createUser Error: Email is already associated with an account.";
         
         let newUser = {
             username,
@@ -40,7 +38,7 @@ const exportedMethods = {
         const userCollection = await users();
         const insertInfo = await userCollection.insertOne(newUser);
         if (!insertInfo.acknowledged || !insertInfo.insertedId)
-            throw 'Could not add user';
+            throw "createUser Error: Could not add user";
         const newId = insertInfo.insertedId.toString();
         newUser._id = newId;
     
