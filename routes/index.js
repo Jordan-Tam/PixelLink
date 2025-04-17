@@ -1,5 +1,5 @@
-import userRoutes from 'users.js';
-import gameRoutes from 'games.js';
+import userRoutes from './users.js';
+import gameRoutes from './games.js';
 import path from 'path';
 
 const constructorMethod = (app) => {
@@ -24,7 +24,8 @@ const constructorMethod = (app) => {
     app.get("/register", (req, res) => {
         res.render('registration', {
             title: "Register",
-            stylesheet: "/public/css/registration.css"
+            stylesheet: "/public/css/registration.css",
+            script: "/public/js/registration.js"
         });
     })
 

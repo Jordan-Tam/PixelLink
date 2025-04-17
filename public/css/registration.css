@@ -20,6 +20,18 @@
     margin-bottom: 2rem;
 }
 
+#error {
+    color: red;
+}
+
 #submit {
     font-size: 1rem;
+}
+
+a {
+    color: blue;
+}
+
+a:visited {
+    color: blue;
 }
