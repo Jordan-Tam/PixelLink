@@ -47,7 +47,7 @@ const user3 = await users.createUser(
 
 await users.removeUser(user3._id)
 
-console.log(await users.getAllUsers())
+console.log(await users.getAllUsers());
 
 console.log("Done seeding database.");
 
