@@ -27,6 +27,27 @@ const user2 = await users.createUser(
   true
 );
 
+const user1Updated = await users.updateUser(
+  user1._id,
+  "JohnDoe2",
+  "johndoe10@gmail.com",
+  "Password123@",
+  "my_picture.jpg",
+  false
+);
+
+const user3 = await users.createUser(
+  "gamer7",
+  "gamer7@gmail.com",
+  "iAMAGAMER%1",
+  "iAMAGAMER%1",
+  "pic.jpg",
+  false
+);
+
+await users.removeUser(user3._id)
+
+console.log(await users.getAllUsers())
 
 console.log("Done seeding database.");
 
