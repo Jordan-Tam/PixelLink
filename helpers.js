@@ -207,4 +207,14 @@ const passwordCheck = (password) => {
             throw 'Invalid password (must include 1 A-Z, 1 a-z, 1 special character, and 1 number.'
     return password;
 }
-export { checkString, checkDateReleased, checkForm, checkUsername, checkEmail, passwordCheck };
+
+const checkImage = (image, funcName) => {
+  let pfp = checkString(image, "profile picture", funcName);
+  pfp = pfp.trim();
+  if (pfp.length <= 4) throw 'Invalid image'
+  let last4 = pfp.slice(pfp.length - 4, pfp.length);
+  if (last4 !== ".jpg") throw 'Invalid image format (must be .jpg)'
+  return pfp;
+}
+
+export { checkString, checkDateReleased, checkForm, checkUsername, checkEmail, passwordCheck, checkImage };

@@ -1,6 +1,6 @@
 import {ObjectId} from 'mongodb';
 import {users} from '../config/mongoCollections.js'
-import { checkString, checkUsername, checkEmail, passwordCheck,  } from "../helpers.js";
+import { checkString, checkUsername, checkEmail, passwordCheck, checkImage} from "../helpers.js";
 
 /*
     - Profile picture check in create/updateUser is not done
@@ -17,7 +17,7 @@ const exportedMethods = {
         password = passwordCheck(password);
         if (password !== retype) throw 'passwords do not match'
           
-        profile_picture = checkString(profile_picture, "profile picture", "createUser");
+        profile_picture = checkImage(profile_picture, "createUser");
         if (typeof admin !== 'boolean') throw 'createUser Error: Invalid admin status (True or False).';
     
         let takenUsernames = await this.getTakenNames();
@@ -51,7 +51,8 @@ const exportedMethods = {
     
         password = passwordCheck(password);
           
-        profile_picture = checkString(profile_picture, "profile picture", "createUser");
+        profile_picture = checkImage(profile_picture, "updateUser");
+
         if (typeof admin !== 'boolean') throw 'Invalid admin status (True or False).';
     
         let user = await this.getUserById(id);
