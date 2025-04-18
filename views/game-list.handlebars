@@ -1,0 +1,19 @@
+<header>
+    <h1>Game List</h1>
+    <p>Click on a game to add it to your profile!</p>
+  </header>
+
+  <main>
+    <div>
+      <ul>
+        {{#each games}}
+          <li>
+            {{this.name}}<br>
+            Players: {{this.players}}<br>
+            Release Date: {{this.release_date}}<br>
+            <a href="game/{{this.id}}/form">Add to Profile</a> //need to edit link
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </main>
