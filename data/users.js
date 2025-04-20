@@ -1,21 +1,15 @@
 import {ObjectId} from 'mongodb';
 import {users} from '../config/mongoCollections.js'
-import { checkString, checkUsername, checkEmail, passwordCheck, checkImage} from "../helpers.js";
-
-/*
-    - Profile picture check in create/updateUser is not done
-*/
-
+import { checkUsername, checkEmail, passwordCheck, checkImage} from "../helpers.js";
 
 const exportedMethods = {
-    async createUser (username, email, password, retype, profile_picture, admin) {
+    async createUser (username, email, password, profile_picture, admin) {
 
         username = checkUsername(username, "createUser");
 
         email = checkEmail(email, "createUser");
 
         password = passwordCheck(password);
-        if (password !== retype) throw 'passwords do not match'
           
         profile_picture = checkImage(profile_picture, "createUser");
         if (typeof admin !== 'boolean') throw 'createUser Error: Invalid admin status (True or False).';

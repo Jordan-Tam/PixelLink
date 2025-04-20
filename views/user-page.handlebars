@@ -1,0 +1,42 @@
+<main>
+    <h1> {{user.username}}'s profile</h1>
+    <div>
+        <p> Friends: 
+            <a href="/user/{{user._id}}/friends" > {{friend_count}}
+        </p>
+    </div>
+
+    <br>
+
+    <div>
+        <h3> {{user.username}}'s games: </h3>
+        <ul>
+            {{#each user.games}}
+            <li> 
+                <a href="/games/{{this.id}}">{{this.title}}</a>
+            </li>
+             {{/each}}
+        </ul>
+    </div>
+
+    <br>
+
+    <div>
+        <h3> {{user.username}}'s profile's comments: </h3>
+        {{#if user.comments.length}}
+        <ul>
+            {{#each user.comments}}
+            <li>
+                <!-- Username Here -->
+                <p>{{this.content}}</p>
+                <h4>{{this.date}} | {{this.time}}</h4>
+            </li>
+            {{/each}}
+        </ul>
+        <p>Add a comment!</p> <!--changing-->
+        {{else}}
+        <p>Be the first to comment!</p> <!--changing-->
+        {{/if}}
+    </div>
+
+</main>
