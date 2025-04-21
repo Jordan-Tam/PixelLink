@@ -1,0 +1,13 @@
+<main>
+    <h1> {{username}}'s friends list </h1>
+    <h3> Total: {{friends.length}} </h3>
+    {{#if friends.length}}
+    <ul>
+        {{#each}}
+        <li>
+            <a href="/user/{{this._id}}"> {{this.username}} </a>
+        </li>
+        {{/each}}
+    </ul>
+    {{/if}}
+</main>

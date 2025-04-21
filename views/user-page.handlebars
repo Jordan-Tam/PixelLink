@@ -1,10 +1,29 @@
 <main>
-    <h1> {{user.username}}'s profile</h1>
+    <h1> {{user.username}}'s profile </h1>
+    <p> Friends: <a href="/user/{{user._id}}/friends" > {{user.friends.length}} </p>
+    {{#if loggedInUser}} <!-- Will be set to true if the person viewing profile is viewing their own profile-->
     <div>
-        <p> Friends: 
-            <a href="/user/{{user._id}}/friends" > {{friend_count}}
-        </p>
+        <h3> Change user information </h3>
+
+        <form action="/user/{{user._id}}" method="POST">
+        <ul>
+            <li> Username: {{user.username}}
+                <label for="change_uname">Change Username?</label>
+                <input type="text" id="change_uname" name="change_uname">
+            </li> 
+            <li> Email: {{user.email}}
+                <label for="change_email">Change Email?</label>
+                <input type="text" id="change_email" name="change_email">
+            </li> 
+            <li> 
+                <label for="change_password">Change Password?</label>
+                <input type="text" id="change_password" name="change_password">
+            </li> 
+        </ul>
+        <input type="submit" value="Make changes">
+        </form>
     </div>
+    {{/if}}
 
     <br>
 
@@ -13,7 +32,7 @@
         <ul>
             {{#each user.games}}
             <li> 
-                <a href="/games/{{this.id}}">{{this.title}}</a>
+                <a href="/game/{{this._id}}">{{this.title}}</a>
             </li>
              {{/each}}
         </ul>
@@ -27,16 +46,17 @@
         <ul>
             {{#each user.comments}}
             <li>
-                <!-- Username Here -->
+                <!-- Commenter Name Here? -->
                 <p>{{this.content}}</p>
                 <h4>{{this.date}} | {{this.time}}</h4>
             </li>
             {{/each}}
         </ul>
-        <p>Add a comment!</p> <!--changing-->
-        {{else}}
-        <p>Be the first to comment!</p> <!--changing-->
         {{/if}}
+        <form action="user/{{user._id}}/comment" method="POST"> <!-- Post to the user's profile -->
+            <input type="text" id="addComment" name="addComment">
+            <input type="submit" value="add comment!">
+        </form> 
     </div>
 
 </main>
