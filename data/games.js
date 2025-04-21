@@ -8,7 +8,7 @@ import { checkString, checkDateReleased, checkForm } from "../helpers.js";
 
 const exportedMethods = {
   async createGame(name, dateReleased, form) {
-    if ((!name, dateReleased, questions)) {
+    if ((!name || !dateReleased || !form)) {
       throw `Error: name, dateReleased, and form must all be supplied to create a game!`;
     }
     name = checkString(name, "name", "createGame");

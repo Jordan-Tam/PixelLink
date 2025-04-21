@@ -26,7 +26,7 @@ const exportedMethods = {
 
         // Get the current date.
         const d = new Date();
-        const dateString = `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`;
+        const dateString = `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
 
         // Get the current time.
         const timeString = `${d.toLocaleString('en-US', {
@@ -73,9 +73,9 @@ const exportedMethods = {
             
             // Append the Comments subdocument to the game's comments property.
             insertedCommentToGameInfo = await gamesCollection.findOneAndUpdate(
-                {_id: new ObjectId(parentId)},
-                {$push: {comments: insertCommentInfo._id.toString()}},
-                {returnDocument: 'after'}
+              { _id: new ObjectId(parentId) },
+              { $push: { comments: newComment } },
+              { returnDocument: "after" }
             );
 
             // Throw an error if the update failed.
@@ -138,7 +138,7 @@ const exportedMethods = {
 
             if (!game) throw "getCommentById: Comment not found.";
 
-            for (let comment of user.comments) {
+            for (let comment of game.comments) {
                 if (comment._id.toString() === id) {
                     comment._id = comment._id.toString();
                     return comment;
@@ -217,6 +217,9 @@ const exportedMethods = {
             // Throw an error if the deletion failed.
             if (!deletionInfo) throw "removeComment Error: Comment could not be deleted.";
 
+        }
+        else{
+            throw "removeComment Error: The type parameter must be either 'user' or 'game'.";
         }
 
         return true;

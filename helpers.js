@@ -26,6 +26,9 @@ let checkString = (str, varName, funcName) => {
 
 const checkDateReleased = (dateReleased, funcName) => {
   dateReleased = checkString(dateReleased, "dateReleased", funcName);
+  if(dateReleased === "unknown"){
+    return dateReleased;
+  }
   let trio = dateReleased.split("/");
   if (trio.length !== 3) {
     throw `Improper date`;
