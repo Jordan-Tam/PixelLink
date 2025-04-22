@@ -7,16 +7,27 @@ import { checkString, checkDateReleased, checkForm } from "../helpers.js";
 // idea of them set up.
 
 const exportedMethods = {
+
+  /**
+   * Adds a Game document to the Games collection.
+   * @param {string} name The name of the game.
+   * @param {string} dateReleased The day the game was released.
+   * @param {string[]} form The form fields that a user needs to fill out in order to add the game to their user profile.
+   * @returns {object} The newly created Game document (with the _id property converted to a string).
+   */
   async createGame(name, dateReleased, form) {
+
+    // If any of the parameters were not provided, throw an error.
     if ((!name || !dateReleased || !form)) {
       throw `Error: name, dateReleased, and form must all be supplied to create a game!`;
     }
+
+    // Input validation.
     name = checkString(name, "name", "createGame");
-
     dateReleased = checkDateReleased(dateReleased, "createGame");
-
     form = checkForm(form);
 
+    // Create the new game object.
     let newGame = {
       name: name,
       dateReleased: dateReleased,
@@ -25,16 +36,28 @@ const exportedMethods = {
       comments: [],
     };
 
+    // Get the Games collection.
     const gameCollection = await games();
+
+    // Insert the new game object to the Games collection.
     const insertInfo = await gameCollection.insertOne(newGame);
+
+    // Check if the insertion was successful.
     if (!insertInfo.acknowledged || !insertInfo.insertedId) {
       throw `createGame Error: Could not create game.`;
     }
+
+    // Convert the _id attribute to a string.
     newGame["_id"] = insertInfo.insertedId.toString();
 
     return newGame;
+
   },
 
+  /**
+   *
+   * @returns {object[]} An array of Game documents (with the _id properties converted to strings).
+   */
   async getAllGames() {
     const gameCollection = await games();
     let gameList = await gameCollection.find({}).toArray();
@@ -48,6 +71,11 @@ const exportedMethods = {
     return gameList;
   },
 
+  /**
+   * 
+   * @param {*} id 
+   * @returns 
+   */
   async getGameById(id) {
     id = checkString(id, "id", "getGameById");
 
@@ -65,6 +93,11 @@ const exportedMethods = {
     return game;
   },
 
+  /**
+   * 
+   * @param {*} id 
+   * @returns 
+   */
   async removeGame(id) {
     id = checkString(id, "id", "removeGame");
 
@@ -82,12 +115,17 @@ const exportedMethods = {
     return deletionInfo;
   },
 
+  /**
+   * 
+   * @param {*} id 
+   */
   async updateGame(id) {
     // Waiting to see how updating a game will work, since updating the questions
     // might cause some big issues in the user collection
 
 
   },
+  
 };
 
 export default exportedMethods;

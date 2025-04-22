@@ -1,8 +1,8 @@
 /**
  * Input validation for string parameters.
- * @param {string} str
- * @param {string} varName
- * @param {string} funcName
+ * @param {string} str The string to validate.
+ * @param {string} varName The name of the string variable as it is called in the function that called this helper function.
+ * @param {string} funcName The name of the function that called this helper function.
  * @returns {string} Trimmed str
  */
 let checkString = (str, varName, funcName) => {

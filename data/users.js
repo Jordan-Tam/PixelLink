@@ -1,8 +1,18 @@
 import {ObjectId} from 'mongodb';
 import {users} from '../config/mongoCollections.js'
-import { checkUsername, checkEmail, passwordCheck, checkImage} from "../helpers.js";
+import {checkUsername, checkEmail, passwordCheck, checkImage} from "../helpers.js";
 
 const exportedMethods = {
+
+    /**
+     * 
+     * @param {*} username 
+     * @param {*} email 
+     * @param {*} password 
+     * @param {*} profile_picture 
+     * @param {*} admin 
+     * @returns 
+     */
     async createUser (username, email, password, profile_picture, admin) {
 
         username = checkUsername(username, "createUser");
@@ -38,6 +48,18 @@ const exportedMethods = {
     
         return newUser;
     },
+
+
+    /**
+     * 
+     * @param {*} id 
+     * @param {*} username 
+     * @param {*} email 
+     * @param {*} password 
+     * @param {*} profile_picture 
+     * @param {*} admin 
+     * @returns 
+     */
     async updateUser (id, username, email, password, profile_picture, admin){
         username = checkUsername(username, "updateUser")
     
@@ -88,6 +110,13 @@ const exportedMethods = {
         throw `Error: Update failed, could not find a user with id of ${id}`;
     return updatedUser;
     }, 
+    
+
+    /**
+     * 
+     * @param {*} id 
+     * @returns 
+     */
     async removeUser (id) {
 
         if (id === undefined) throw 'you must provide an id to search for';
@@ -106,6 +135,12 @@ const exportedMethods = {
         return `${deletionInfo.username} has been successfully deleted!`;
     
     },
+
+
+    /**
+     * 
+     * @returns 
+     */
     async getAllUsers () {
         const userCollection = await users();
         let userList = await userCollection.find({}).toArray();
@@ -116,6 +151,13 @@ const exportedMethods = {
         });
         return userList
     },
+
+
+    /**
+     * 
+     * @param {*} id 
+     * @returns 
+     */
     async getUserById (id) {
         if (id === undefined | typeof id !== "string") throw 'Invalid ID';
         if (id.trim().length === 0)
@@ -129,6 +171,12 @@ const exportedMethods = {
         return user;
       
     },
+
+
+    /**
+     * 
+     * @returns 
+     */
     async getTakenNames(){
         const userCollection = await users();
         let userList = await userCollection.find({}).toArray();
@@ -136,6 +184,12 @@ const exportedMethods = {
         let usernames = userList.map((user) => user.username.toLowerCase());
         return usernames
     },
+
+    
+    /**
+     * 
+     * @returns 
+     */
     async getTakenEmails(){
         const userCollection = await users();
         let userList = await userCollection.find({}).toArray();
@@ -144,4 +198,5 @@ const exportedMethods = {
         return emails;
     }
 };
+
 export default exportedMethods;

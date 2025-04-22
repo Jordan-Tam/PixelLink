@@ -3,13 +3,14 @@ import {users, games} from '../config/mongoCollections.js';
 import {checkString} from '../helpers.js';
 
 const exportedMethods = {
+
     /**
      * Adds a Comment subdocument to a User or Game document.
      * @param {string} type The document type this comment is a subdocument of.
      * @param {string} parentId ID of the user/game being commented on.
      * @param {string} userId ID of the user who made the comment.
      * @param {string} content The actual contents of the comment.
-     * @returns {object} The newly created Comment subdocument.
+     * @returns {object} The newly created Comment subdocument (with the _id property converted to a string).
      */
     async createComment(
         type,
@@ -44,6 +45,7 @@ const exportedMethods = {
             timeString
         }
 
+        // Variables to store insertion information.
         let insertedCommentToUserInfo = undefined;
         let insertedCommentToGameInfo = undefined;
         
@@ -88,10 +90,14 @@ const exportedMethods = {
             throw "createComment Error: The type parameter must be either 'user' or 'game'.";
         }
 
+        // Convert the _id attribute to a string.
+        newComment._id = newComment._id.toString();
+
         // Return the Comment object.
         return newComment;
 
     },
+
 
     /**
      * Finds the requested comment using a string representation of its ID.
@@ -108,16 +114,22 @@ const exportedMethods = {
             throw "getCommentById Error: Invalid Object ID.";
         }
 
+        // If the comment was made under a user profile, search the Users collection for the comment.
         if (type === "user") {
 
+            // Get the Users collection.
             const usersCollection = await users();
 
+            // Search for a User containing a comment with the specified id.
             let user = await usersCollection.findOne(
                 {"comments._id": new ObjectId(id)}
             );
 
+            // If no user was found, the comment does not exist. Throw an error.
             if (!user) throw "getCommentById: Comment not found.";
 
+            // Loop through the User's comments array for the desired comment.
+            // Before returning the comment, convert the ObjectId to a string.
             for (let comment of user.comments) {
                 if (comment._id.toString() === id) {
                     comment._id = comment._id.toString();
@@ -128,16 +140,23 @@ const exportedMethods = {
             // The code should never reach this point.
             throw "getCommentById: Comment disappeared.";
 
+
+        // If the comment was made under a game, search the Games collection for the comment.
         } else if (type === "game") {
 
+            // Get the Games collection.
             const gamesCollection = await games();
 
+            // Search for a Game containing a comment with the specified id.
             let game = await gamesCollection.findOne(
                 {"comments._id": new ObjectId(id)}
             );
 
+            // If no game was found, the comment does not exist. Throw an error.
             if (!game) throw "getCommentById: Comment not found.";
 
+            // Loop through the Game's comments array for the desired comment.
+            // Before returning the comment, convert the ObjectId to a string.
             for (let comment of game.comments) {
                 if (comment._id.toString() === id) {
                     comment._id = comment._id.toString();
@@ -155,6 +174,7 @@ const exportedMethods = {
         }
 
     },
+
 
     /**
      * Deletes the requested comment using a string representation of its ID.
@@ -217,9 +237,10 @@ const exportedMethods = {
             // Throw an error if the deletion failed.
             if (!deletionInfo) throw "removeComment Error: Comment could not be deleted.";
 
-        }
-        else{
+        } else {
+            
             throw "removeComment Error: The type parameter must be either 'user' or 'game'.";
+        
         }
 
         return true;
