@@ -1,0 +1,20 @@
+<h1>Welcome {{user.username}}!</h1>
+<main>
+  <a href="/user:{{user._id}}">Click here to view your profile!</a>
+  <br />
+  <br />
+  <form name="userSearchForm" id="userSearchForm" action="/user" method="POST">
+    <label for="userSearch">Search for a user:</label>
+    <input type="text" name="userSearch" id="userSearch" />
+    <button type="submit" name="submitButton" id="submitButton">Submit</button>
+  </form>
+  <br />
+  <form name="gameSearchForm" id="gameSearchForm" action="/game" method="POST">
+    <label for="gameSearch">Search for a game:</label>
+    <input type="text" name="gameSearch" id="gameSearch" />
+    <button type="submit" name="submitButton" id="submitButton">Submit</button>
+  </form>
+
+  <a id="signoutLink" href="/signout">Sign out</a>
+
+</main>
