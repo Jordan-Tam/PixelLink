@@ -25,7 +25,9 @@
     "bcryptjs": "^2.4.3",
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
+    "express-session": "^1.18.1",
     "mongodb": "^6.15.0",
-    "validator": "^13.15.0"
+    "validator": "^13.15.0",
+    "xss": "^1.0.15"
   }
 }
