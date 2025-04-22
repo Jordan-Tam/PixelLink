@@ -1,4 +1,30 @@
 <header>
-    <h1>Game Form</h1><br>
+    <!-- logo img -->
+    <h1 class="centered">Game Form</h1><br>
     <p>Fill out the form below to add {{game.title}} to your profile.</p>
 </header>
+<main>
+    <!-- for each field object in form array, display with form tag -->
+    {{#if game.form.length}}
+        <form action="/{{game._id}}/form" method="POST">
+            {{#each game.form}}
+                <label for="{{this.field_name}}">
+                    {{this.field_name}}
+                    {{#if this.options.length}}
+                        <!-- Drop down -->
+                        <select name="{{this.field_name}}" id="{{this.field_name}}">
+                            {{#each this.options}}
+                                <option value="{{this}}">{{this}}</option>
+                            {{/each}}
+                        </select>
+                    {{else}}
+                        <input type="text" placeholder="{{this.field_name}}" name="{{this.field_name}}" id="{{this.field_name}}"/>
+                    {{/if}}
+                </label><br>
+            {{/each}}
+            <input type="submit" value="Submit Form"/>
+        </form>
+    {{else}}
+        <p>No fields to fill out in {{game}}'s Add to Profile form!</p>
+    {{/if}}
+</main>
