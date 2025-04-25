@@ -45,7 +45,7 @@ const constructorMethod = (app) => {
     // Game routes
     app.use("/game", gameRoutes);
 
-    // Redirect to /error
+    // Redirect everything else to /error
     app.use("*", (req, res) => {
         res.redirect("/error");
     });
