@@ -3,8 +3,6 @@ import { games } from "../config/mongoCollections.js";
 import { checkString, checkDateReleased, checkForm } from "../helpers.js";
 
 
-// I still have not tested these functions, but I have the general
-// idea of them set up.
 
 const exportedMethods = {
 

@@ -29,6 +29,11 @@ const constructorMethod = (app) => {
         });
     })
 
+    app.get("/signout", (req, res) =>{
+        req.session.destroy();
+        res.sendFile(path.resolve("static/about.html"));
+    })
+
     // About page
     app.get("/about", (req, res) => {
         res.sendFile(path.resolve("static/about.html"));
