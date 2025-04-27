@@ -1,3 +1,12 @@
+import {ObjectId} from "mongodb";
+
+// Strings to be used for checking username and password constraints.
+const UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const LOWERCASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
+const NUMBERS = "0123456789";
+const LETTERS_AND_NUMBERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+
 /**
  * Input validation for string parameters.
  * @param {string} str The string to validate.
@@ -5,7 +14,8 @@
  * @param {string} funcName The name of the function that called this helper function.
  * @returns {string} Trimmed str
  */
-let checkString = (str, varName, funcName) => {
+const checkString = (str, varName, funcName) => {
+
   if (!str) {
     throw `${funcName} Error: ${varName} is undefined.`;
   }
@@ -136,8 +146,11 @@ const checkForm = (form, funcName) => {
 };
 
 const checkUsername = (username, funcName) => {
+
     username = checkString(username, "username", funcName);
-    for (let i = 0; i < username.length; i++){
+
+    for (let i = 0; i < username.length; i++) {
+
         //Allowed characters: A-Z (case insensitive), 0-9, _ , . , -
         if (
         username.charCodeAt(i) !==  95 &&
@@ -196,7 +209,7 @@ const checkEmail = (email, funcName) => {
     return email;
 }
 
-const passwordCheck = (password) => {
+const checkPassword = (password) => {
     if (password === undefined || typeof password !== 'string' || password.trim() === "") throw 'Invalid password.';
         if (password.length < 8) throw 'Invalid password (8+ characters).'                        
         const characters = {lower: 0, upper: 0, special: 0, number: 0};                                              
@@ -220,4 +233,41 @@ const checkImage = (image, funcName) => {
   return pfp;
 }
 
-export { checkString, checkDateReleased, checkForm, checkUsername, checkEmail, passwordCheck, checkImage };
+const checkAdmin = (admin, funcName) => {
+  
+  if (!admin) {
+    throw `${funcName} Error: admin is undefined.`;
+  }
+
+  if (typeof admin !== "boolean") {
+    throw `${funcName} Error: admin must be a boolean.`;
+  }
+
+  return admin;
+
+}
+
+
+const checkId = (id, funcName, id_of_what) => {
+
+  id = checkString(id, "id", funcName);
+
+  if (!ObjectId.isValid(id)) {
+    throw `${funcName} Error: Invalid ${id_of_what} ID.`;
+  }
+
+  return id;
+
+}
+
+export {
+  checkString,
+  checkDateReleased,
+  checkForm,
+  checkUsername,
+  checkEmail,
+  checkPassword,
+  checkImage,
+  checkAdmin,
+  checkId
+};

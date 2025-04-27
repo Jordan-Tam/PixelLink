@@ -1,6 +1,6 @@
 import {ObjectId} from 'mongodb';
 import {users, games} from '../config/mongoCollections.js';
-import {checkString} from '../helpers.js';
+import {checkString, checkId} from '../helpers.js';
 
 const exportedMethods = {
 
