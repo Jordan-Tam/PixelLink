@@ -12,7 +12,7 @@ const LETTERS_AND_NUMBERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy
  * @param {string} str The string to validate.
  * @param {string} varName The name of the string variable as it is called in the function that called this helper function.
  * @param {string} funcName The name of the function that called this helper function.
- * @returns {string} Trimmed str
+ * @returns {string} str.trim()
  */
 const checkString = (str, varName, funcName) => {
 
@@ -152,6 +152,14 @@ const checkForm = (form, funcName) => {
 
 };
 
+/**
+ * Input validation for username parameter.
+ * Only checks if the passed username satisfies username constraints.
+ * Does NOT check if the username already exists in the Users collection.
+ * @param {string} username The username to check.
+ * @param {string} funcName The name of the function calling this function.
+ * @returns {string} username.trim()
+ */
 const checkUsername = (username, funcName) => {
 
     username = checkString(username, "username", funcName);
@@ -174,6 +182,12 @@ const checkUsername = (username, funcName) => {
     return username;
 }
 
+/**
+ * 
+ * @param {*} email 
+ * @param {*} funcName 
+ * @returns email.trim()
+ */
 const checkEmail = (email, funcName) => {
   email = checkString(email, "email", funcName);
     if (email === undefined || typeof email != 'string' || email.trim() === "") throw 'Invalid email.'; 
@@ -216,6 +230,11 @@ const checkEmail = (email, funcName) => {
     return email;
 }
 
+/**
+ * 
+ * @param {*} password 
+ * @returns 
+ */
 const checkPassword = (password) => {
     if (password === undefined || typeof password !== 'string' || password.trim() === "") throw 'Invalid password.';
         if (password.length < 8) throw 'Invalid password (8+ characters).'                        
@@ -231,6 +250,12 @@ const checkPassword = (password) => {
     return password;
 }
 
+/**
+ * 
+ * @param {*} image 
+ * @param {*} funcName 
+ * @returns 
+ */
 const checkImage = (image, funcName) => {
   let pfp = checkString(image, "profile picture", funcName);
   pfp = pfp.trim();
@@ -240,6 +265,12 @@ const checkImage = (image, funcName) => {
   return pfp;
 }
 
+/**
+ * 
+ * @param {*} admin 
+ * @param {*} funcName 
+ * @returns 
+ */
 const checkAdmin = (admin, funcName) => {
   
   if (!admin) {
@@ -255,6 +286,13 @@ const checkAdmin = (admin, funcName) => {
 }
 
 
+/**
+ * 
+ * @param {*} id 
+ * @param {*} funcName 
+ * @param {*} id_of_what 
+ * @returns 
+ */
 const checkId = (id, funcName, id_of_what) => {
 
   id = checkString(id, "id", funcName);
@@ -285,6 +323,31 @@ const checkUserGameInfo = (userGameInfo, gameId) => {
 
 }
 
+
+/**
+ * 
+ * @param {number} rating 
+ * @param {string} funcName 
+ * @returns rating
+ */
+const checkRating = (rating, funcName) => {
+
+  if (!rating) {
+    throw `${funcName} Error: rating is undefined.`;
+  }
+
+  if (typeof rating !== "number") {
+    throw `${funcName} Error: rating must be a number.`;
+  }
+
+  if (rating < 1 || rating > 5) {
+    throw `${funcName} Error: rating must be a number between 1 and 5.`;
+  }
+
+  return rating;
+
+}
+
 export {
   checkString,
   checkDateReleased,
@@ -295,5 +358,6 @@ export {
   checkImage,
   checkAdmin,
   checkId,
-  checkUserGameInfo
+  checkUserGameInfo,
+  checkRating
 };

@@ -263,9 +263,10 @@ const exportedMethods = {
     
 
     /**
-     * 
-     * @param {*} id 
-     * @param {*} friendId 
+     * Appends a user ID to the friends property of another user.
+     * @param {string} id The ID of the user who wants to add a friend.
+     * @param {string} friendId The ID of the friend.
+     * @returns {boolean} true
      */
     async addFriend(id, friendId) {
 
@@ -302,7 +303,7 @@ const exportedMethods = {
 
         updateInfo._id = updateInfo._id.toString();
         
-        return updateInfo;
+        return true;
 
     },
 
@@ -383,14 +384,25 @@ const exportedMethods = {
         userGameInfo = checkUserGameInfo(userGameInfo, gameId);
 
         // Insert the userGameInfo subdocument to User document.
-        let insertInfo = await usersCollection.findOneAndUpdate(
+        let updatedUser = await usersCollection.findOneAndUpdate(
             {_id: new ObjectId(id)},
             {$push: {games: userGameInfo}},
             {returnDocument: 'after'}
         );
 
-        if (!insertInfo) {
+        if (!updatedUser) {
             throw "addGame Error: User game info could not be added.";
+        }
+
+        // Update the numPlayers counter of the game.
+        let updatedGame = await gamesCollection.findOneAndUpdate(
+            {_id: new ObjectId(gameId)},
+            {$set: {numPlayers: numPlayers++}},
+            {returnDocument:'after'}
+        );
+
+        if (!updatedGame) {
+            throw "addGame Error: Game player count could not be updated.";
         }
 
         // Switch to something more useful later.
