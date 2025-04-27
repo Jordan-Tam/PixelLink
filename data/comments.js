@@ -108,11 +108,7 @@ const exportedMethods = {
     async getCommentById(id, type) {
 
         // Input validation.
-        id = checkString(id, "id", "getCommentById");
-
-        if (!ObjectId.isValid(id)) {
-            throw "getCommentById Error: Invalid Object ID.";
-        }
+        id = checkId(id, "getCommentById", "User");
 
         // If the comment was made under a user profile, search the Users collection for the comment.
         if (type === "user") {

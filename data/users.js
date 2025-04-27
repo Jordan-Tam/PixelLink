@@ -3,13 +3,14 @@ import {ObjectId} from 'mongodb';
 import bcrypt from 'bcryptjs';
 const saltRounds = 10;
 
-import {users} from '../config/mongoCollections.js'
+import {users, games} from '../config/mongoCollections.js'
 import {
     checkUsername,
     checkEmail,
     checkPassword,
     checkAdmin,
-    checkId
+    checkId,
+    checkUserGameInfo
 } from "../helpers.js";
 
 
@@ -17,10 +18,11 @@ const exportedMethods = {
 
     /**
      * Adds a User document to the Users collection.
+     * Analogous to a "register" function.
      * @param {string} username The username of the new account. It must be between 8-30 characters long; must contain only letters, numbers, underscores, periods, and hyphens; and cannot start or end with a period.
      * @param {string} email 
      * @param {string} password The plain text password of the new account. It must be at least 8 characters long; contain at least 1 uppercase letter, 1 lowercase number, 1 number, and 1 special character.
-     * @param {boolean} admin 
+     * @param {boolean} admin A boolean determining whether the user will have administrative privileges, which would allow them to add, update, and remove games from the pre-determined list of games.
      * @returns {object} The newly created User document (with the _id property converted to a string).
      */
     async createUser (username, email, password, admin) {
@@ -32,7 +34,7 @@ const exportedMethods = {
         admin = checkAdmin(admin);
     
         // Check if username is already taken.
-        let takenUsernames = await this.getTakenNames();
+        let takenUsernames = await this.getTakenUsernames();
         if (takenUsernames.includes(username.toLowerCase())) throw "createUser Error: Username taken.";
         let takenEmails = await this.getTakenEmails();
         if (takenEmails.includes(email.toLowerCase())) throw "createUser Error: Email is already associated with an account.";
@@ -71,6 +73,43 @@ const exportedMethods = {
 
 
     /**
+     * 
+     * @param {*} username 
+     * @param {*} password 
+     * @returns {object} 
+     */
+    async login (username, password) {
+
+        // Input validation.
+        username = checkUsername(username, "login");
+        password = checkPassword(password);
+
+        // Get users collection.
+        const usersCollection = await users();
+
+        // Get user associated with the username.
+        let user = await usersCollection.findOne({
+            username: username
+        });
+
+        if (!user) {
+            throw "login Error: User not found.";
+        }
+
+        let compare = await bcrypt.compare(password, user.password);
+
+        if (!compare) {
+            throw "login Error: Either the username or password is wrong.";
+        }
+
+        return {
+            username: user.username
+            // All other user info to add to the cookie.
+        };
+
+    },
+
+    /**
      * Updates the username, email, and password of the User document associated with the given ID.
      * @param {string} id 
      * @param {string} username 
@@ -93,7 +132,7 @@ const exportedMethods = {
 
         // If the username changed, make sure it is not taken.
         if(username !== user.username) {
-            let takenUsernames = await this.getTakenNames();
+            let takenUsernames = await this.getTakenUsernames();
             if (takenUsernames.includes(username.toLowerCase())) {
                 throw "Username taken.";
             }
@@ -175,15 +214,22 @@ const exportedMethods = {
     /**
      * 
      * @param {*} id 
-     * @returns 
+     * @returns {object} The requested User document (with the _id property converted to a string).
      */
     async getUserById (id) {
-        id = checkString(id, "id", "getUserById");
 
-        if (!ObjectId.isValid(id)) throw 'Invalid user ID';
+        // Input validation.
+        id = checkId(id, "getUserById", "User");
+
+        // Get users collection.
         const userCollection = await users();
+
+        // Find the user with the given ID.
         const user = await userCollection.findOne({ _id: new ObjectId(id) });
+
         if (user === null) throw 'error: no user with that id';
+
+        // Return the user object with the _id property converted to a string.
         user._id = user._id.toString();
         return user;
       
@@ -194,7 +240,7 @@ const exportedMethods = {
      * 
      * @returns A list of all usernames in the Users collection.
      */
-    async getTakenNames() {
+    async getTakenUsernames() {
         const userCollection = await users();
         let userList = await userCollection.find({}).toArray();
         if (!userList) throw 'Could not get all users';
@@ -306,13 +352,61 @@ const exportedMethods = {
     },
 
 
-    async addGame() {
+    /**
+     * 
+     * @param {*} id 
+     * @param {*} gameId 
+     * @param {*} userGameInfo 
+     * @returns 
+     */
+    async addGame(id, gameId, userGameInfo) {
+
+        // Input validation for the ID parameters.
+        id = checkId(id, "addGame", "User");
+        gameId = checkId(gameId, "addGame", "Game");
+
+        // Get the users and games collections.
+        const usersCollection = await users();
+        const gamesCollection = await games();
+
+        // Check if user ID exists.
+        await this.getUserById(id);
+
+        // Check if game ID exists.
+        let game = gamesCollection.findOne({
+            _id: new ObjectId(id)
+        });
+
+        if (!game) throw "addGame Error: No game with that ID.";
+
+        // Now that we know that the game exists, we can do input validation for the userGameInfo parameter.
+        userGameInfo = checkUserGameInfo(userGameInfo, gameId);
+
+        // Insert the userGameInfo subdocument to User document.
+        let insertInfo = await usersCollection.findOneAndUpdate(
+            {_id: new ObjectId(id)},
+            {$push: {games: userGameInfo}},
+            {returnDocument: 'after'}
+        );
+
+        if (!insertInfo) {
+            throw "addGame Error: User game info could not be added.";
+        }
+
+        // Switch to something more useful later.
+        return true;
 
     },
 
-    async removeGame() {
+    async updateGame(id, gameId, userGameInfo) {
+
+    },
+
+    async removeGame(id, gameId) {
 
     }
+
+    //* Data functions for comments are implemented in "./comments.js"
 
 };
 

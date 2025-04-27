@@ -18,6 +18,13 @@ const checkString = (str, varName, funcName) => {
 
   if (!str) {
     throw `${funcName} Error: ${varName} is undefined.`;
+    /*
+    throw {
+      status: 400,
+      function: funcName,
+      error: `${varName} is undefined.`
+    };
+    */
   }
 
   if (typeof str !== "string") {
@@ -260,6 +267,24 @@ const checkId = (id, funcName, id_of_what) => {
 
 }
 
+/**
+ * 
+ * @param {array} userGameInfo An array of
+ * @param {string} gameId 
+ * @returns 
+ */
+const checkUserGameInfo = (userGameInfo, gameId) => {
+  
+  // Make sure userGameInfo is an array.
+  // Get the form of the game associated with gameId.
+  // Then, for each element in userGameInfo, make sure it is of type object and has only two keys: 'field_name' and 'value'.
+  // For each element, check that the value for 'field_name' matches a value in the game form. Since both form and UserGames are an array of objects, the field name's SHOULD appear in the same order (perhaps enforce that, too).
+  // Then, check that the value of 'value' is of the correct type, as dictated by the game form's field's 'type' attribute.
+
+  return;
+
+}
+
 export {
   checkString,
   checkDateReleased,
@@ -269,5 +294,6 @@ export {
   checkPassword,
   checkImage,
   checkAdmin,
-  checkId
+  checkId,
+  checkUserGameInfo
 };
