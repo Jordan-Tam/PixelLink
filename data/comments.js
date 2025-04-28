@@ -83,11 +83,22 @@ const exportedMethods = {
             // Throw an error if the update failed.
             if (!insertedCommentToGameInfo) {
                 throw "createComment Error: Comment could not be added to game.";
+                throw {
+                    status: 500,
+                    function: "createComment",
+                    error: "Comment could not be added."
+                };
+                
             }
         
         // Throw an error if type is defined as anything else.
         } else {
             throw "createComment Error: The type parameter must be either 'user' or 'game'.";
+            throw {
+                status: 500,
+                function: "createComment",
+                error: "'type' parameter must be either 'user' or 'game'."
+            };
         }
 
         // Convert the _id attribute to a string.

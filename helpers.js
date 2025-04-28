@@ -7,6 +7,10 @@ const NUMBERS = "0123456789";
 const LETTERS_AND_NUMBERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//* GENERAL
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  * Input validation for string parameters.
  * @param {string} str The string to validate.
@@ -16,39 +20,85 @@ const LETTERS_AND_NUMBERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy
  */
 const checkString = (str, varName, funcName) => {
 
+  // Check if "str" is undefined, null, or an empty string.
   if (!str) {
     throw `${funcName} Error: ${varName} is undefined.`;
-    /*
     throw {
       status: 400,
       function: funcName,
       error: `${varName} is undefined.`
     };
-    */
   }
 
+  // Check if "str" is of type string.
   if (typeof str !== "string") {
     throw `${funcName} Error: ${varName} must be a string.`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: `${varName} must be a string.`
+    };
   }
 
   str = str.trim();
 
+  // Check if "str" is composed of only spaces.
   if (str.length === 0) {
     throw `${funcName} Error: ${varName} cannot be empty or just spaces.`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: `${varName} cannot be empty or just spaces.`
+    };
   }
 
   return str;
 
 };
 
+
+/**
+ * 
+ * @param {string} id The ID to validate.
+ * @param {string} funcName The name of the function that called this helper function.
+ * @param {string} id_of_what The type of document this ID belongs to (user, game, comment, etc).
+ * @returns id.trim()
+ */
+const checkId = (id, funcName, id_of_what) => {
+
+  id = checkString(id, "id", funcName);
+
+  if (!ObjectId.isValid(id)) {
+    throw `${funcName} Error: Invalid ${id_of_what} ID.`;
+  }
+
+  return id;
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//* INPUT VALIDATION FOR GAMES COLLECTION
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * 
+ * @param {string} dateReleased 
+ * @param {string} funcName 
+ * @returns 
+ */
 const checkDateReleased = (dateReleased, funcName) => {
+
+
   dateReleased = checkString(dateReleased, "dateReleased", funcName);
-  if(dateReleased === "unknown"){
+
+  if(dateReleased === "N/A"){
     return dateReleased;
   }
+
   let trio = dateReleased.split("/");
   if (trio.length !== 3) {
-    throw `Improper date`;
+    throw `${funcName} Error: Improper date`;
   }
   let month = trio[0];
   let day = trio[1];
@@ -91,6 +141,7 @@ const checkDateReleased = (dateReleased, funcName) => {
   }
 
   return dateReleased;
+
 };
 
 const checkQuestion = (question, funcName) => {
@@ -151,6 +202,36 @@ const checkForm = (form, funcName) => {
   return form;
 
 };
+
+
+/**
+ * 
+ * @param {number} rating 
+ * @param {string} funcName 
+ * @returns rating
+ */
+const checkRating = (rating, funcName) => {
+
+  if (!rating) {
+    throw `${funcName} Error: rating is undefined.`;
+  }
+
+  if (typeof rating !== "number") {
+    throw `${funcName} Error: rating must be a number.`;
+  }
+
+  if (rating < 1 || rating > 5) {
+    throw `${funcName} Error: rating must be a number between 1 and 5.`;
+  }
+
+  return rating;
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//* INPUT VALIDATION FOR USERS COLLECTION
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Input validation for username parameter.
@@ -273,7 +354,7 @@ const checkImage = (image, funcName) => {
  */
 const checkAdmin = (admin, funcName) => {
   
-  if (!admin) {
+  if (admin === undefined || admin === null) {
     throw `${funcName} Error: admin is undefined.`;
   }
 
@@ -285,25 +366,6 @@ const checkAdmin = (admin, funcName) => {
 
 }
 
-
-/**
- * 
- * @param {*} id 
- * @param {*} funcName 
- * @param {*} id_of_what 
- * @returns 
- */
-const checkId = (id, funcName, id_of_what) => {
-
-  id = checkString(id, "id", funcName);
-
-  if (!ObjectId.isValid(id)) {
-    throw `${funcName} Error: Invalid ${id_of_what} ID.`;
-  }
-
-  return id;
-
-}
 
 /**
  * 
@@ -320,31 +382,6 @@ const checkUserGameInfo = (userGameInfo, gameId) => {
   // Then, check that the value of 'value' is of the correct type, as dictated by the game form's field's 'type' attribute.
 
   return;
-
-}
-
-
-/**
- * 
- * @param {number} rating 
- * @param {string} funcName 
- * @returns rating
- */
-const checkRating = (rating, funcName) => {
-
-  if (!rating) {
-    throw `${funcName} Error: rating is undefined.`;
-  }
-
-  if (typeof rating !== "number") {
-    throw `${funcName} Error: rating must be a number.`;
-  }
-
-  if (rating < 1 || rating > 5) {
-    throw `${funcName} Error: rating must be a number between 1 and 5.`;
-  }
-
-  return rating;
 
 }
 

@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { games } from "../config/mongoCollections.js";
-import { getUserById } from "./users.js";
+import userData from "./users.js";
 import {
   checkString,
   checkDateReleased,
@@ -173,7 +173,7 @@ const exportedMethods = {
 
     // Check if user ID exists.
     // This function will throw an error if no user is found.
-    await getUserById(userId);
+    await userData.getUserById(userId);
 
     // Get game.
     let game = gamesCollection.findOne({
@@ -194,7 +194,7 @@ const exportedMethods = {
     };
 
     // Append the Review subdocument to the game's reviews property. 
-    insertReviewToGameInfo = await gamesCollection.findOneAndUpdate(
+    let insertReviewToGameInfo = await gamesCollection.findOneAndUpdate(
       {_id: new ObjectId(gameId)},
       {$push: {reviews: newReview}},
       {returnDocument: 'after'}

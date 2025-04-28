@@ -10,69 +10,69 @@ const db = await databaseConnection();
 await db.dropDatabase();
 
 //////////////////////////////////////////////////////////////
-//Users
+// Users
 //////////////////////////////////////////////////////////////
 
-const user1 = await users.createUser(
+let user1 = await users.createUser(
   "JohnDoe",
   "johndoe10@gmail.com",
   "Password123@",
-  "my_picture.jpg",
+  //"my_picture.jpg",
   false
 );
 
-const user2 = await users.createUser(
+let user2 = await users.createUser(
   "owen-treanor",
   "owen-treanor@gmail.com",
   "D0nkeyK0ng!",
-  "picture.jpg",
+  //"picture.jpg",
   true
 );
 
-const user3 = await users.createUser(
+let user3 = await users.createUser(
   "gamer7",
   "gamer7@gmail.com",
   "iAMAGAMER%1",
-  "pic.jpg",
+  //"pic.jpg",
   false
 );
 
-const user4 = await users.createUser(
+let user4 = await users.createUser(
   "Josh6",
   "josh7@gmail.com",
   "ABCabc123!",
-  "pfp.jpg",
+  //"pfp.jpg",
   false
 );
 
-const user5 = await users.createUser(
+let user5 = await users.createUser(
   "user5",
   "hello@gmail.com",
   "!!3PPOOQQqq",
-  "p.jpg",
+  //"p.jpg",
   false
 );
 
-const user6 = await users.createUser(
+let user6 = await users.createUser(
   "James12345",
   "jj@gmail.com",
   "myPassword7%%",
-  "hello.jpg",
+  //"hello.jpg",
   false
 );
 
-const user7 = await users.createUser(
+let user7 = await users.createUser(
   "admin",
   "admin4PixelLink@gmail.com",
   "Admin!000",
-  "admin.jpg",
+  //"admin.jpg",
   true
 );
 
 // console.log(await users.getAllUsers());
 
 //////////////////////////////////////////////////////////////
-//Games
+// Games
 //////////////////////////////////////////////////////////////
 const chessForm = [
   {
@@ -91,7 +91,8 @@ const chessForm = [
     options: [],
   },
 ];
-const chess = await games.createGame("Chess", "unknown", chessForm);
+const chess = await games.createGame("Chess", "N/A", chessForm);
+
 
 const balatroForm = [
   {
@@ -125,6 +126,7 @@ const balatroForm = [
 ];
 const balatro = await games.createGame("Balatro", "02/20/2024", balatroForm);
 
+
 const marioKartForm = [
   {
     field: "Which is your favorite character to race as?",
@@ -142,6 +144,7 @@ const marioKart = await games.createGame(
   "04/28/2017",
   marioKartForm
 );
+
 
 const amongUsForm = [
   {
@@ -167,6 +170,7 @@ const amongUsForm = [
   },
 ];
 const amongUs = await games.createGame("Among Us", "06/15/2018", amongUsForm);
+
 
 const overwatch2Form = [
   {
@@ -232,6 +236,7 @@ const overwatch2 = await games.createGame(
   overwatch2Form
 );
 
+
 const minecraftForm = [
   {
     field: "What is your favorite way to play?",
@@ -259,6 +264,7 @@ const minecraft = await games.createGame(
   "05/17/2009",
   minecraftForm
 );
+
 
 const marvelRivalsForm = [
   {
@@ -321,11 +327,12 @@ const marvelRivals = await games.createGame(
   marvelRivalsForm
 );
 
+
 // const allGames = await games.getAllGames();
 // console.log(allGames);
 
 //////////////////////////////////////////////////////////////
-//Comments
+// Game Comments
 //////////////////////////////////////////////////////////////
 
 const commentG1 = await comments.createComment(
@@ -362,6 +369,10 @@ const commentG5 = await comments.createComment(
   user1._id.toString(),
   "Chicken Jockey!!"
 );
+
+//////////////////////////////////////////////////////////////
+// User Comments
+//////////////////////////////////////////////////////////////
 
 const commentU1 = await comments.createComment(
   "user",
@@ -410,6 +421,19 @@ const commentU6 = await comments.createComment(
 // console.log(await comments.getCommentById(commentG2._id.toString(), "game"));
 
 // console.log(await comments.removeComment(commentG1._id.toString(), "game"));
+
+
+//////////////////////////////////////////////////////////////
+// Game Reviews
+//////////////////////////////////////////////////////////////
+
+const review1 = await games.addReview(
+  chess._id,
+  user1._id,
+  "Lacking Content",
+  "This game hasn't gotten any updates in centuries.",
+  2
+);
 
 console.log("Done seeding database.");
 

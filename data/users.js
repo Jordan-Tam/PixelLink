@@ -31,7 +31,7 @@ const exportedMethods = {
         username = checkUsername(username, "createUser");
         email = checkEmail(email, "createUser");
         password = checkPassword(password);
-        admin = checkAdmin(admin);
+        admin = checkAdmin(admin, "createUser");
     
         // Check if username is already taken.
         let takenUsernames = await this.getTakenUsernames();
@@ -124,7 +124,6 @@ const exportedMethods = {
         username = checkUsername(username, "updateUser")
         email = checkEmail(email, "updateUser");
         password = checkPassword(password);
-        admin = checkAdmin(admin);
     
         // Get the user associated with the given ID.
         // This function will throw an error if no user is found.
