@@ -110,6 +110,7 @@ if (registrationForm) {
             return;
         }
 
+        //Password validation
         if (password_input.length < 8){
             error.innerHTML = "Password must be 8+ characters."
             error.hidden = false;
@@ -134,8 +135,6 @@ if (registrationForm) {
             return;
         }
             
-
-
 
         registrationForm.reset();
         error.innerHTML = "";

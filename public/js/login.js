@@ -100,6 +100,30 @@ if (loginForm) {
             }
         }
 
+        if (password_input.length < 8){
+            error.innerHTML = "Password must be 8+ characters."
+            error.hidden = false;
+            return;
+        }
+
+        const characters = {lower: 0, upper: 0, special: 0, number: 0};    
+        for (let i = 0; i < password.length; i++){
+            if (password_input.charCodeAt(i) >= 48 && password_input.charCodeAt(i) <= 57) characters['number']++;
+            else if (password_input.charCodeAt(i) >= 65 && password_input.charCodeAt(i) <= 90) characters['upper']++;
+            else if (password_input.charCodeAt(i) >= 97 && password_input.charCodeAt(i) <= 122) characters['lower']++;
+            else if (password_input.charCodeAt(i) === 32){
+                error.innerHTML = "Spaces not allowed in password";
+                error.hidden = false;
+                return;
+            }
+            else characters['special']++;                  
+        }                       
+        if (characters['lower'] === 0 || characters['upper'] === 0 || characters['special'] === 0 || characters['number'] === 0){
+            error.innerHTML = "Password must contain 1+ uppercase, 1+ lowercase, 1+ number, and 1+ special character ";
+            error.hidden = false;
+            return;
+        }
+
         loginForm.reset();
         error.innerHTML = "";
 
