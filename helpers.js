@@ -324,6 +324,9 @@ const checkPassword = (password) => {
             if (password.charCodeAt(i) >= 48 && password.charCodeAt(i) <= 57) characters['number']++;
             else if (password.charCodeAt(i) >= 65 && password.charCodeAt(i) <= 90) characters['upper']++;
             else if (password.charCodeAt(i) >= 97 && password.charCodeAt(i) <= 122) characters['lower']++;
+            else if (password.charCodeAt(i) === 32){
+              throw 'Spaces not allowed in password.'
+            }
             else characters['special']++;                  
         }                       
         if (characters['lower'] === 0 || characters['upper'] === 0 || characters['special'] === 0 || characters['number'] === 0)  //If one chartype isnt seen throw error
