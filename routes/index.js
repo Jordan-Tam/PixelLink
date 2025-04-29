@@ -1,4 +1,4 @@
-import {checkUsername, checkPassword} from '../helpers.js';
+import {checkUsername, checkPassword, checkEmail, checkAdmin} from '../helpers.js';
 import users from '../data/users.js';
 import userRoutes from './users.js';
 import gameRoutes from './games.js';
