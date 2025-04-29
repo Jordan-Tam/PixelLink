@@ -23,7 +23,6 @@ const checkString = (str, varName, funcName) => {
 
   // Check if "str" is undefined, null, or an empty string.
   if (!str) {
-    throw `${funcName} Error: ${varName} is undefined.`;
     throw {
       status: 400,
       function: funcName,
@@ -33,7 +32,6 @@ const checkString = (str, varName, funcName) => {
 
   // Check if "str" is of type string.
   if (typeof str !== "string") {
-    throw `${funcName} Error: ${varName} must be a string.`;
     throw {
       status: 400,
       function: funcName,
@@ -45,7 +43,6 @@ const checkString = (str, varName, funcName) => {
 
   // Check if "str" is composed of only spaces.
   if (str.length === 0) {
-    throw `${funcName} Error: ${varName} cannot be empty or just spaces.`;
     throw {
       status: 400,
       function: funcName,
@@ -70,7 +67,6 @@ const checkId = (id, funcName, id_of_what) => {
   id = checkString(id, "id", funcName);
 
   if (!ObjectId.isValid(id)) {
-    throw `${funcName} Error: Invalid ${id_of_what} ID.`;
     throw {
       status: 400,
       function: funcName,
@@ -105,14 +101,22 @@ const checkDateReleased = (dateReleased, funcName) => {
 
   let trio = dateReleased.split("/");
   if (trio.length !== 3) {
-    throw `${funcName} Error: Improper date`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Improper date."
+    }
   }
   let month = trio[0];
   let day = trio[1];
   let year = trio[2];
 
   if (month.length !== 2 || day.length !== 2 || year.length !== 4) {
-    throw `${funcName} Error: Improper date`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Improper date."
+    }
   }
 
   month = parseInt(month);
@@ -120,31 +124,55 @@ const checkDateReleased = (dateReleased, funcName) => {
   year = parseInt(year);
 
   if (isNaN(month) || isNaN(day) || isNaN(year)) {
-    throw `${funcName} Error: Improper date`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Improper date."
+    }
   }
 
   if (!(month >= 1 && month <= 12)) {
-    throw `${funcName} Error: Improper date`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Improper date."
+    }
   }
 
   if (!(day >= 1 && day <= 31)) {
-    throw `${funcName} Error: Improper date`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Improper date."
+    }
   }
 
   let currentYear = new Date().getFullYear();
 
   if (!(year >= 1900 && year <= currentYear + 2)) {
-    throw `${funcName} Error: Improper date`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Improper date."
+    }
   }
 
   if (month === 4 || month === 6 || month === 9 || month === 11) {
     if (day === 31) {
-      throw `${funcName} Error: Date does not exist`;
+      throw {
+        status: 400,
+        function: funcName,
+        error: "Date does not exist."
+      }
     }
   }
 
   if (month === 2 && day > 28) {
-    throw `${funcName} Error: Date does not exist`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Date does not exist."
+    }
   }
 
   return dateReleased;
@@ -159,31 +187,42 @@ const checkDateReleased = (dateReleased, funcName) => {
  */
 const checkQuestion = (question, funcName) => {
 
+  // Check that question was supplied.
   if (!question) {
-    throw `${funcName} Error`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: ""
+    }
   }
   
+  // Check that question is an object.
   if (typeof question !== "object") {
     throw `${funcName} Error: question must be an object.`;
   }
-
   if (Array.isArray(question)) {
     throw `${funcName} Error: question must be an object.`;
   }
   
+  // Check the "field" attribute of the question object.
   let field = question.field;
   if (!field) {
     throw `${funcName} Error: Each question must have a field key.`;
   }
+
+  // Check the "type" attribute of the question object.
   let type = question.type;
   if (!type) {
     throw `${funcName} Error: Each question must have a type key.`;
   }
+
+  // Check the "options" attribute of the question object.
   let options = question.options;
   if (!options) {
     throw `${funcName} Error: Each question must have a options key.`;
   }
 
+  // Make sure there are no other keys in the questions object.
   if (Object.keys(question).length !== 3) {
     throw `${funcName} Error: A question has unnecessary keys.`;
   }
@@ -200,21 +239,37 @@ const checkQuestion = (question, funcName) => {
     throw `${funcName} Error: Question options must be an array.`;
   }
 
-  if (type === "text" && options.length !== 0) {
+  // If type is "text"...
+  if (type === "text") {
+
+    // ...make sure that the options array is empty.
     if (options.length !== 0) {
       throw `${funcName} Error: Cannot have a text question with options.`;
-    } else {
-      if (options.length === 0) {
-        throw `${funcName} Error: Cannot have a select question without options.`;
-      }
-      for (let option of options) {
-        option = checkString(option, funcName);
-      }
     }
+
+  // If type is "select"...
+  } else if (type === "select") {
+
+    // ...make sure that the options array has at least 2 elements.
+    if (options.length < 2) {
+      throw `${funcName} Error: There must be at least 2 options for a select-type question.`;
+    }
+
+    for (let i = 0; i < options.length; i++) {
+      options[i] = checkString(options[i], `Options`, funcName);
+    }
+
+  } else {
+
+    throw {
+      status: 500,
+      function: funcName,
+      error: "Type must be either 'text' or 'select'."
+    };
+    
   }
 
-  return question;
-  //return { field: field, type: type, options: options };
+  return { field: field, type: type, options: options };
 
 };
 
@@ -225,15 +280,28 @@ const checkQuestion = (question, funcName) => {
  * @returns 
  */
 const checkForm = (form, funcName) => {
+
+  // Check that a form was supplied.
   if (!form) {
-    throw `${funcName} Error: Form is not defined.`;
-  }
-  if (!Array.isArray(form)) {
-    throw `${funcName} Error: Form must be an array.`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Form is not defined."
+    }
   }
 
-  for (let question of form) {
-    question = checkQuestion(question, funcName);
+  // Check that form is an array.
+  if (!Array.isArray(form)) {
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Form must be an array."
+    }
+  }
+
+  // For each element of form, check that it is a valid GameFormField.
+  for (let i = 0; i < form.length; i++) {
+    form[i] = checkQuestion(form[i], funcName);
   }
 
   return form;
@@ -250,15 +318,27 @@ const checkForm = (form, funcName) => {
 const checkRating = (rating, funcName) => {
 
   if (!rating) {
-    throw `${funcName} Error: rating is undefined.`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Rating is undefined."
+    }
   }
 
   if (typeof rating !== "number") {
-    throw `${funcName} Error: rating must be a number.`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Rating must be a number."
+    }
   }
 
   if (rating < 1 || rating > 5) {
-    throw `${funcName} Error: rating must be a number between 1 and 5.`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Rating must be a number between 1 and 5."
+    }
   }
 
   return rating;
@@ -282,21 +362,22 @@ const checkUsername = (username, funcName) => {
 
     username = checkString(username, "username", funcName);
 
-    for (let i = 0; i < username.length; i++) {
-
-        //Allowed characters: A-Z (case insensitive), 0-9, _ , . , -
-        if (
-        username.charCodeAt(i) !==  95 &&
-        username.charCodeAt(i) !== 46 &&
-        username.charCodeAt(i) !== 45 &&
-        !(username.charCodeAt(i) >= 48 && username.charCodeAt(i) <= 57) &&
-        !(username.charCodeAt(i) >= 65 && username.charCodeAt(i) <= 90 ) &&
-        !(username.charCodeAt(i) >= 97 && username.charCodeAt(i) <= 122)){
-            throw "Invalid username. Allowed characters: A-Z (case insensitive), 0-9, _ , . , -";
-        } 
+    if (username.length < 3 || username.length > 15) {
+      throw 'Username must be between 3-15 characters';
     }
-    if (username.charCodeAt(0) === 46 || username.charCodeAt(username.length-1) === 46) throw 'Username cannot start or end with \'.\''; //Username cannot start/end with a . (ugly)
-    if (username.length < 3 || username.length > 15) throw 'Username must be between 3-15 characters'; 
+
+    for (let char of username) {
+
+      if (LETTERS_AND_NUMBERS_PLUS.indexOf(char) < 0) {
+        throw "Invalid username. Allowed characters: A-Z (case insensitive), 0-9, _ , . , -";
+      }
+
+    }
+
+    if (username[0] === "." || username[username.length-1] === ".") {
+      throw 'Username cannot start or end with \'.\'';
+    }
+
     return username;
 }
 
@@ -395,11 +476,19 @@ const checkImage = (image, funcName) => {
 const checkAdmin = (admin, funcName) => {
   
   if (admin === undefined || admin === null) {
-    throw `${funcName} Error: admin is undefined.`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Admin is undefined."
+    }
   }
 
   if (typeof admin !== "boolean") {
-    throw `${funcName} Error: admin must be a boolean.`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: "Admin must be a boolean."
+    }
   }
 
   return admin;
