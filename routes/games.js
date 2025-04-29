@@ -26,7 +26,7 @@ router.route('/:id')
             const game = await games.getGameById(id);
             return res.render('game-page', {game: game});
         } catch (error) {
-            return res.send(error);
+            return res.status(404).redirect("/error");
         }
     })
     .post()
