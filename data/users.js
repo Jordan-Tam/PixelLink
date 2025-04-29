@@ -103,7 +103,8 @@ const exportedMethods = {
         }
 
         return {
-            username: user.username
+            username: user.username,
+            _id: user._id.toString()
             // All other user info to add to the cookie.
         };
 
