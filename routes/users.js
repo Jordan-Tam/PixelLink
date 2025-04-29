@@ -27,7 +27,7 @@ router.route('/:id')
             }
             return res.render('user-page', {user, loggedInUser});
         } catch (error) {
-            res.status(500).json({error});
+            res.status(404).redirect("/error");
         }
     })
     .post(async (req, res) => {
