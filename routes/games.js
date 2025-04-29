@@ -22,10 +22,8 @@ router.route('/list')
 router.route('/:id')
     .get(async (req, res) => {
         try{
-            if(!req.params.id){
-                return res.status(400).json({error: "Invalid game id"});
-            }
-            const game = await games.getGameById(req.params.id);
+            const id = checkString(req.params.id, 'Game id','GET game/:id');
+            const game = await games.getGameById(id);
             return res.render('game-page', {game: game});
         } catch (error) {
             return res.send(error);
@@ -36,10 +34,8 @@ router.route('/:id')
 router.route('/:id/form')
     .get(async (req, res) => {
         try{
-            if(!req.params.id){
-                return res.status(400).json({error: "Invalid game id"});
-            }
-            const game = await games.getGameById(req.params.id);
+            const id = checkString(req.params.id, 'Game id','GET game/:id/form');
+            const game = await games.getGameById(id);
             return res.render('game-form', {game: game});
         } catch (error) {
             return res.send(error);
