@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {checkString} from '../helpers.js';
+import {checkString, checkDateReleased, checkForm} from '../helpers.js';
 import games from '../data/games.js';
 
 const router = Router();
@@ -17,10 +17,29 @@ router.route('/list')
                 title: "Games List"
             });
         } catch (error) {
-            return res.send(error);
+            return res.status(500).json({error});
         }
     })
-    .post()
+    .post(async (req, res) => {
+        try {
+            const {name, dateReleased, form} = req.body;
+            name = checkString(name, "name", "POST game/list");
+            dateReleased = checkDateReleased(dateReleased, "POST game/list");
+            form = checkForm(form);
+            if(!req.session.user && !req.session.user.admin){
+                //Not logged in users and non-admins cannot add a game
+                return res.status(403).json({error: "Permission Denied"});
+            }
+            const game = await games.createGame(name, dateReleased, form);
+            const gamesList = await games.getAllGames();
+            return res.render('game-list', {
+                games: gamesList,
+                title: "Games List"
+            });
+        } catch (error) {
+            return res.status(500).json({error});
+        }
+    })
 
 router.route('/:id')
     .get(async (req, res) => {
