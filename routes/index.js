@@ -14,24 +14,32 @@ const constructorMethod = (app) => {
 
     // Login page
     app.get("/login", (req, res) => {
-        res.render('login', {
-            title: "Login",
-            stylesheet: "/public/css/login.css"
-        });
+        try{
+            return res.render('login', {
+                title: "Login",
+                stylesheet: "/public/css/login.css"
+            });
+        } catch (error) {
+            return res.status(500).json({error});
+        }
     });
 
     // Registration page
     app.get("/register", (req, res) => {
-        res.render('registration', {
-            title: "Register",
-            stylesheet: "/public/css/registration.css",
-            script: "/public/js/registration.js"
-        });
+        try {
+            return res.render('registration', {
+                title: "Register",
+                stylesheet: "/public/css/registration.css",
+                script: "/public/js/registration.js"
+            });
+        } catch (error) {
+            return res.status(500).json({error});
+        }
     })
 
     app.get("/signout", (req, res) =>{
         req.session.destroy();
-        res.sendFile(path.resolve("static/about.html"));
+        res.sendFile(path.resolve("static/signout.html"));
     })
 
     // About page
