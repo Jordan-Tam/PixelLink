@@ -2,8 +2,8 @@
     <div class="centered-flex-column">
         <img src="/public/images/logo.png" width="500">
         <h1>Login</h1>
-        <p id="error" hidden></p>
-        <form method="POST" id="loginForm" name="loginForm">
+        <p id="error" {{hidden}}>{{error_message}}</p>
+        <form method="POST" action="/login" id="loginForm" name="loginForm">
             <div class="centered-flex-row">
                 <label for="username">Username</label>
                 <input id="username" name="username" type="text">

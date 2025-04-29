@@ -2,8 +2,8 @@
     <div class="centered-flex-column">
         <img src="/public/images/logo.png" width="500">
         <h1>Register</h1>
-        <p id="error" hidden></p>
-        <form id="registrationForm" name="registrationForm" method="POST">
+        <p id="error" {{hidden}}>{{error_message}}</p>
+        <form id="registrationForm" action="/register" name="registrationForm" method="POST">
             <div class="centered-flex-row">
                 <label for="email">Email</label>
                 <input id="email" name="email" type="email">

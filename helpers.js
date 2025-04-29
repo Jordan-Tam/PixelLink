@@ -5,6 +5,7 @@ const UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const LOWERCASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
 const NUMBERS = "0123456789";
 const LETTERS_AND_NUMBERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+const LETTERS_AND_NUMBERS_PLUS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._-";
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,6 +71,11 @@ const checkId = (id, funcName, id_of_what) => {
 
   if (!ObjectId.isValid(id)) {
     throw `${funcName} Error: Invalid ${id_of_what} ID.`;
+    throw {
+      status: 400,
+      function: funcName,
+      error: `Invalid ${id_of_what} ID.`
+    }
   }
 
   return id;
@@ -85,14 +91,15 @@ const checkId = (id, funcName, id_of_what) => {
  * 
  * @param {string} dateReleased 
  * @param {string} funcName 
- * @returns 
+ * @returns dateReleased.trim()
  */
 const checkDateReleased = (dateReleased, funcName) => {
 
-
+  // Basic string validation.
   dateReleased = checkString(dateReleased, "dateReleased", funcName);
 
-  if(dateReleased === "N/A"){
+  // Let "N/A" be an acceptable date.
+  if (dateReleased === "N/A"){
     return dateReleased;
   }
 
@@ -144,7 +151,26 @@ const checkDateReleased = (dateReleased, funcName) => {
 
 };
 
+/**
+ * 
+ * @param {object} question 
+ * @param {string} funcName 
+ * @returns 
+ */
 const checkQuestion = (question, funcName) => {
+
+  if (!question) {
+    throw `${funcName} Error`;
+  }
+  
+  if (typeof question !== "object") {
+    throw `${funcName} Error: question must be an object.`;
+  }
+
+  if (Array.isArray(question)) {
+    throw `${funcName} Error: question must be an object.`;
+  }
+  
   let field = question.field;
   if (!field) {
     throw `${funcName} Error: Each question must have a field key.`;
@@ -162,12 +188,14 @@ const checkQuestion = (question, funcName) => {
     throw `${funcName} Error: A question has unnecessary keys.`;
   }
 
+  // Check that 'field' and 'type' are strings.
   field = checkString(field, funcName);
   type = checkString(type, funcName);
   if (type !== "text" && type !== "select") {
     throw `${funcName} Error: Question types can only be 'text' or 'select'.`;
   }
 
+  // Check that 'options' is an array.
   if (!Array.isArray(options)) {
     throw `${funcName} Error: Question options must be an array.`;
   }
@@ -184,9 +212,18 @@ const checkQuestion = (question, funcName) => {
       }
     }
   }
-  return { field: field, type: type, options: options };
+
+  return question;
+  //return { field: field, type: type, options: options };
+
 };
 
+/**
+ * 
+ * @param {array} form 
+ * @param {string} funcName 
+ * @returns 
+ */
 const checkForm = (form, funcName) => {
   if (!form) {
     throw `${funcName} Error: Form is not defined.`;
