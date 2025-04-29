@@ -25,7 +25,11 @@ router.route('/:id')
             if(req.session.user && req.session.user._id == id){//checks if user is visiting their own profile page
                 loggedInUser = true;
             }
-            return res.render('user-page', {user, loggedInUser});
+            return res.render('user-page', {
+                user, 
+                loggedInUser,
+                title: `${user.username}'s Profile`
+            });
         } catch (error) {
             res.status(404).redirect("/error");
         }
@@ -55,7 +59,11 @@ router.route('/:id/friends')
                 const friend = await users.getUserById(id);
                 friendsArr.push(friend); //array of users(friends)
             }
-            return res.render('friends-list', {friends: friendsArr, username: user.username});
+            return res.render('friends-list', {
+                friends: friendsArr,
+                username: user.username,
+                title: `${user.username}'s Friends List`
+            });
         } catch (error) {
             return res.status(500).json({error});
         }
