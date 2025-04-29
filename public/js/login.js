@@ -63,7 +63,7 @@ if (loginForm) {
             return;
         }
 
-        loginForm.reset();
+        //loginForm.reset();
         error.innerHTML = "";
 
     })

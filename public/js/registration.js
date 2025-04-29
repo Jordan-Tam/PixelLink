@@ -149,7 +149,7 @@ if (registrationForm) {
         return;
     }
         
-    registrationForm.reset();
+    //registrationForm.reset();
     error.innerHTML = "";
     })
 }
