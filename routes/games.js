@@ -12,7 +12,10 @@ router.route('/list')
     .get(async (req, res) => {
         try {
             const gamesList = await games.getAllGames();
-            return res.render('game-list', {games: gamesList});
+            return res.render('game-list', {
+                games: gamesList,
+                title: "Games List"
+            });
         } catch (error) {
             return res.send(error);
         }
@@ -24,7 +27,10 @@ router.route('/:id')
         try{
             const id = checkString(req.params.id, 'Game id','GET game/:id');
             const game = await games.getGameById(id);
-            return res.render('game-page', {game: game});
+            return res.render('game-page', {
+                game: game,
+                title: game.title
+            });
         } catch (error) {
             return res.status(404).redirect("/error");
         }
@@ -36,7 +42,10 @@ router.route('/:id/form')
         try{
             const id = checkString(req.params.id, 'Game id','GET game/:id/form');
             const game = await games.getGameById(id);
-            return res.render('game-form', {game: game});
+            return res.render('game-form', {
+                game: game,
+                title: `Add ${game.title} to profile`
+            });
         } catch (error) {
             return res.send(error);
         }
