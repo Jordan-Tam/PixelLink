@@ -1,3 +1,5 @@
+import {checkUsername, checkPassword} from '../helpers.js';
+import users from '../data/users.js';
 import userRoutes from './users.js';
 import gameRoutes from './games.js';
 import path from 'path';
@@ -17,10 +19,28 @@ const constructorMethod = (app) => {
         try{
             return res.render('login', {
                 title: "Login",
-                stylesheet: "/public/css/login.css"
+                stylesheet: "/public/css/login.css",
+                script: "/public/js/login.js"
             });
         } catch (error) {
             return res.status(500).json({error});
+        }
+    });
+    app.post("/login", async (req, res) => {
+        try{
+            const {username, password} = req.body;
+            username = checkUsername(username, "POST /login");
+            password = checkPassword(password);
+            const user = await users.login(username, password);
+            req.session.user = user;
+            return res.render('home', {user: req.session.user});
+        } catch (error) {
+            return res.status(400).render('login', {
+                title: "Login",
+                stylesheet: "/public/css/login.css",
+                script: "/public/js/login.js",
+                error_message: error.message
+            });
         }
     });
 
