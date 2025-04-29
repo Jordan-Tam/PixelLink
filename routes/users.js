@@ -35,8 +35,8 @@ router.route('/:id')
             const id = checkString(req.params.id, 'User id','POST user/:id');
             const {username, email, password} = req.body;
             const nUsername = checkString(username, 'Username', 'POST user/:id');
-            const nEmail = checkString(username, 'Email', 'POST user/:id');
-            const nPassword = checkString(username, 'Password', 'POST user/:id');
+            const nEmail = checkString(email, 'Email', 'POST user/:id');
+            const nPassword = checkString(password, 'Password', 'POST user/:id');
             const updatedUser = await users.updateUser(id, nUsername, nEmail, nPassword);
             return res.json(updatedUser);
         } catch (error) {
