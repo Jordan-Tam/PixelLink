@@ -29,7 +29,7 @@ const constructorMethod = (app) => {
     app.post("/login", async (req, res) => {
         try{
             const {username, password} = req.body;
-            username = checkUsername(username, "POST /login");
+            username = checkUsername(username, "login");
             password = checkPassword(password);
             const user = await users.login(username, password);
             req.session.user = user;
@@ -55,7 +55,26 @@ const constructorMethod = (app) => {
         } catch (error) {
             return res.status(500).json({error});
         }
-    })
+    });
+    app.post("/register", async (req, res) => {
+        try {
+            const {username, email, password, admin} = req.body;
+            username = checkUsername(username, "register");
+            email = checkEmail(email, "register");
+            password = checkPassword(password);
+            admin = checkAdmin(admin, "register");
+            const newUser = await users.createUser(username, email, password, admin);
+            req.session.user = newUser;
+            return res.render('home', {user: req.session.user});
+        } catch (error) {
+            return res.render('registration', {
+                title: "Register",
+                stylesheet: "/public/css/registration.css",
+                script: "/public/js/registration.js",
+                error_message: error.message
+            });
+        }
+    });
 
     app.get("/signout", (req, res) =>{
         req.session.destroy();
