@@ -1,8 +1,16 @@
-h1, img {
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1 {
     flex-direction: column;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+img {
+    margin-bottom: 50px;
 }
 
 .centered-form {
@@ -17,4 +25,32 @@ h1, img {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+a {
+    color: blue;
+}
+
+a:visited {
+    color: blue;
+}
+
+#login {
+    border: 3mm ridge rgba(220, 50, 50, 0.6);
+    padding: 10px;
+}
+
+#login:active {
+    border-color: black;
+    color: black;
+}
+
+#register {
+    border: 3mm ridge rgba(21, 142, 10, 0.6);
+    padding: 10px;
+}
+
+#about {
+    border: 3mm ridge rgba(50, 61, 220, 0.6);
+    padding: 10px;
 }
