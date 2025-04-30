@@ -432,7 +432,19 @@ const checkFormField = (formField, funcName) => {
         status: 400,
         function: funcName,
         error: "Cannot have a text formField with options."
-      }
+      };
+    }
+
+  // If type is "number"...
+  } else if (type === "number") {
+
+    // ...make sure that the options array is empty.
+    if (options.length !== 0) {
+      throw {
+        status: 400,
+        function: funcName,
+        error: "Cannot have a number formField with options."
+      };
     }
 
   // If type is "select"...
@@ -444,9 +456,10 @@ const checkFormField = (formField, funcName) => {
         status: 400,
         function: funcName,
         error: "There must be at least 2 options for a select-type formField."
-      }
+      };
     }
 
+    // Trim all elements in the options array.
     for (let i = 0; i < options.length; i++) {
       options[i] = checkString(options[i], `Options`, funcName);
     }
@@ -456,7 +469,7 @@ const checkFormField = (formField, funcName) => {
     throw {
       status: 500,
       function: funcName,
-      error: "Type must be either 'text' or 'select'."
+      error: "Type must be either 'text', 'number', or 'select'."
     };
     
   }
