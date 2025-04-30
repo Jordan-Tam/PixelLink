@@ -6,7 +6,6 @@ const saltRounds = 10;
 import {users, games} from '../config/mongoCollections.js'
 import {
     checkUsername,
-    checkEmail,
     checkPassword,
     checkAdmin,
     checkId,
@@ -20,24 +19,20 @@ const exportedMethods = {
      * Adds a User document to the Users collection.
      * Analogous to a "register" function.
      * @param {string} username The username of the new account. It must be between 8-30 characters long; must contain only letters, numbers, underscores, periods, and hyphens; and cannot start or end with a period.
-     * @param {string} email 
      * @param {string} password The plain text password of the new account. It must be at least 8 characters long; contain at least 1 uppercase letter, 1 lowercase number, 1 number, and 1 special character.
      * @param {boolean} admin A boolean determining whether the user will have administrative privileges, which would allow them to add, update, and remove games from the pre-determined list of games.
      * @returns {object} The newly created User document (with the _id property converted to a string).
      */
-    async createUser (username, email, password, admin) {
+    async createUser (username, password, admin) {
 
         // Input validation.
         username = checkUsername(username, "createUser");
-        email = checkEmail(email, "createUser");
-        password = checkPassword(password);
+        password = checkPassword(password, "createUser");
         admin = checkAdmin(admin, "createUser");
     
         // Check if username is already taken.
         let takenUsernames = await this.getTakenUsernames();
         if (takenUsernames.includes(username.toLowerCase())) throw "createUser Error: Username taken.";
-        let takenEmails = await this.getTakenEmails();
-        if (takenEmails.includes(email.toLowerCase())) throw "createUser Error: Email is already associated with an account.";
 
         // Hash the password.
         const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -45,7 +40,6 @@ const exportedMethods = {
         // Create the new user object.
         let newUser = {
             username,
-            email,
             password: hashedPassword,
             admin,
             friends: [],
@@ -82,7 +76,7 @@ const exportedMethods = {
 
         // Input validation.
         username = checkUsername(username, "login");
-        password = checkPassword(password);
+        password = checkPassword(password, "login");
 
         // Get users collection.
         const usersCollection = await users();
@@ -111,20 +105,18 @@ const exportedMethods = {
     },
 
     /**
-     * Updates the username, email, and password of the User document associated with the given ID.
+     * Updates the username and password of the User document associated with the given ID.
      * @param {string} id 
-     * @param {string} username 
-     * @param {string} email 
+     * @param {string} username
      * @param {string} password 
      * @returns {object} The updated User document (with the _id property converted to a string).
      */
-    async updateUser (id, username, email, password) {
+    async updateUser (id, username, password) {
 
         // Input validation.
         id = checkId(id, "updateUser", "User");
-        username = checkUsername(username, "updateUser")
-        email = checkEmail(email, "updateUser");
-        password = checkPassword(password);
+        username = checkUsername(username, "updateUser");
+        password = checkPassword(password, "updateUser");
     
         // Get the user associated with the given ID.
         // This function will throw an error if no user is found.
@@ -137,18 +129,9 @@ const exportedMethods = {
                 throw "Username taken.";
             }
         }
-
-        // If the email changed, make sure it is not taken.
-        if(email !== user.email) {
-            let takenEmails = await this.getTakenEmails();
-            if (takenEmails.includes(email.toLowerCase())) {
-                throw "Email is already associated with an account.";
-            }
-        }
         
         const updatedUser = {
-            username, 
-            email, 
+            username,
             password
         };
 
@@ -246,19 +229,6 @@ const exportedMethods = {
         if (!userList) throw 'Could not get all users';
         let usernames = userList.map((user) => user.username.toLowerCase());
         return usernames
-    },
-
-    
-    /**
-     * 
-     * @returns A list of all emails in the Users collection.
-     */
-    async getTakenEmails() {
-        const userCollection = await users();
-        let userList = await userCollection.find({}).toArray();
-        if (!userList) throw 'Could not get all users';
-        let emails = userList.map((user) => user.email.toLowerCase());
-        return emails;
     },
     
 

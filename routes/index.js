@@ -1,4 +1,4 @@
-import {checkUsername, checkPassword, checkEmail, checkAdmin} from '../helpers.js';
+import {checkUsername, checkPassword, checkAdmin} from '../helpers.js';
 import users from '../data/users.js';
 import userRoutes from './users.js';
 import gameRoutes from './games.js';
@@ -28,10 +28,10 @@ const constructorMethod = (app) => {
     });
     app.post("/login", async (req, res) => {
         try{
-            const {username, password} = req.body;
+            let {username, password} = req.body;
             username = checkUsername(username, "login");
             password = checkPassword(password);
-            const user = await users.login(username, password);
+            let user = await users.login(username, password);
             req.session.user = user;
             return res.render('home', {user: req.session.user});
         } catch (error) {
@@ -58,12 +58,11 @@ const constructorMethod = (app) => {
     });
     app.post("/register", async (req, res) => {
         try {
-            const {username, email, password, admin} = req.body;
+            let {username, password, admin} = req.body;
             username = checkUsername(username, "register");
-            email = checkEmail(email, "register");
             password = checkPassword(password);
             admin = checkAdmin(admin, "register");
-            const newUser = await users.createUser(username, email, password, admin);
+            let newUser = await users.createUser(username, password, admin);
             req.session.user = newUser;
             return res.render('home', {user: req.session.user});
         } catch (error) {

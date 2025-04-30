@@ -82,7 +82,6 @@ const exportedMethods = {
 
             // Throw an error if the update failed.
             if (!insertedCommentToGameInfo) {
-                throw "createComment Error: Comment could not be added to game.";
                 throw {
                     status: 500,
                     function: "createComment",
@@ -93,11 +92,10 @@ const exportedMethods = {
         
         // Throw an error if type is defined as anything else.
         } else {
-            throw "createComment Error: The type parameter must be either 'user' or 'game'.";
             throw {
                 status: 500,
                 function: "createComment",
-                error: "'type' parameter must be either 'user' or 'game'."
+                error: "The type parameter must be either 'user' or 'game'."
             };
         }
 
@@ -133,7 +131,13 @@ const exportedMethods = {
             );
 
             // If no user was found, the comment does not exist. Throw an error.
-            if (!user) throw "getCommentById: Comment not found.";
+            if (!user) {
+                throw {
+                    status: 404,
+                    function: "createComment",
+                    error: "Comment not found."
+                }
+            }
 
             // Loop through the User's comments array for the desired comment.
             // Before returning the comment, convert the ObjectId to a string.
@@ -143,10 +147,6 @@ const exportedMethods = {
                     return comment;
                 }
             }
-
-            // The code should never reach this point.
-            throw "getCommentById: Comment disappeared.";
-
 
         // If the comment was made under a game, search the Games collection for the comment.
         } else if (type === "game") {
@@ -160,7 +160,13 @@ const exportedMethods = {
             );
 
             // If no game was found, the comment does not exist. Throw an error.
-            if (!game) throw "getCommentById: Comment not found.";
+            if (!game) {
+                throw {
+                    status: 404,
+                    function: "createComment",
+                    error: "Comment not found."
+                }
+            }
 
             // Loop through the Game's comments array for the desired comment.
             // Before returning the comment, convert the ObjectId to a string.
@@ -171,12 +177,13 @@ const exportedMethods = {
                 }
             }
 
-            // The code should never reach this point.
-            throw "getCommentById: Comment disappeared.";
-
         } else {
 
-            throw "createComment Error: The type parameter must be either 'user' or 'game'.";
+            throw {
+                status: 500,
+                function: "createComment",
+                error: "The type parameter must be either 'user' or 'game'."
+            }
 
         }
 
@@ -192,11 +199,7 @@ const exportedMethods = {
     async removeComment(id, type) {
 
         // Input validation.
-        id = checkString(id, "id", "removeComment");
-
-        if (!ObjectId.isValid(id)) {
-            throw "removeComment Error: Invalid Object ID.";
-        }
+        id = checkId(id, "removeComment", "Comment");
 
         if (type === "user") {
 
@@ -209,7 +212,13 @@ const exportedMethods = {
             );
 
             // Throw an error if the comment does not exist.
-            if (!user) throw "removeComment Error: Comment not found.";
+            if (!user) {
+                throw {
+                    status: 404,
+                    function: "removeComment",
+                    error: "Comment not found."
+                };
+            }
 
             // Delete the comment from the user's comments property.
             const deletionInfo = await usersCollection.findOneAndUpdate(
@@ -219,7 +228,13 @@ const exportedMethods = {
             )
 
             // Throw an error if the deletion failed.
-            if (!deletionInfo) throw "removeComment Error: Comment could not be deleted.";
+            if (!deletionInfo) {
+                throw {
+                    status: 500,
+                    function: "removeComment",
+                    error: "Comment could not be deleted."
+                };
+            }
 
         } else if (type === "game") {
     
@@ -232,7 +247,13 @@ const exportedMethods = {
             );
 
             // Throw an error if the comment does not exist.
-            if (!user) throw "removeComment Error: Comment not found.";
+            if (!user) {
+                throw {
+                    status: 404,
+                    function: "removeComment",
+                    error: "Comment not found."
+                };
+            }
 
             // Delete the comment from the user's comments property.
             const deletionInfo = await gamesCollection.findOneAndUpdate(
@@ -242,12 +263,22 @@ const exportedMethods = {
             )
 
             // Throw an error if the deletion failed.
-            if (!deletionInfo) throw "removeComment Error: Comment could not be deleted.";
+            if (!deletionInfo) {
+                throw {
+                    status: 500,
+                    function: "removeComment",
+                    error: "Comment could not be deleted."
+                };
+            }
 
         } else {
+
+            throw {
+                status: 500,
+                function: "removeComment",
+                error: "The type parameter must be either 'user' or 'game'."
+            };
             
-            throw "removeComment Error: The type parameter must be either 'user' or 'game'.";
-        
         }
 
         return true;

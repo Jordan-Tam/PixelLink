@@ -1,7 +1,6 @@
 // Get HTML elements.
 let error = document.getElementById("error");
 let registrationForm = document.getElementById("registrationForm");
-let email = document.getElementById("email");
 let username = document.getElementById("username");
 let password = document.getElementById("password");
 let confirmPassword = document.getElementById("confirmPassword");
@@ -13,77 +12,10 @@ if (registrationForm) {
 
         // Prevent the default behavior of the form.
 
-    let email_input = email.value.trim();
     let username_input = username.value.trim();
     let password_input = password.value;
     let confirmPassword_input = confirmPassword.value;
 
-
-        // Email validation.
-    if (!email_input || email_input.length === 0) {
-        event.preventDefault();
-        error.innerHTML = "Please enter a valid email.";
-        error.hidden = false;
-        return;
-    }
-
-    if(email_input.includes('..')){
-        event.preventDefault();
-        error.innerHTML = "Invalid email address. (two periods in a row)"
-        error.hidden = false;
-        return;
-    }
-
-    let atSymbol = false;
-    let period = false;
-    let after_period_count = 0;
-    for (let char of  email_input){
-        if (!atSymbol){
-            if (char === '@'){ 
-                atSymbol = true;
-            }
-            else if ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-".indexOf(char) < 0) {
-                    event.preventDefault();
-                    error.innerHTML = "Invalid email address."
-                    error.hidden = false;
-                    return;
-            }
-        } else {
-
-            if (!period){
-
-                if (char === "."){
-                    period = true;
-                }
-                else if ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-".indexOf(char) < 0){
-                        event.preventDefault();
-                        error.innerHTML = "Invalid email domain."
-                        error.hidden = false;
-                        return;
-                } 
-                
-            } else {
-
-                after_period_count++;
-                if ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".indexOf(char) < 0){
-                    event.preventDefault();
-                    error.innerHTML = 'Invalid email domain.'
-                    error.hidden = false;
-                    return;
-                } 
-            
-
-            }
-        
-        }
-    }
-
-    if (after_period_count < 2 || !period ){
-        event.preventDefault();
-        error.innerHTML = "Invalid email domain."
-        error.hidden = false;
-        return;
-    }
         
         //username validation 
         
