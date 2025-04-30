@@ -93,15 +93,21 @@ const exportedMethods = {
         const usersCollection = await users();
 
         // Get user associated with the username.
-        let user = await usersCollection.findOne({
-            username: username
-        });
+        let userList = await this.getAllUsers();
+
+        let user;
+        for (let u of userList) {
+            if (u.username.toLowerCase() === username.toLowerCase()) {
+                user = u;
+                break;
+            }
+        }
 
         if (!user) {
             throw {
-                status: 404,
+                status: 400,
                 function: "login",
-                error: "User not found"
+                error: "Either the username or password is wrong."
             };
         }
 

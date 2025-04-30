@@ -15,57 +15,43 @@ await db.dropDatabase();
 
 let user1 = await users.createUser(
   "JohnDoe",
-  "johndoe10@gmail.com",
   "Password123@",
-  //"my_picture.jpg",
   false
 );
 
 let user2 = await users.createUser(
   "owen-treanor",
-  "owen-treanor@gmail.com",
   "D0nkeyK0ng!",
-  //"picture.jpg",
   true
 );
 
 let user3 = await users.createUser(
   "gamer7",
-  "gamer7@gmail.com",
   "iAMAGAMER%1",
-  //"pic.jpg",
   false
 );
 
 let user4 = await users.createUser(
   "Josh6",
-  "josh7@gmail.com",
   "ABCabc123!",
-  //"pfp.jpg",
   false
 );
 
 let user5 = await users.createUser(
   "user5",
-  "hello@gmail.com",
   "!!3PPOOQQqq",
-  //"p.jpg",
   false
 );
 
 let user6 = await users.createUser(
   "James12345",
-  "jj@gmail.com",
   "myPassword7%%",
-  //"hello.jpg",
   false
 );
 
 let user7 = await users.createUser(
   "admin",
-  "admin4PixelLink@gmail.com",
   "Admin!000",
-  //"admin.jpg",
   true
 );
 

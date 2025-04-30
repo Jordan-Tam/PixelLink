@@ -46,7 +46,11 @@ const exportedMethods = {
 
     // Check if the insertion was successful.
     if (!insertInfo.acknowledged || !insertInfo.insertedId) {
-      throw `createGame Error: Could not create game.`;
+      throw {
+        status: 500,
+        function: "createGame",
+        error: "Could not add game."
+      }
     }
 
     // Convert the _id attribute to a string.
@@ -70,7 +74,11 @@ const exportedMethods = {
     let gameList = await gamesCollection.find({}).toArray();
 
     if (!gameList) {
-      throw `createGame Error: Could not get game list`;
+      throw {
+        status: 500,
+        function: "getAllGames",
+        error: "Could not retrieve list of all games."
+      };
     }
 
     // Convert all the _id properties to strings.
@@ -100,7 +108,11 @@ const exportedMethods = {
     const game = await gamesCollection.findOne({ _id: new ObjectId(id) });
     
     if (!game) {
-      throw `getGameById Error: No game with that id`;
+      throw {
+        status: 404,
+        function: "getGameById",
+        error: "No game with that ID."
+      };
     }
 
     // Convert the _id property to a string.
@@ -130,7 +142,11 @@ const exportedMethods = {
     });
 
     if (!deletionInfo) {
-      throw `removeGame Error: Could not remove game.`;
+      throw {
+        status: 500,
+        function: "removeGame",
+        error: "Could not remove game."
+      };
     }
 
     return true;
@@ -181,7 +197,11 @@ const exportedMethods = {
     });
 
     if (!game) {
-      throw "addReview Error: Game not found.";
+      throw {
+        status: 404,
+        function: "addReview",
+        error: "Game not found."
+      };
     }
 
     // Create the new review object.
@@ -201,7 +221,11 @@ const exportedMethods = {
     );
 
     if (!insertReviewToGameInfo) {
-      throw "addReview Error: Could not add review.";
+      throw {
+        status: 500,
+        function: "addReview",
+        error: "Could not add review to game."
+      };
     }
 
     // Update averageRating of game.
@@ -223,7 +247,11 @@ const exportedMethods = {
     );
 
     if (!updateGame) {
-      throw "addReview Error: Could not update average rating of game.";
+      throw {
+        status: 500,
+        function: "addReview",
+        error: "Could not update average rating of game."
+      };
     }
 
     return updateGame;
