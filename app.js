@@ -60,7 +60,7 @@ app.use(async (req, res, next) => {
 app.use("/login", async (req, res, next) => {
   if (req.method === "GET") {
     if (req.session.user) {
-      res.redirect("/home"); //Redirect the user to the home page if they are signed in and try to access login page.
+      return res.redirect("/home"); //Redirect the user to the home page if they are signed in and try to access login page.
     }
   }
 
@@ -71,36 +71,47 @@ app.use("/login", async (req, res, next) => {
 app.use("/register", async (req, res, next) => {
   if (req.method === "GET") {
     if (req.session.user) {
-      res.redirect("/home"); //Redirect the user to the home page if they are signed in and try to access register page.
+      return res.redirect("/home"); //Redirect the user to the home page if they are signed in and try to access register page.
     }
   }
 
   next();
 });
 
-//* Middleware 4: If an unauthenticated user tries to access any "/user" page, redirect them to the login page.
+//* Middleware 4: If an unauthenticated user tries to access the home page, redirect them to the login page.
+app.use("/home", async (req, res, next) => {
+  if (req.method === "GET") {
+    if (!req.session.user) {
+      return res.redirect("/login");
+    }
+  }
+
+  next();
+})
+
+//* Middleware 5: If an unauthenticated user tries to access any "/user" page, redirect them to the login page.
 app.use("/user", async (req, res, next) => {
   if (req.method === "GET") {
     if (!req.session.user) {
-      res.redirect("/login"); //Redirect the user to the login page if they are not signed in and try to access a user route.
+      return res.redirect("/login"); //Redirect the user to the login page if they are not signed in and try to access a user route.
     }
   }
 
   next();
 });
 
-//* Middleware 5: If an unauthenticated user tries to access any "/game" page, redirect them to the login page.
+//* Middleware 6: If an unauthenticated user tries to access any "/game" page, redirect them to the login page.
 app.use("/game", async (req, res, next) => {
   if (req.method === "GET") {
     if (!req.session.user) {
-      res.redirect("/login"); //Redirect the user to the login page if they are not signed in and try to access a game route.
+      return res.redirect("/login"); //Redirect the user to the login page if they are not signed in and try to access a game route.
     }
   }
 
   next();
 });
 
-//* Middleware 6: If an unauthenticated user tries to access the signout page, redirect them to the login page.
+//* Middleware 7: If an unauthenticated user tries to access the signout page, redirect them to the login page.
 app.use("/signout", async (req, res, next) => {
   if (req.method === "GET") {
     if (!req.session.user) {

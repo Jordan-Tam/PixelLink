@@ -44,7 +44,7 @@ const constructorMethod = (app) => {
             // Add user info to the cookie.
             req.session.user = user;
 
-            return res.render('home', {user: req.session.user});
+            return res.redirect("/home");
         
         } catch (e) {
 
@@ -87,6 +87,11 @@ const constructorMethod = (app) => {
                 error_message: e.error
             });
         }
+    });
+
+    // Home page
+    app.get("/home", (req, res) => {
+        return res.render('home', {user: req.session.user});
     });
 
     // Signout
