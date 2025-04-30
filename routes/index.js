@@ -20,7 +20,8 @@ const constructorMethod = (app) => {
             return res.render('login', {
                 title: "Login",
                 stylesheet: "/public/css/login.css",
-                script: "/public/js/login.js"
+                script: "/public/js/login.js",
+                hidden: "hidden"
             });
         } catch (e) {
             return res.status(500).json({error: e.error});
@@ -62,7 +63,8 @@ const constructorMethod = (app) => {
             return res.render('registration', {
                 title: "Register",
                 stylesheet: "/public/css/registration.css",
-                script: "/public/js/registration.js"
+                script: "/public/js/registration.js",
+                hidden: "hidden"
             });
         } catch (e) {
             return res.status(500).json({error: e.error});
