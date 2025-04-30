@@ -1,4 +1,4 @@
-import {checkUsername, checkPassword, checkAdmin} from '../helpers.js';
+import {checkUsername, checkPassword} from '../helpers.js';
 import users from '../data/users.js';
 import userRoutes from './users.js';
 import gameRoutes from './games.js';
@@ -16,30 +16,42 @@ const constructorMethod = (app) => {
 
     // Login page
     app.get("/login", (req, res) => {
-        try{
+        try {
             return res.render('login', {
                 title: "Login",
                 stylesheet: "/public/css/login.css",
                 script: "/public/js/login.js"
             });
-        } catch (error) {
-            return res.status(500).json({error});
+        } catch (e) {
+            return res.status(500).json({error: e.error});
         }
     });
     app.post("/login", async (req, res) => {
-        try{
+
+        try {
+            
+            // Get username and password from the request body.
             let {username, password} = req.body;
+
+            // Input validation for username and password.
             username = checkUsername(username, "login");
             password = checkPassword(password);
+
+            // Check if both username and password are correct.
             let user = await users.login(username, password);
+
+            // Add user info to the cookie.
             req.session.user = user;
+
             return res.render('home', {user: req.session.user});
-        } catch (error) {
-            return res.status(400).render('login', {
+        
+        } catch (e) {
+
+            return res.status(e.status).render('login', {
                 title: "Login",
                 stylesheet: "/public/css/login.css",
                 script: "/public/js/login.js",
-                error_message: error.message
+                error_message: e.error
             });
         }
     });
@@ -52,29 +64,30 @@ const constructorMethod = (app) => {
                 stylesheet: "/public/css/registration.css",
                 script: "/public/js/registration.js"
             });
-        } catch (error) {
-            return res.status(500).json({error});
+        } catch (e) {
+            return res.status(500).json({error: e.error});
         }
     });
     app.post("/register", async (req, res) => {
         try {
-            let {username, password, admin} = req.body;
-            username = checkUsername(username, "register");
-            password = checkPassword(password);
-            admin = checkAdmin(admin, "register");
+            let {username, password} = req.body;
+            username = checkUsername(username, "POST /register");
+            password = checkPassword(password, "POST /register");
+            let admin = false;
             let newUser = await users.createUser(username, password, admin);
             req.session.user = newUser;
             return res.render('home', {user: req.session.user});
-        } catch (error) {
-            return res.render('registration', {
+        } catch (e) {
+            return res.status(e.status).render('registration', {
                 title: "Register",
                 stylesheet: "/public/css/registration.css",
                 script: "/public/js/registration.js",
-                error_message: error.message
+                error_message: e.error
             });
         }
     });
 
+    // Signout
     app.get("/signout", (req, res) =>{
         req.session.destroy();
         res.sendFile(path.resolve("static/signout.html"));

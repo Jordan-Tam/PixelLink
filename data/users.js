@@ -32,7 +32,13 @@ const exportedMethods = {
     
         // Check if username is already taken.
         let takenUsernames = await this.getTakenUsernames();
-        if (takenUsernames.includes(username.toLowerCase())) throw "createUser Error: Username taken.";
+        if (takenUsernames.includes(username.toLowerCase())) {
+            throw {
+                status: 400,
+                function: "createUser",
+                error: "Username already taken."
+            };
+        }
 
         // Hash the password.
         const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -53,8 +59,13 @@ const exportedMethods = {
         // Insert the new user to the users database.
         const insertInfo = await userCollection.insertOne(newUser);
         
-        if (!insertInfo.acknowledged || !insertInfo.insertedId)
-            throw "createUser Error: Could not add user.";
+        if (!insertInfo.acknowledged || !insertInfo.insertedId) {
+            throw {
+                status: 500,
+                function: "createUser",
+                error: "Could not add user."
+            };
+        }
         
         // Get the new user's ID and convert it to a string. 
         const newId = insertInfo.insertedId.toString();
@@ -87,13 +98,21 @@ const exportedMethods = {
         });
 
         if (!user) {
-            throw "login Error: User not found.";
+            throw {
+                status: 404,
+                function: "login",
+                error: "User not found"
+            };
         }
 
         let compare = await bcrypt.compare(password, user.password);
 
         if (!compare) {
-            throw "login Error: Either the username or password is wrong.";
+            throw {
+                status: 400,
+                function: "login",
+                error: "Either the username or password is wrong."
+            };
         }
 
         return {
@@ -126,7 +145,11 @@ const exportedMethods = {
         if(username !== user.username) {
             let takenUsernames = await this.getTakenUsernames();
             if (takenUsernames.includes(username.toLowerCase())) {
-                throw "Username taken.";
+                throw {
+                    status: 400,
+                    function: "updateUser",
+                    error: "Username already taken."
+                };
             }
         }
         
@@ -142,8 +165,13 @@ const exportedMethods = {
             {returnDocument: 'after'}
         );
 
-        if (!updateInfo)
-            throw `updateUser Error: Update failed, could not find a user with id of ${id}.`;
+        if (!updateInfo) {
+            throw {
+                status: 500,
+                function: "updateUser",
+                error: `Could not update user with ID of ${id}.`
+            };
+        }
 
         updatedUser._id = updatedUser._id.toString();
         
@@ -166,11 +194,15 @@ const exportedMethods = {
 
         // Delete user from the database.
         const deletionInfo = await userCollection.findOneAndDelete({
-          _id: new ObjectId(id)
+            _id: new ObjectId(id)
         });
 
         if (!deletionInfo) {
-          throw `removeUser Error: Could not delete user with id of ${id}.`;
+            throw {
+                status: 500,
+                function: "removeUser",
+                error: `Could not delete user with ID of ${id}`
+            };
         }
 
         return true;
@@ -183,14 +215,26 @@ const exportedMethods = {
      * @returns 
      */
     async getAllUsers () {
+
         const userCollection = await users();
+        
         let userList = await userCollection.find({}).toArray();
-        if (!userList) throw 'Could not get all users';
+        
+        if (!userList) {
+            throw {
+                status: 500,
+                function: "getAllUsers",
+                error: "Could not retrieve list of all users."
+            };
+        }
+        
         userList = userList.map((element) => {
             element._id = element._id.toString();
             return element;
         });
+        
         return userList
+    
     },
 
 
@@ -210,7 +254,13 @@ const exportedMethods = {
         // Find the user with the given ID.
         const user = await userCollection.findOne({ _id: new ObjectId(id) });
 
-        if (user === null) throw 'error: no user with that id';
+        if (user === null) {
+            throw {
+                status: 404,
+                function: "getUserById",
+                error: "No user with that ID."
+            }
+        }
 
         // Return the user object with the _id property converted to a string.
         user._id = user._id.toString();
@@ -224,11 +274,17 @@ const exportedMethods = {
      * @returns A list of all usernames in the Users collection.
      */
     async getTakenUsernames() {
+        
+        // Get the users collection.
         const userCollection = await users();
-        let userList = await userCollection.find({}).toArray();
-        if (!userList) throw 'Could not get all users';
+
+        // Get all users in the database.
+        let userList = await this.getAllUsers();
+
         let usernames = userList.map((user) => user.username.toLowerCase());
+
         return usernames
+    
     },
     
 
@@ -268,7 +324,11 @@ const exportedMethods = {
         );
 
         if (!updateInfo) {
-            throw "addFriend Error: Could not update users' friends list.";
+            throw {
+                status: 500,
+                function: "addFriend",
+                error: `Could not update user's friends list`
+            };
         }
 
         updateInfo._id = updateInfo._id.toString();
@@ -313,7 +373,11 @@ const exportedMethods = {
         );
 
         if (!updateInfo) {
-            throw "removeFriend Error: Could not update users' friends list.";
+            throw {
+                status: 500,
+                function: "addFriend",
+                error: `Could not update user's friends list`
+            };
         }
         
         updateInfo._id = updateInfo._id.toString();
@@ -348,7 +412,13 @@ const exportedMethods = {
             _id: new ObjectId(id)
         });
 
-        if (!game) throw "addGame Error: No game with that ID.";
+        if (!game) {
+            throw {
+                status: 404,
+                function: "addGame",
+                error: "No game with that ID."
+            };
+        }
 
         // Now that we know that the game exists, we can do input validation for the userGameInfo parameter.
         userGameInfo = checkUserGameInfo(userGameInfo, gameId);
@@ -361,7 +431,11 @@ const exportedMethods = {
         );
 
         if (!updatedUser) {
-            throw "addGame Error: User game info could not be added.";
+            throw {
+                status: 500,
+                function: "addGame",
+                error: "User profile could not updated to include new game."
+            };
         }
 
         // Update the numPlayers counter of the game.
@@ -372,7 +446,11 @@ const exportedMethods = {
         );
 
         if (!updatedGame) {
-            throw "addGame Error: Game player count could not be updated.";
+            throw {
+                status: 500,
+                function: "addGame",
+                error: "The player count of the added game could not be updated."
+            }
         }
 
         // Switch to something more useful later.
