@@ -37,11 +37,10 @@ router.route('/:id')
     .post(async (req, res) => {
         try {
             const id = checkString(req.params.id, 'User id','POST user/:id');
-            let {username, email, password} = req.body;
+            let {username, password} = req.body;
             const nUsername = checkString(username, 'Username', 'POST user/:id');
-            const nEmail = checkString(email, 'Email', 'POST user/:id');
             const nPassword = checkString(password, 'Password', 'POST user/:id');
-            const updatedUser = await users.updateUser(id, nUsername, nEmail, nPassword);
+            const updatedUser = await users.updateUser(id, nUsername, nPassword);
             return res.json(updatedUser);
         } catch (error) {
             res.status(400).json({error});
