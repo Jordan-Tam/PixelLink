@@ -257,6 +257,23 @@ const exportedMethods = {
     return updateGame;
 
   },
+
+
+  /**
+   * An algorithm for picking up to 5 games to recommend to the user.
+   * 1) For each game in the user's profile, get a list of all users who also play that game. 
+   * 2) Combine all the lists from Step 1 into a single set (remove duplicate users).
+   * 3) Create an object that keeps track of how often the algorithm sees a new game (key: game name, value: number of times the algorithm sees it)
+   * 4) For each user in the set, iterate through their games list and increment respective counters in the object.
+   * 5) Convert the object to a list and sort the games by the number of times the algorithm has seen it.
+   * 6) Go through the list in descending order. When the algorithm sees a game that isn't in the user's profile, add it to the recommendations list.
+   * 7) Keep doing this until either 5 games were added to the recommendations list or the entire list has been run through.
+   * @param {string} userId The ID of the user receiving the game recommendations.
+   * @returns {array} An array of 0 to 5 Game IDs.
+   */
+  async getRecommendations(userId) {
+    return;
+  },
   
 };
 

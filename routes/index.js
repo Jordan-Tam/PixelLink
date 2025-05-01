@@ -29,10 +29,10 @@ const constructorMethod = (app) => {
     });
     app.post("/login", async (req, res) => {
 
+        // Get username and password from the request body; ignore confirmPassword.
+        let {username, password} = req.body;
+
         try {
-            
-            // Get username and password from the request body.
-            let {username, password} = req.body;
 
             // Input validation for username and password.
             username = checkUsername(username, "login");
@@ -52,7 +52,9 @@ const constructorMethod = (app) => {
                 title: "Login",
                 stylesheet: "/public/css/login.css",
                 script: "/public/js/login.js",
-                error_message: e.error
+                error_message: e.error,
+                username: username,
+                password: password
             });
         }
     });
@@ -71,8 +73,8 @@ const constructorMethod = (app) => {
         }
     });
     app.post("/register", async (req, res) => {
+        let {username, password} = req.body;
         try {
-            let {username, password} = req.body;
             username = checkUsername(username, "POST /register");
             password = checkPassword(password, "POST /register");
             let admin = false;
@@ -84,7 +86,9 @@ const constructorMethod = (app) => {
                 title: "Register",
                 stylesheet: "/public/css/registration.css",
                 script: "/public/js/registration.js",
-                error_message: e.error
+                error_message: e.error,
+                username: username,
+                password: password
             });
         }
     });

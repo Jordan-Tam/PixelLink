@@ -14,7 +14,7 @@ if (loginForm) {
         let password_input = password.value;
 
         // Username validation.
-        if (!username_input || username_input.length === 0) {
+        if (!username_input || username_input.length === 0 || username_input.length < 3 || username_input.length > 15) {
             event.preventDefault();
             error.innerHTML = "Username must be between 3-15 characters long and only include letters, numbers, periods, underscores, and minus signs.";
             error.hidden = false;
@@ -38,6 +38,7 @@ if (loginForm) {
         }
 
         if (password_input.length < 8){
+            event.preventDefault();
             error.innerHTML = "Password must be 8+ characters."
             error.hidden = false;
             return;
