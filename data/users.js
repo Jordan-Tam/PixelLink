@@ -432,7 +432,10 @@ const exportedMethods = {
         // Insert the userGameInfo subdocument to User document.
         let updatedUser = await usersCollection.findOneAndUpdate(
             {_id: new ObjectId(id)},
-            {$push: {games: userGameInfo}},
+            {$push: {games: {
+                gameId: new ObjectId(gameId),
+                userGameInfo: userGameInfo
+            }}},
             {returnDocument: 'after'}
         );
 
@@ -470,7 +473,168 @@ const exportedMethods = {
 
     async removeGame(id, gameId) {
 
-    }
+    },
+
+    /**
+     * 
+     * @param {*} userId The ID of the user making the query; used to prevent the user's own profile from showing up in the filtered results.
+     * @param {*} gameId The ID of the game the user wants to search.
+     * @param {*} field The field
+     * @param {*} value The value 
+     */
+    async filterUsersByText(userId, gameId, field_name, value) {
+
+        // Get list of all user objects.
+        const usersList = await this.getAllUsers();
+
+        // Initialize a list to store all users that fit the filter requirements.
+        let filteredUsersList = [];
+
+        // For each user...
+        for (let user of usersList) {
+
+            if (user._id === userId) continue;
+
+            // ..go through their list of games..
+            for (let game of user.games) {
+
+                // ...to see if they play the game associated with "gameId"...
+                if (game.gameId.toString() === gameId) {
+
+                    // ...if they do, go through their list of fields...
+                    for (let field of game.userGameInfo) {
+
+                        // ...to see if they filled out the field specified by "field"...
+                        if (field_name === field.field_name) {
+
+                            // ...if they do, compare the field's value with "value"...
+                            if (value.toLowerCase() === field.value.toLowerCase()) {
+
+                                // ...if they match, add the user to the filtered list.
+                                filteredUsersList.push(user);
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return filteredUsersList;
+
+    },
+
+    /**
+     * 
+     * @param {*} userId 
+     * @param {*} gameId 
+     * @param {*} field_name 
+     * @param {*} value 
+     * @param {*} operator 
+     * @returns 
+     */
+    async filterUsersByNumber(userId, gameId, field_name, value, operator) {
+
+        const usersList = await this.getAllUsers();
+
+        let filteredUsersList = [];
+
+        for (let user of usersList) {
+
+            if (user._id === userId) continue;
+
+            for (let game of user.games) {
+
+                if (game.gameId.toString() === gameId) {
+
+                    for (let field of game.userGameInfo) {
+
+                        if (field_name === field.field_name) {
+
+                            switch(operator) {
+                                case "Equal To":
+                                    if (field.value === value) {
+                                        filteredUsersList.push(user);
+                                    }
+                                    break;
+                                case "Greater Than":
+                                    if (field.value > value) {
+                                        filteredUsersList.push(user);
+                                    }
+                                    break;
+                                case "Less Than":
+                                    if (field.value < value) {
+                                        filteredUsersList.push(user);
+                                    }
+                                    break;
+                                default:
+                                    throw {
+                                        status: 500,
+                                        function: "filterUsersByNumber",
+                                        error: "Operator must be either 'Equal To', 'Greater Than', or 'Less Than'."
+                                    };
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return filteredUsersList;
+
+    },
+
+    /**
+     * Nearly identical to filterUsersByText(), but case sensitive.
+     * This doesn't change a whole lot anyways since the user isn't typing the value themselves, but selecting it from a dropdown menu instead, so this mostly serves to double check that we're passing the correct values to this function.
+     * @param {*} userId 
+     * @param {*} gameId 
+     * @param {*} field_name 
+     * @param {*} value 
+     * @returns 
+     */
+    async filterUsersBySelect(userId, gameId, field_name, value) {
+
+        const usersList = await this.getAllUsers();
+
+        let filteredUsersList = [];
+
+        for (let user of usersList) {
+
+            if (user._id === userId) continue;
+
+            for (let game of user.games) {
+
+                if (game.gameId.toString() === gameId) {
+
+                    for (let field of game.userGameInfo) {
+
+                        if (field_name === field.field_name) {
+
+                            if (value === field.value) {
+
+                                filteredUsersList.push(user);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return filteredUsersList;
+
+    },
 
     //* Data functions for comments are implemented in "./comments.js"
 
