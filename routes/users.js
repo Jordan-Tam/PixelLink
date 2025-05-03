@@ -26,10 +26,23 @@ router.route('/:id')
             if(req.session.user && req.session.user._id == id){//checks if user is visiting their own profile page
                 loggedInUser = true;
             }
+
+            //check to see if the user is friends with the profile they are checking
+            let notFriends = true;
+            if (!loggedInUser){
+                const friendsList = req.session.user.friends;
+                for (friendId in friendsList){
+                    if (friendId === id){
+                        notFriends = false;
+                        break;
+                    }
+                }
+            }
             return res.render('user-page', {
                 user, 
                 loggedInUser,
-                title: `${user.username}'s Profile`
+                title: `${user.username}'s Profile`,
+                notFriends
             });
         } catch (error) {
             res.status(404).redirect("/error");
@@ -71,14 +84,15 @@ router.route('/:id/friends')
     .post(async (req, res) => {
         try {
             const id = checkId(req.params.id, "POST user/:id/friends", "User");
-            let {friendId} = req.body;
-            friendId = checkId(friendId, "POST user/:id/friends", "User");
-            if(!req.session.user || req.session.user._id != id){ //checks if user is visiting their own profile page
+            if(!req.session.user || req.session.user._id === id){ //checks if user is visiting their own profile page
                 //render the 403 error
                 return res.status(403).json({error: "Permission Denied"});
             }
-            await users.addFriend(id, friendId); //add friend
-            const user = await users.getUserById(id); //get user
+            
+            await users.addFriend(req.session.user._id, id); //add friend
+            
+
+            const user = await users.getUserById(req.session.user._id); //get user
             
             let friends = user.friends; //list of user's friends' ids
             let friendsArr = [];
@@ -86,6 +100,7 @@ router.route('/:id/friends')
                 const friend = await users.getUserById(id);
                 friendsArr.push(friend); //array of users(friends)
             }
+            //Changed this to take you to your friends list since it only adds the friend on your side.
             return res.render('friends-list', {
                 friends: friendsArr,
                 username: user.username,

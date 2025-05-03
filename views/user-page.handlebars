@@ -1,11 +1,11 @@
 <main>
     <h1> {{user.username}}'s profile </h1>
-    <p> Friends: <a href="/user/{{user._id}}/friends" > {{user.friends.length}}</a> </p>
+    <p> Friends: <a href="/users/{{user._id}}/friends" > {{user.friends.length}}</a> </p>
     {{#if loggedInUser}} <!-- Will be set to true if the person viewing profile is viewing their own profile-->   
     <div>
         <h3> Change user information </h3>
 
-        <form action="/user/{{user._id}}" method="POST">
+        <form action="/{{user._id}}" method="POST">
         <ul>
             <li> Username: {{user.username}}
                 <label for="change_uname">Change Username?</label>
@@ -21,10 +21,18 @@
     </div>
     {{else}}
     <div>
-        <form action = "??" method="POST">
-            <input type="hidden" id="userid" name="userid" value="{{user.username}}">
+        {{#if notFriended}}
+        <form action = "{{user._id}}/friends" method="POST">
+            <input type="hidden" name="friendId" value="{{user._id}}">
             <input type="submit" value="Add {{user.username}}">
         </form>
+        {{else}}
+         <form action = "{{user._id}}/friends" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="friendId" value="{{user._id}}">
+            <input type="submit" value="Remove {{user.username}}">
+        </form>
+        {{/if}}
     </div>
     {{/if}}
 
@@ -55,7 +63,7 @@
                 <h4>{{this.date}} | {{this.time}}</h4>
             </li>
             {{#if loggedInUser}}
-            <form action="user/{{user._id}}/comment/{{this._id}}" method="POST">
+            <form action="{{user._id}}/comment/{{this._id}}" method="POST">
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="submit" value = "delete comment">
             </form>
@@ -64,7 +72,7 @@
             {{/each}}
         </ul>
         {{/if}}
-        <form action="user/{{user._id}}/comment" method="POST"> 
+        <form action="/{{user._id}}/comment" method="POST"> 
             <input type="text" id="addComment" name="addComment">
             <input type="submit" value="add comment!">
         </form> 
