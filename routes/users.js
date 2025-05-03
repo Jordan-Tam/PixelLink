@@ -1,6 +1,7 @@
 import {Router} from 'express';
 import {checkString, checkId} from '../helpers.js';
 import users from '../data/users.js';
+import { all } from 'axios';
 
 
 const router = Router();
@@ -9,7 +10,7 @@ router.route('/')
     .get(async (req, res) => {
         try {
             const allUsers = await users.getAllUsers();
-            return res.json(allUsers);
+            return res.render("users", {title: "User Browser", users: allUsers})
         } catch (error) {
             res.status(500).json({error});
         }

@@ -115,10 +115,10 @@ const constructorMethod = (app) => {
     });
 
     // User routes
-    app.use("/user", userRoutes);
+    app.use("/users", userRoutes);
 
     // Game routes
-    app.use("/game", gameRoutes);
+    app.use("/games", gameRoutes);
 
     // Redirect everything else to /error
     app.use("*", (req, res) => {
