@@ -1,30 +1,31 @@
 <header>
     <!-- logo img -->
     <h1>Game Form</h1><br>
-    <p>Fill out the form below to add {{game.title}} to your profile.</p>
+    <p>Fill out the form below to add {{game.name}} to your profile.</p>
 </header>
 <main>
     <!-- for each field object in form array, display with form tag -->
     {{#if game.form.length}}
-        <form action="/{{game._id}}/form" method="POST">
+        <form action="/games/{{game._id}}/form" method="POST">
             {{#each game.form}}
-                <label for="{{this.field_name}}">
-                    {{this.field_name}}
+                <label for="form_input">
+                    {{this.field}}
                     {{#if this.options.length}}
                         <!-- Drop down -->
-                        <select name="{{this.field_name}}" id="{{this.field_name}}">
+                        <select name="form_input" id="form_input">
                             {{#each this.options}}
                                 <option value="{{this}}">{{this}}</option>
                             {{/each}}
                         </select>
                     {{else}}
-                        <input type="text" placeholder="{{this.field_name}}" name="{{this.field_name}}" id="{{this.field_name}}"/>
+                        <input type="text" name="form_input" id="form_input"/>
                     {{/if}}
                 </label><br>
             {{/each}}
             <input type="submit" value="Submit Form"/>
         </form>
     {{else}}
-        <p>No fields to fill out in {{game}}'s Add to Profile form!</p>
+        <p>No fields to fill out in {{game.name}}'s Add to Profile form!</p>
     {{/if}}
+    <a href="/games/list">Back to games list</a>
 </main>

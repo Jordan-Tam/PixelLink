@@ -7,10 +7,10 @@
       <ul>
         {{#each games}}
           <li>
-            {{this.name}}<br>
-            Players: {{this.players}}<br>
-            Release Date: {{this.release_date}}<br>
-            <a href="game/{{this.id}}/form">Add to Profile</a>
+            <a href="/games/{{this._id}}">{{this.name}}</a><br>
+            Players: {{this.numPlayers}}<br>
+            Release Date: {{this.dateReleased}}<br>
+            <a href="/games/{{this._id}}/form">Add to Profile</a>
           </li>
         {{/each}}
       </ul>

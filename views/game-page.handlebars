@@ -1,11 +1,12 @@
 <header>
     <img src="{{game.imagePath}}">
-    <h1>{{game.title}}</h1>
+    <h1>{{game.name}}</h1>
 </header>
 <main>
     <div>
-        <h3>Release Date:</h3><p>{{game.release_date}}</p><br>
-        <h3>Description</h3><p>{{game.description}}</p> <br>
+        <h3>Release Date:</h3><p>{{game.dateReleased}}</p><br>
+        <h3>Description:</h3><p>{{game.description}}</p> <br>
+        <h3>Average Rating:{{game.averageRating}}</h3>
         <!-- Reviews -->
     </div>
     <br>
@@ -15,12 +16,18 @@
         <ul>
             {{#each game.comments}}
             <li>
-                <p>{{this.content}}</p><br>
-                <h4>
-                    {{this.date}}  {{this.time}}
-                </h4>
+                <h4>{{this.content}}</h4>
+                <p>
+                    {{this.timeString}}  -  {{this.dateString}}
+                </p>
             </li>
+            {{/each}}
         </ul>
         {{/if}}
+        <form action="/{{user._id}}/comment" method="POST"> 
+            <input type="text" id="addComment" name="addComment">
+            <input type="submit" value="add comment!">
+        </form> 
     </div>
+    <a href="/games/list">Back to games list</a>
 </main>
