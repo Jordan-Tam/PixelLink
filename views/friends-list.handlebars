@@ -1,13 +1,20 @@
 <main>
-    <h1> {{username}}'s friends list </h1>
-    <h4> Total: {{friends.length}} </h4>
-    {{#if friends.length}}
-    <ul>
-        {{#each}}
-        <li>
-            <a href="/user/{{this._id}}"> {{this.username}} </a>
-        </li>
-        {{/each}}
-    </ul>
-    {{/if}}
+   <h1> {{username}}'s friends list </h1>
+   <h4> Total: {{friends.length}} </h4>
+   {{#if friends.length}}
+   <ul>
+       {{#each friends}}
+       <hr />
+       <li>
+           <a href="/users/{{this._id}}"> {{this.username}} </a>
+       </li>
+
+
+       {{/each}}
+       <hr />
+   </ul>
+   {{/if}}
+
+
+   <a href="/users/{{id}}"> Back to {{username}}'s profile </a>
 </main>

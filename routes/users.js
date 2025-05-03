@@ -31,12 +31,12 @@ router.route('/:id')
             }
 
             //check to see if the user is friends with the profile they are checking
-            let notFriends = true;
+            let notFriended = true;
             if (!loggedInUser){
                 const friendsList = req.session.user.friends;
                 for (friendId in friendsList){
                     if (friendId === id){
-                        notFriends = false;
+                        notFriended = false;
                         break;
                     }
                 }
@@ -45,7 +45,7 @@ router.route('/:id')
                 user, 
                 loggedInUser,
                 title: `${user.username}'s Profile`,
-                notFriends
+                notFriended
             });
         } catch (error) {
             return res.status(error.status).render("error", {
@@ -82,6 +82,7 @@ router.route('/:id/friends')
                 friendsArr.push(friend); //array of users(friends)
             }
             return res.render('friends-list', {
+                id,
                 friends: friendsArr,
                 username: user.username,
                 title: `${user.username}'s Friends List`
@@ -114,6 +115,7 @@ router.route('/:id/friends')
             }
             //Changed this to take you to your friends list since it only adds the friend on your side.
             return res.render('friends-list', {
+                id,
                 friends: friendsArr,
                 username: user.username,
                 title: `${user.username}'s Friends List`
