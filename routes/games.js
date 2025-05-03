@@ -14,7 +14,8 @@ router.route('/list')
             const gamesList = await games.getAllGames();
             return res.render('game-list', {
                 games: gamesList,
-                title: "Games List"
+                title: "Games List",
+                stylesheet: "/public/css/game-list.css"
             });
         } catch (error) {
             return res.status(error.status).render("error", {

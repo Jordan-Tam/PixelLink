@@ -1,0 +1,20 @@
+header p {
+    text-decoration: underline dashed;
+}
+
+li {
+    margin: 10px;
+    width: 50%;
+    border-radius: 5px;
+    border-width: 3px;
+    border: solid;
+    border-color: black;
+}
+
+a.name:hover {
+    color: purple;
+}
+
+a:hover {
+    color: green;
+}
