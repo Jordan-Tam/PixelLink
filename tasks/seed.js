@@ -13,47 +13,19 @@ await db.dropDatabase();
 // Users
 //////////////////////////////////////////////////////////////
 
-let user1 = await users.createUser(
-  "JohnDoe",
-  "Password123@",
-  false
-);
+let user1 = await users.createUser("JohnDoe", "Password123@", false);
 
-let user2 = await users.createUser(
-  "owen-treanor",
-  "D0nkeyK0ng!",
-  true
-);
+let user2 = await users.createUser("owen-treanor", "D0nkeyK0ng!", true);
 
-let user3 = await users.createUser(
-  "gamer7",
-  "iAMAGAMER%1",
-  false
-);
+let user3 = await users.createUser("gamer7", "iAMAGAMER%1", false);
 
-let user4 = await users.createUser(
-  "Josh6",
-  "ABCabc123!",
-  false
-);
+let user4 = await users.createUser("Josh6", "ABCabc123!", false);
 
-let user5 = await users.createUser(
-  "user5",
-  "!!3PPOOQQqq",
-  false
-);
+let user5 = await users.createUser("user5", "!!3PPOOQQqq", false);
 
-let user6 = await users.createUser(
-  "James12345",
-  "myPassword7%%",
-  false
-);
+let user6 = await users.createUser("James12345", "myPassword7%%", false);
 
-let user7 = await users.createUser(
-  "admin",
-  "Admin!000",
-  true
-);
+let user7 = await users.createUser("admin", "Admin!000", true);
 
 // console.log(await users.getAllUsers());
 
@@ -68,7 +40,7 @@ const chessForm = [
   },
   {
     field: "What is your rating on Chess.com?",
-    type: "text",
+    type: "number",
     options: [],
   },
   {
@@ -78,7 +50,6 @@ const chessForm = [
   },
 ];
 const chess = await games.createGame("Chess", "N/A", chessForm);
-
 
 const balatroForm = [
   {
@@ -106,12 +77,11 @@ const balatroForm = [
   },
   {
     field: "What is your high score?",
-    type: "text",
+    type: "number",
     options: [],
   },
 ];
 const balatro = await games.createGame("Balatro", "02/20/2024", balatroForm);
-
 
 const marioKartForm = [
   {
@@ -130,7 +100,6 @@ const marioKart = await games.createGame(
   "04/28/2017",
   marioKartForm
 );
-
 
 const amongUsForm = [
   {
@@ -156,7 +125,6 @@ const amongUsForm = [
   },
 ];
 const amongUs = await games.createGame("Among Us", "06/15/2018", amongUsForm);
-
 
 const overwatch2Form = [
   {
@@ -222,7 +190,6 @@ const overwatch2 = await games.createGame(
   overwatch2Form
 );
 
-
 const minecraftForm = [
   {
     field: "What is your favorite way to play?",
@@ -250,7 +217,6 @@ const minecraft = await games.createGame(
   "05/17/2009",
   minecraftForm
 );
-
 
 const marvelRivalsForm = [
   {
@@ -312,7 +278,6 @@ const marvelRivals = await games.createGame(
   "12/06/2024",
   marvelRivalsForm
 );
-
 
 // const allGames = await games.getAllGames();
 // console.log(allGames);
@@ -408,7 +373,6 @@ const commentU6 = await comments.createComment(
 
 // console.log(await comments.removeComment(commentG1._id.toString(), "game"));
 
-
 //////////////////////////////////////////////////////////////
 // Game Reviews
 //////////////////////////////////////////////////////////////
@@ -420,6 +384,23 @@ const review1 = await games.addReview(
   "This game hasn't gotten any updates in centuries.",
   2
 );
+
+let user1ChessForm = [
+  { field_name: "Do you prefer to be white or black?", value: "White" },
+  { field_name: "What is your rating on Chess.com?", value: "600" },
+  { field_name: "What is your favorite opening?", value: "Queen's Gambit" },
+];
+
+let userGame1 = await users.addGame(user1._id, chess._id, user1ChessForm);
+
+let user1BalatroForm = [
+  { field_name: "What is your favorite hand?", value: "Flush" },
+  { field_name: "What is your favorite legendary joker?", value: "Perkeo" },
+  { field_name: "What is your high score?", value: "1000000000" },
+];
+
+let userGame2 = await users.addGame(user1._id, balatro._id, user1BalatroForm);
+
 
 console.log("Done seeding database.");
 

@@ -391,17 +391,17 @@ const exportedMethods = {
     },
 
 
-    /**
+   /**
      * 
-     * @param {*} id 
+     * @param {*} userId 
      * @param {*} gameId 
      * @param {*} userGameInfo 
      * @returns 
      */
-    async addGame(id, gameId, userGameInfo) {
+    async addGame(userId, gameId, userGameInfo) {
 
         // Input validation for the ID parameters.
-        id = checkId(id, "addGame", "User");
+        userId = checkId(userId, "addGame", "User");
         gameId = checkId(gameId, "addGame", "Game");
 
         // Get the users and games collections.
@@ -409,11 +409,11 @@ const exportedMethods = {
         const gamesCollection = await games();
 
         // Check if user ID exists.
-        await this.getUserById(id);
+        await this.getUserById(userId);
 
         // Check if game ID exists.
-        let game = gamesCollection.findOne({
-            _id: new ObjectId(id)
+        let game = await gamesCollection.findOne({
+            _id: new ObjectId(gameId)
         });
 
         if (!game) {
@@ -425,16 +425,21 @@ const exportedMethods = {
         }
 
         // Now that we know that the game exists, we can do input validation for the userGameInfo parameter.
-        userGameInfo = checkUserGameInfo(userGameInfo, gameId);
+        userGameInfo = checkUserGameInfo(userGameInfo, game, "addGame");
 
         // Insert the userGameInfo subdocument to User document.
         let updatedUser = await usersCollection.findOneAndUpdate(
-            {_id: new ObjectId(id)},
-            {$push: {games: {
+          { _id: new ObjectId(userId) },
+          {
+            $push: {
+              games: {
+                gameName: game.name,
                 gameId: new ObjectId(gameId),
-                userGameInfo: userGameInfo
-            }}},
-            {returnDocument: 'after'}
+                userGameInfo: userGameInfo,
+              },
+            },
+          },
+          { returnDocument: "after" }
         );
 
         if (!updatedUser) {
@@ -448,7 +453,7 @@ const exportedMethods = {
         // Update the numPlayers counter of the game.
         let updatedGame = await gamesCollection.findOneAndUpdate(
             {_id: new ObjectId(gameId)},
-            {$set: {numPlayers: numPlayers++}},
+            {$set: {numPlayers: game.numPlayers++}},
             {returnDocument:'after'}
         );
 

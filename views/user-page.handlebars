@@ -43,8 +43,12 @@
         <ul>
             {{#each user.games}}
             <li> 
-                <img src="{{this.imagePath}}">
-                <a href="/game/{{this._id}}">{{this.title}}</a>
+                <a href="/game/{{this.gameId}}">{{this.gameName}}</a>
+                <ul>
+                {{#each this.userGameInfo}}
+                <li>{{this.field_name}}: {{this.value}}</li>
+                {{/each}}
+                </ul>
             </li>
              {{/each}}
         </ul>

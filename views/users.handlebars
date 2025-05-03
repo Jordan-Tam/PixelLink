@@ -9,6 +9,18 @@
 </form>
 <hr />
 {{#each users}}
-  <h3><a href="/users/{{this._id}}">{{this.username}}</a></h3>
+  <h2><a href="/users/{{this._id}}">{{this.username}}</a></h2>
+  <ul>
+    {{#each this.games}}
+      <li>
+        <a href="/game/{{this.gameId}}">{{this.gameName}}</a>
+        <ul>
+          {{#each this.userGameInfo}}
+            <li>{{this.field_name}}: {{this.value}}</li>
+          {{/each}}
+        </ul>
+      </li>
+    {{/each}}
+  </ul>
   <hr />
 {{/each}}

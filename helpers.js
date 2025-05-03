@@ -222,19 +222,103 @@ const checkAdmin = (admin, funcName) => {
 /**
  * 
  * @param {array} userGameInfo An array of
- * @param {string} gameId 
+ * @param {object} game
  * @returns 
  */
-const checkUserGameInfo = (userGameInfo, gameId) => {
-  
+const checkUserGameInfo = (userGameInfo, game, funcName) => {
   // Make sure userGameInfo is an array.
-  // Get the form of the game associated with gameId.
+  // Make sure the game is an object
   // Then, for each element in userGameInfo, make sure it is of type object and has only two keys: 'field_name' and 'value'.
   // For each element, check that the value for 'field_name' matches a value in the game form. Since both form and UserGames are an array of objects, the field name's SHOULD appear in the same order (perhaps enforce that, too).
   // Then, check that the value of 'value' is of the correct type, as dictated by the game form's field's 'type' attribute.
 
-  return;
+  //Make sure userGameInfo is an array
+  if (!Array.isArray(userGameInfo)) {
+    throw {
+      status: 400,
+      function: funcName,
+      error: "userGameInfo must be an array.",
+    };
+  }
 
+  //Make sure the game is an object
+  if (typeof game !== "object") {
+    throw {
+      status: 400,
+      function: funcName,
+      error: "game must be an object.",
+    };
+  }
+
+  //Get the game's form and ensure it's format is correct.
+  let gameForm = game.form;
+  gameForm = checkForm(gameForm);
+
+  // For each response, check if the field_name matches a field in the form
+  // Then check to make sure that the type of value is a string
+  // If the type is number, make sure it is a string representation of a number
+  // If the type is option, make sure the value is one of the options
+
+  let retval = []
+
+  for (let response of userGameInfo) {
+    let field_name = response.field_name;
+    if (!field_name) {
+      throw {
+        status: 400,
+        function: funcName,
+        error: "Each user game form must have a 'field_name' property.",
+      };
+    }
+
+    let value = response.value;
+    if (!value) {
+      throw {
+        status: 400,
+        function: funcName,
+        error: "Each user game form must have a 'value' property.",
+      };
+    }
+
+    field_name = checkString(field_name, "field_name", "checkUserGameInfo");
+    value = checkString(value, "value", "checkUserGameInfo");
+
+    let validQuestion = false;
+    for (let question of gameForm) {
+      if (question.field === field_name) {
+        validQuestion = true;
+        if (question.type === "number" && Number.isNaN(parseInt(value))) {
+          // Throw if a number is not given to a question with number type
+          throw {
+            status: 400,
+            function: funcName,
+            error:
+              "A question with a number type must receive a value that is a number.",
+          };
+        }
+        if (question.type === "options" && !options.includes(value)) {
+          // Throw if the user gives an answer that is not one of the options in a question with options type
+          throw {
+            status: 400,
+            function: funcName,
+            error:
+              "A question with a number type must receive a value that is a number.",
+          };
+        }
+        retval.push({ field_name: field_name, value: value });  // Add the valid field into the return value
+        continue;
+      }
+    }
+    if (!validQuestion) {
+      throw {
+        status: 400,
+        function: funcName,
+        error: `An invalid field_name was provided: ${field_name}`,
+      };
+    }
+  }
+
+  return retval;
 }
 
 
