@@ -1,10 +1,14 @@
-  <form name="userSearchForm" id="userSearchForm" action="/user" method="POST">
-    <label for="userSearch">Search for a user:</label>
-    <input type="text" name="userSearch" id="userSearch" />
-    <button type="submit" name="submitButton" id="submitButton">Submit</button>
-  </form>
-<hr>
-  {{#each users}}
-  <h1><a href = '/users/{{this._id}}'>{{this.username}}</h1>
-  <hr>
-  {{/each}}
+<h1>User Browser</h1>
+<br />
+<br />
+
+<form name="userSearchForm" id="userSearchForm" action="/user" method="POST">
+  <label for="userSearch">Search for a user:</label>
+  <input type="text" name="userSearch" id="userSearch" />
+  <button type="submit" name="submitButton" id="submitButton">Submit</button>
+</form>
+<hr />
+{{#each users}}
+  <h3><a href="/users/{{this._id}}">{{this.username}}</a></h3>
+  <hr />
+{{/each}}
