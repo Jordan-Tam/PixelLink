@@ -11,10 +11,6 @@
                 <label for="change_uname">Change Username?</label>
                 <input type="text" id="change_uname" name="change_uname">
             </li> 
-            <li> Email: {{user.email}}
-                <label for="change_email">Change Email?</label>
-                <input type="text" id="change_email" name="change_email">
-            </li> 
             <li> 
                 <label for="change_password">Change Password?</label>
                 <input type="text" id="change_password" name="change_password">
@@ -23,7 +19,7 @@
         <input type="submit" value="Make changes">
         </form>
     </div>
-    {{#else}}
+    {{else}}
     <div>
         <form action = "??" method="POST">
             <input type="hidden" id="userid" name="userid" value="{{user.username}}">
@@ -63,7 +59,7 @@
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="submit" value = "delete comment">
             </form>
-            {{#/if}}
+            {{/if}}
             
             {{/each}}
         </ul>
