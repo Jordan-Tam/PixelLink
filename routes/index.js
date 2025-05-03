@@ -24,7 +24,10 @@ const constructorMethod = (app) => {
                 hidden: "hidden"
             });
         } catch (e) {
-            return res.status(500).json({error: e.error});
+            return res.status(e.status).render("error", {
+                status: e.status,
+                error_message: e.error
+            });
         }
     });
     app.post("/login", async (req, res) => {
@@ -69,7 +72,10 @@ const constructorMethod = (app) => {
                 hidden: "hidden"
             });
         } catch (e) {
-            return res.status(500).json({error: e.error});
+            return res.status(e.status).render("error", {
+                status: e.status,
+                error_message: e.error
+            });
         }
     });
     app.post("/register", async (req, res) => {

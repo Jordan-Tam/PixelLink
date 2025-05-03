@@ -17,7 +17,10 @@ router.route('/list')
                 title: "Games List"
             });
         } catch (error) {
-            return res.status(500).json({error});
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`
+            });
         }
     })
     .post(async (req, res) => {
@@ -37,7 +40,10 @@ router.route('/list')
                 title: "Games List"
             });
         } catch (error) {
-            return res.status(500).json({error});
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`
+            });
         }
     })
 
@@ -51,7 +57,10 @@ router.route('/:id')
                 title: game.title
             });
         } catch (error) {
-            return res.status(404).redirect("/error");
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`
+            });
         }
     })
     .post()
@@ -66,7 +75,10 @@ router.route('/:id/form')
                 title: `Add ${game.title} to profile`
             });
         } catch (error) {
-            return res.send(error);
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`
+            });
         }
     })
     .post()

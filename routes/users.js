@@ -12,7 +12,10 @@ router.route('/')
             const allUsers = await users.getAllUsers();
             return res.render("users", {title: "User Browser", users: allUsers})
         } catch (error) {
-            res.status(500).json({error});
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`
+            });
         }
     })
     .post();
@@ -45,7 +48,10 @@ router.route('/:id')
                 notFriends
             });
         } catch (error) {
-            res.status(404).redirect("/error");
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`
+            });
         }
     })
     .post(async (req, res) => {
@@ -57,7 +63,10 @@ router.route('/:id')
             const updatedUser = await users.updateUser(id, nUsername, nPassword);
             return res.json(updatedUser);
         } catch (error) {
-            res.status(400).json({error});
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`
+            });
         }
     })
 
@@ -78,7 +87,10 @@ router.route('/:id/friends')
                 title: `${user.username}'s Friends List`
             });
         } catch (error) {
-            return res.status(500).json({error});
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`
+            });
         }
     })
     .post(async (req, res) => {
@@ -107,7 +119,10 @@ router.route('/:id/friends')
                 title: `${user.username}'s Friends List`
             });
         } catch (error) {
-            return res.status(500).json({error});
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`
+            });
         }
     });
 
