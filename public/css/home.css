@@ -1,0 +1,55 @@
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+header, main {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+header {
+    font-size: 1.5rem;
+}
+
+.homepage-options-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 300px;
+}
+
+#edit-profile-svg {
+    margin-right: 20px;
+}
+
+#browse-users-svg {
+    margin-right: 20px;
+}
+
+#browse-games-svg {
+    margin-right: 20px;
+}
+
+#signout-svg {
+    margin-right: 21px;
+}
+
+a {
+    color: blue;
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(172, 172, 255);
+}
+
+a:active {
+    color: rgb(0, 0, 0);
+}

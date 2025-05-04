@@ -101,7 +101,11 @@ const constructorMethod = (app) => {
 
     // Home page
     app.get("/home", (req, res) => {
-        return res.render('home', {user: req.session.user});
+        return res.render('home', {
+            title: "Home",
+            stylesheet: "/public/css/home.css",
+            user: req.session.user,
+        });
     });
 
     // Signout
