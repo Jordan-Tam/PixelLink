@@ -10,7 +10,7 @@ router.route('/')
     .get(async (req, res) => {
         try {
             const allUsers = await users.getAllUsers();
-            return res.render("users", {title: "User Browser", users: allUsers})
+            return res.render("user-list", {title: "User Browser", users: allUsers})
         } catch (error) {
             res.status(500).json({error});
         }
