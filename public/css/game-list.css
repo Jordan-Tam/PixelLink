@@ -18,3 +18,8 @@ a.name:hover {
 a:hover {
     color: green;
 }
+
+#goBack {
+    font-size: 1.5rem;
+    font-weight: bold;
+}

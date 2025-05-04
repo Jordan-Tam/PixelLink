@@ -71,24 +71,21 @@
     <div>
         <h3> Comments: </h3>
         {{#if user.comments.length}}
-        <ul>
             {{#each user.comments}}
-            <li>
-                <!-- Commenter Name Here? -->
-                <p>{{this.content}}</p>
-                <h4>{{this.date}} | {{this.time}}</h4>
-            </li>
-            {{#if loggedInUser}}
-            <form action="{{user._id}}/comment/{{this._id}}" method="POST">
-                <input type="hidden" name="_method" value="DELETE">
-                <input type="submit" value = "delete comment">
-            </form>
-            {{/if}}
-            
+                <div class="commentDiv">
+                    <p class="usernameParagraph">{{this.username}}</p>
+                    <p class="dateTimeParagraph">{{this.date}} • {{this.time}}</p>
+                    <p class="contentParagraph">{{this.content}}</p>
+                </div>
+                {{#if loggedInUser}}
+                <form action="{{user._id}}/comment/{{this._id}}" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="submit" value = "delete comment">
+                </form>
+                {{/if}}
             {{/each}}
-        </ul>
         {{else}}
-        No comments.
+            No comments.
         {{/if}}
         <form action="/{{user._id}}/comment" method="POST"> 
             <input type="text" id="addComment" name="addComment">

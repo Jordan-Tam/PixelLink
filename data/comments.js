@@ -1,5 +1,6 @@
 import {ObjectId} from 'mongodb';
 import {users, games} from '../config/mongoCollections.js';
+import usersDataFunctions from './users.js';
 import {checkString, checkId} from '../helpers.js';
 
 const exportedMethods = {
@@ -21,9 +22,12 @@ const exportedMethods = {
 
         // Input validation.
         type = checkString(type, "type", "createComment");
-        parentId = checkString(parentId, "parentId", "createComment");
-        userId = checkString(userId, "userId", "createComment");
+        parentId = checkId(parentId, "createComment", type);
+        userId = checkId(userId, "createComment", "User");
         content = checkString(content, "content", "createComment");
+
+        // Get user document associated with "userId".
+        const user = await usersDataFunctions.getUserById(userId);
 
         // Get the current date.
         const d = new Date();
@@ -40,9 +44,10 @@ const exportedMethods = {
         let newComment = {
             _id: new ObjectId(),
             userId,
+            username: user.username,
             content,
-            dateString,
-            timeString
+            date: dateString,
+            time: timeString
         }
 
         // Variables to store insertion information.

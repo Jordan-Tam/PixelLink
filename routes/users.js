@@ -10,7 +10,12 @@ router.route('/')
     .get(async (req, res) => {
         try {
             const allUsers = await users.getAllUsers();
-            return res.render("user-list", {title: "User Browser", users: allUsers})
+            console.log(allUsers);
+            return res.render("user-list", {
+                title: "User Browser",
+                stylesheet: "/public/css/user-list.css",
+                users: allUsers
+            })
         } catch (error) {
             res.status(500).json({error});
         }
@@ -39,6 +44,7 @@ router.route('/:id')
                     }
                 }
             }
+            console.log(user);
             return res.render('user-page', {
                 user, 
                 stylesheet: "/public/css/user-page.css",
