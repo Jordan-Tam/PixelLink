@@ -310,10 +310,20 @@ const exportedMethods = {
         // This function will throw an error if no user is found.
         const user = await this.getUserById(id);
         
-
         // Check if there is a user associated with "friendId".
         // This function will throw an error if no user is found.
         await this.getUserById(friendId);
+
+        // Check if the user associated with "id" is already friends with the user associated with "friendId".
+        for (let friend of user.friends) {
+            if (friend === friendId) {
+                throw {
+                    status: 500,
+                    function: "addFriend",
+                    error: "User is already a friend."
+                };
+            }
+        }
 
         user.friends.push(friendId);
         

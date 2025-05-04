@@ -1,11 +1,15 @@
-<main>
+<header>
+    <a href="/home" id="goBack">⇦ Return to home page</a>
+
     <h1> {{user.username}}'s profile </h1>
-    <p> Friends: <a href="/users/{{user._id}}/friends" > {{user.friends.length}}</a> </p>
+</header>
+<main>
     {{#if loggedInUser}} <!-- Will be set to true if the person viewing profile is viewing their own profile-->   
     <div>
-        <h3> Change user information </h3>
+        <h3> Change account information </h3>
 
         <form action="/{{user._id}}" method="POST">
+        <p id="error" {{hidden}}>{{error_message}}</p>
         <ul>
             <li> Username: {{user.username}}
                 <label for="change_uname">Change Username?</label>
@@ -39,7 +43,12 @@
     <br>
 
     <div>
-        <h3> {{user.username}}'s games: </h3>
+        <h3> Friends: <a href="/users/{{user._id}}/friends" > {{user.friends.length}}</a> </h3>
+    </div>
+
+    <div>
+        <h3> Games: </h3>
+        {{#if user.games}}
         <ul>
             {{#each user.games}}
             <li> 
@@ -52,12 +61,15 @@
             </li>
              {{/each}}
         </ul>
+        {{else}}
+        No games.
+        {{/if}}
     </div>
 
     <br>
 
     <div>
-        <h3> {{user.username}}'s profile's comments: </h3>
+        <h3> Comments: </h3>
         {{#if user.comments.length}}
         <ul>
             {{#each user.comments}}
@@ -75,14 +87,12 @@
             
             {{/each}}
         </ul>
+        {{else}}
+        No comments.
         {{/if}}
         <form action="/{{user._id}}/comment" method="POST"> 
             <input type="text" id="addComment" name="addComment">
             <input type="submit" value="add comment!">
         </form> 
     </div>
-
-
-    <a href="/home">Home page</a>
-     <a href="/signout">Sign me out</a>
 </main>

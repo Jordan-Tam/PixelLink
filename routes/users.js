@@ -42,9 +42,11 @@ router.route('/:id')
                 }
             }
             return res.render('user-page', {
+                title: `${user.username}'s Profile`,
+                stylesheet: "/public/css/user-page.css",
+                hidden: "hidden",
                 user, 
                 loggedInUser,
-                title: `${user.username}'s Profile`,
                 notFriended
             });
         } catch (error) {
