@@ -55,6 +55,7 @@
     <div>
         <h3> Following: <a href="/users/{{user._id}}/friends" > {{user.friends.length}}</a> </h3>
         <h3> Followers: <a href="/users/{{user._id}}/friends" > {{user.followers.length}}</a> </h3>
+        <a href="/users">Find more users!</a>
     </div>
 
     <div>
@@ -72,8 +73,10 @@
             </li>
              {{/each}}
         </ul>
+        <a href="/games/list">Find more games!</a>
         {{else}}
         No games.
+        <a href="/games/list">Find your favorite games!</a>
         {{/if}}
     </div>
 
