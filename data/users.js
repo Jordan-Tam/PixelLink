@@ -249,7 +249,7 @@ const exportedMethods = {
             });
         }
         
-        return userList
+        return userList;
     
     },
 

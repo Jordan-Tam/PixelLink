@@ -12,7 +12,7 @@ router.route('/')
 router.route('/list')
     .get(async (req, res) => {
         try {
-            const gamesList = await games.getAllGames();
+            const gamesList = await games.getAllGames(true);
             return res.render('game-list', {
                 games: gamesList,
                 title: "Games List",

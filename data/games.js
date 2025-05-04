@@ -65,7 +65,7 @@ const exportedMethods = {
    * Returns an array containing all the Game documents in the Games collection.
    * @returns {object[]} An array of Game documents (with the _id properties converted to strings).
    */
-  async getAllGames() {
+  async getAllGames(sortAlphabetically = false) {
 
     // Get games collection.
     const gamesCollection = await games();
@@ -87,7 +87,16 @@ const exportedMethods = {
       return element;
     });
 
+    if (sortAlphabetically) {
+      gameList.sort((game1, game2) => {
+        if (game1.name < game2.name) return -1;
+        if (game1.name === game2.name) return 0;
+        return 1;
+      });
+    }
+
     return gameList;
+
   },
 
 

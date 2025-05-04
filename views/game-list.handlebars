@@ -1,19 +1,24 @@
 <header>
     <a href="/home" id="goBack">⇦ Return to home page</a>
     <h1>Games List</h1>
-    <p>Click on a game to add it to your profile!</p>
+    {{!-- <p>Click on a game to add it to your profile!</p> --}}
 </header>
 <main>
-  <div>
-    <ul>
-      {{#each games}}
-        <li>
-          <a href="/games/{{this._id}}" class="name">{{this.name}}</a><br>
-          Players: {{this.numPlayers}}<br>
-          Release Date: {{this.dateReleased}}<br>
+    {{#each games}}
+      <div class="game-div">
+        <div class="game-title-div">
+          <h2>
+            <a href="/games/{{this._id}}" class="name">{{this.name}}</a>
+          </h2>
+        </div>
+        <div class="game-info-div">
+          <p><span>Average Rating:</span> {{this.averageRating}}</p>
+          <p><span>Number of Players:</span> {{this.numPlayers}}</p>
+          <p><span>Release Date:</span> {{this.dateReleased}}</p>
+        </div>
+        <div class="add-to-profile-div">
           <a href="/games/{{this._id}}/form">Add to Profile</a>
-        </li>
-      {{/each}}
-    </ul>
-  </div>
+        </div>
+      </div>
+    {{/each}}
 </main>
