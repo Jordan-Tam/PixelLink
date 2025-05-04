@@ -4,11 +4,20 @@
     <h1> {{user.username}}'s profile </h1>
 </header>
 <main>
-    {{#if loggedInUser}} <!-- Will be set to true if the person viewing profile is viewing their own profile-->   
-    <div>
-        <h3> Change account information </h3>
 
-        <form action="/{{user._id}}" method="POST">
+    <!-- If this profile belongs to the user currently logged in, display elements to change account information. -->
+    {{#if loggedInUser}}
+    <div id="changeAccountInfo-div">
+
+        <form {{!-- action="/" method="POST" --}}>
+            <input type="submit" value="Change Username">
+        </form>
+
+        <form {{!-- action="/" method="POST" --}}>
+            <input type="submit" value="Change Password">
+        </form>
+
+        {{!-- <form action="/{{user._id}}" method="POST">
         <p id="error" {{hidden}}>{{error_message}}</p>
         <ul>
             <li> Username: {{user.username}}
@@ -21,8 +30,11 @@
             </li> 
         </ul>
         <input type="submit" value="Make changes">
-        </form>
+        </form> --}}
+
     </div>
+
+    <!-- If this profile does NOT belong to the user currently logged in, display a button to follow/unfollow the user (depends on whether the user is already following this profile or not). -->
     {{else}}
     <div>
         {{#if notFriended}}
@@ -40,10 +52,9 @@
     </div>
     {{/if}}
 
-    <br>
-
     <div>
-        <h3> Friends: <a href="/users/{{user._id}}/friends" > {{user.friends.length}}</a> </h3>
+        <h3> Following: <a href="/users/{{user._id}}/friends" > {{user.friends.length}}</a> </h3>
+        <h3> Followers: <a href="/users/{{user._id}}/friends" > {{user.followers.length}}</a> </h3>
     </div>
 
     <div>

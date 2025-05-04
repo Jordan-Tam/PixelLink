@@ -48,7 +48,8 @@ const exportedMethods = {
             username,
             password: hashedPassword,
             admin,
-            friends: [],
+            friends: [], // This should be renamed to "following", but is kept as "friends" to avoid breaking existing code.
+            followers: [],
             games: [],
             comments: []
         }
@@ -218,9 +219,10 @@ const exportedMethods = {
 
     /**
      * 
+     * @param {*} sortAlphabetically 
      * @returns 
      */
-    async getAllUsers () {
+    async getAllUsers (sortAlphabetically = false) {
 
         const userCollection = await users();
         
@@ -238,6 +240,14 @@ const exportedMethods = {
             element._id = element._id.toString();
             return element;
         });
+
+        if (sortAlphabetically) {
+            userList.sort((user1, user2) => {
+                if (user1.username < user2.username) return -1;
+                if (user1.username === user2.username) return 0;
+                return 1;
+            });
+        }
         
         return userList
     
@@ -246,7 +256,7 @@ const exportedMethods = {
 
     /**
      * 
-     * @param {*} id 
+     * @param {string} id 
      * @returns {object} The requested User document (with the _id property converted to a string).
      */
     async getUserById (id) {
@@ -272,6 +282,39 @@ const exportedMethods = {
         user._id = user._id.toString();
         return user;
       
+    },
+
+
+    /**
+     * 
+     * @param {string} username 
+     * @returns {object} The requested User document (with the _id property converted to a string).
+     */
+    async getUserByUsername(username) {
+
+        // Input validation.
+        username = checkUsername(username, "getUserByUsername");
+
+        // Get users collection.
+        const userCollection = await users();
+
+        // Find the user with the given ID.
+        const user = await userCollection.findOne(
+            { username: username }
+        );
+
+        if (user === null) {
+            throw {
+                status: 404,
+                function: "getUserByUsername",
+                error: "No user with that username."
+            }
+        }
+
+        // Return the user object with the _id property converted to a string.
+        user._id = user._id.toString();
+        return user;
+
     },
 
 
@@ -312,7 +355,7 @@ const exportedMethods = {
         
         // Check if there is a user associated with "friendId".
         // This function will throw an error if no user is found.
-        await this.getUserById(friendId);
+        const user_to_friend = await this.getUserById(friendId);
 
         // Check if the user associated with "id" is already friends with the user associated with "friendId".
         for (let friend of user.friends) {
@@ -325,7 +368,7 @@ const exportedMethods = {
             }
         }
 
-        user.friends.push(friendId);
+        //user.friends.push(friendId);
         
         // Get the Users collection.
         const userCollection = await users();
@@ -333,7 +376,7 @@ const exportedMethods = {
         // Update the user's friends list.
         const updateInfo = await userCollection.findOneAndUpdate(
             {_id: new ObjectId(id)},
-            { $push: { friends: friendId } },
+            {$push: {friends: friendId}},
             {returnDocument: 'after'}
         );
 
@@ -345,7 +388,20 @@ const exportedMethods = {
             };
         }
 
-        updateInfo._id = updateInfo._id.toString();
+        // Update the user_to_friend's followers list.
+        const updateInfo2 = await userCollection.findOneAndUpdate(
+            {_id: new ObjectId(friendId)},
+            {$push: {followers: id}},
+            {returnDocument: 'after'}
+        );
+
+        if (!updateInfo2) {
+            throw {
+                status: 500,
+                function: "addFriend",
+                error: `Could not update follower list of user who is being friended.`
+            };
+        }
         
         return true;
 

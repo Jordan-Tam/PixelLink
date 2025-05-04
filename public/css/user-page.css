@@ -20,6 +20,12 @@ a:active {
     font-weight: bold;
 }
 
+#changeAccountInfo-div {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
 .commentDiv {
     border: 1px solid black;
     margin-top: 10px;

@@ -2,18 +2,18 @@
     <a href="/home" id="goBack">⇦ Return to home page</a>
     <h1>Games List</h1>
     <p>Click on a game to add it to your profile!</p>
-  </header>
-  <main>
-    <div>
-      <ul>
-        {{#each games}}
-          <li>
-            <a href="/games/{{this._id}}" class="name">{{this.name}}</a><br>
-            Players: {{this.numPlayers}}<br>
-            Release Date: {{this.dateReleased}}<br>
-            <a href="/games/{{this._id}}/form">Add to Profile</a>
-          </li>
-        {{/each}}
-      </ul>
-    </div>
-  </main>
+</header>
+<main>
+  <div>
+    <ul>
+      {{#each games}}
+        <li>
+          <a href="/games/{{this._id}}" class="name">{{this.name}}</a><br>
+          Players: {{this.numPlayers}}<br>
+          Release Date: {{this.dateReleased}}<br>
+          <a href="/games/{{this._id}}/form">Add to Profile</a>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+</main>

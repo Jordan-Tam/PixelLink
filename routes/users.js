@@ -9,8 +9,7 @@ const router = Router();
 router.route('/')
     .get(async (req, res) => {
         try {
-            const allUsers = await users.getAllUsers();
-            console.log(allUsers);
+            const allUsers = await users.getAllUsers(true);
             return res.render("user-list", {
                 title: "User Browser",
                 stylesheet: "/public/css/user-list.css",
@@ -117,8 +116,8 @@ router.route('/:id/friends')
                 username: user.username,
                 title: `${user.username}'s Friends List`
             });
-        } catch (error) {
-            return res.status(500).json({error});
+        } catch (e) {
+            return res.status(500).json({error: e.error});
         }
     })
 

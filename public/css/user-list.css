@@ -2,15 +2,32 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.userDiv {
-    border: 1px solid black;
-    border-radius: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding-left: 10px;
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(172, 172, 255);
+}
+
+a:active {
+    color: rgb(0, 0, 0);
 }
 
 #goBack {
     font-size: 1.5rem;
     font-weight: bold;
+    text-decoration: none;
 }
+
+.userDiv {
+    background-color: rgb(185, 233, 221);
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    width: 550px;
+}
+
