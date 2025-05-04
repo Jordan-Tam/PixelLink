@@ -55,8 +55,9 @@ router.route('/:id')
             const id = checkString(req.params.id, 'Game id','GET game/:id');
             const game = await games.getGameById(id);
             return res.render('game-page', {
-                game: game,
-                title: game.title
+                title: game.title,
+                stylesheet: "/public/css/game-page.css",
+                game: game
             });
         } catch (error) {
             return res.status(error.status).render("error", {

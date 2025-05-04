@@ -1,16 +1,44 @@
 <header>
-    <img src="{{game.imagePath}}">
+    {{!-- <img src="{{game.imagePath}}"> --}}
     <h1>{{game.name}}</h1>
 </header>
 <main>
-    <div>
-        <h3>Release Date:</h3><p>{{game.dateReleased}}</p><br>
-        <h3>Description:</h3><p>{{game.description}}</p> <br>
-        <h3>Average Rating:{{game.averageRating}}</h3>
-        <!-- Reviews -->
+
+    <div class="dateReleased-div">
+        <h3><span>Release Date:</h3>
+        <p>{{game.dateReleased}}</p>
     </div>
-    <br>
-    <div>
+
+    <div class="description-div">
+        <h3>Description:</h3>
+        {{#if game.description}}
+        <p>{{game.description}}</p>
+        {{else}}
+        <p>No description.</p>
+        {{/if}}
+    </div>
+
+    <div class="rating-div">
+        <h3>Rating:</h3>
+        <p>{{game.averageRating}}</p>
+    </div>
+
+    <div class="reviews-div">
+        <h3>Reviews:</h3>
+        {{#if game.reviews.length}}
+            <div class="single-review-div">
+                {{#each game.reviews}}
+                    <h4>{{this.title}}</h4>
+                    <p>{{this.content}}</p>
+                    <p>Rating: {{this.rating}}</p>
+                {{/each}}
+            </div>
+        {{else}}
+            No reviews.
+        {{/if}}
+    </div>
+
+    <div class="comments-div">
         <h3>Comments:</h3>
         {{#if game.comments.length}}
         <ul>
@@ -18,11 +46,13 @@
             <li>
                 <h4>{{this.content}}</h4>
                 <p>
-                    {{this.timeString}}  -  {{this.dateString}}
+                    {{this.time}}  -  {{this.date}}
                 </p>
             </li>
             {{/each}}
         </ul>
+        {{else}}
+        <p>No comments.</p>
         {{/if}}
         <form action="/{{user._id}}/comment" method="POST"> 
             <input type="text" id="addComment" name="addComment">
