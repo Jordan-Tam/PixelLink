@@ -475,8 +475,8 @@ const exportedMethods = {
             }
         }
 
-        // Switch to something more useful later.
-        return true;
+
+        return {gameAdded: true};
 
     },
 

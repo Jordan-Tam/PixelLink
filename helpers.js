@@ -645,5 +645,5 @@ export {
   checkAdmin,
   checkId,
   checkUserGameInfo,
-  checkRating
+  checkRating,
 };

@@ -1,6 +1,7 @@
 import {Router} from 'express';
-import {checkString, checkDateReleased, checkForm} from '../helpers.js';
+import {checkString, checkDateReleased, checkForm, checkUserGameInfo} from '../helpers.js';
 import games from '../data/games.js';
+import users from "../data/users.js";
 
 const router = Router();
 
@@ -86,12 +87,38 @@ router
   })
   .post(async(req, res) => {
     try {
-        const gameId = checkString(req.params.id, "Game id", "POST game/:id/form");
+        const gameId = checkString(
+            req.params.id,
+            "Game id",
+            "POST game/:id/form"
+        );
+
+        // I don't think I can easily send arrays to the server using a form, so I 
+        // send the form as an object, and reformat it here for the checkUserGameInfo function
+        let body = req.body;
+        let userGameInfo = [];
+        for(const elem in body){
+            userGameInfo.push({field_name: elem, value: body[elem]});
+        }
         const game = await games.getGameById(gameId);
-        let form = req.body;
-        // console.log(form);
-    } catch(e){
+        userGameInfo = checkUserGameInfo(userGameInfo, game, "Game form POST route");
+        const result = await users.addGame(req.session.user._id, gameId, userGameInfo);
+        if (!result || !result.gameAdded) {
+            return res.status(500).render("error", {
+            status: 500,
+            error_message: "Internal Server Error"
+            });
+        }
+        return res.redirect("/users/" + req.session.user._id);
         
+
+
+      // console.log(form);
+    } catch (error) {
+      return res.status(error.status).render("error", {
+        status: error.status,
+        error_message: `${error.function}: ${error.error}`,
+      });
     }
   });
 

@@ -13,17 +13,17 @@ if (gameForm) {
     let userGameInfo = [];
     let i = 0;
     while (true) {  // Get all of the field and value pairs into the userGameInfo array.
-      let field = document.getElementById("label" + i);
-      if (!field) {
+      let field_name = document.getElementById("label" + i);
+      if (!field_name) {
         break;
       }
-      field = field.firstChild.nodeValue.trim();
+      field_name = field_name.firstChild.nodeValue.trim();
       let value = document.getElementById("form_input" + i);
       if (!value) {
         continue;
       }
       value = value.value;
-      userGameInfo.push({ field: field, value: value });
+      userGameInfo.push({ field_name: field_name, value: value });
       i++;
     }
 
@@ -33,8 +33,8 @@ if (gameForm) {
     newForm.setAttribute("action", gameForm.action);
     for (let elem of userGameInfo) {
       let answer = document.createElement("input"); // Fill in my mock form
-      answer.id = elem.field;
-      answer.name = elem.field;
+      answer.id = elem.field_name;
+      answer.name = elem.field_name;
       answer.value = elem.value;
       newForm.appendChild(answer);
     }
