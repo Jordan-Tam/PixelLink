@@ -361,20 +361,18 @@ const exportedMethods = {
 
         // Input validation.
         id = checkId(id, "removeFriend", "User");
-        friendId = checkId(id, "removeFriend", "User");
-
+        friendId = checkId(friendId, "removeFriend", "User");
+ 
+ 
         // Get the user associated with "id".
         // This function will throw an error if no user is found.
         const user = await this.getUserById(id);
-
+ 
+ 
         // Check if there is a user associated with "friendId".
         // This function will throw an error if no user is found.
         await this.getUserById(friendId);
 
-        // Create updated friends list.
-        const updatedUser = {
-            friends: user.friends.filter((id) => id !== friendId)
-        };
         
         // Get the Users collection.
         const userCollection = await users();
@@ -382,18 +380,19 @@ const exportedMethods = {
         // Update the user's friends list.
         const updateInfo = await userCollection.findOneAndUpdate(
             {_id: new ObjectId(id)},
-            {$set: updatedUser},
+            {$pull: {friends: friendId}},
             {returnDocument: 'after'}
         );
 
+        //Error
         if (!updateInfo) {
             throw {
                 status: 500,
-                function: "addFriend",
+                function: "removeFriend",
                 error: `Could not update user's friends list`
             };
         }
-        
+
         updateInfo._id = updateInfo._id.toString();
         
         return updateInfo;
