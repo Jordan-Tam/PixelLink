@@ -100,7 +100,7 @@ app.use("/users", async (req, res, next) => {
   next();
 });
 
-//* Middleware 6: If an unauthenticated user tries to access any "/game" page, redirect them to the login page.
+//* Middleware 6: If an unauthenticated user tries to access any "/games" page, redirect them to the login page.
 app.use("/games", async (req, res, next) => {
   if (req.method === "GET") {
     if (!req.session.user) {

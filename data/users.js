@@ -453,7 +453,7 @@ const exportedMethods = {
         // Update the numPlayers counter of the game.
         let updatedGame = await gamesCollection.findOneAndUpdate(
             {_id: new ObjectId(gameId)},
-            {$set: {numPlayers: game.numPlayers++}},
+            {$set: {numPlayers: ++game.numPlayers}},
             {returnDocument:'after'}
         );
 
