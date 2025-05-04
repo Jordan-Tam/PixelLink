@@ -6,19 +6,19 @@
 <main>
     <!-- for each field object in form array, display with form tag -->
     {{#if game.form.length}}
-        <form action="/games/{{game._id}}/form" method="POST">
+        <form action="/games/{{game._id}}/form" method="POST" name = "gameForm" id = "gameForm">
             {{#each game.form}}
-                <label for="form_input">
+                <label for="form_input{{@index}}" id="label{{@index}}">
                     {{this.field}}
                     {{#if this.options.length}}
                         <!-- Drop down -->
-                        <select name="form_input" id="form_input">
+                        <select name="form_input{{@index}}" id="form_input{{@index}}">
                             {{#each this.options}}
-                                <option value="{{this}}">{{this}}</option>
+                                <option value="{{this}}" id = "value{{@index}}">{{this}}</option>
                             {{/each}}
                         </select>
                     {{else}}
-                        <input type="text" name="form_input" id="form_input"/>
+                        <input type="text" name="form_input{{@index}}" id="form_input{{@index}}"/>
                     {{/if}}
                 </label><br>
             {{/each}}

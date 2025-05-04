@@ -66,22 +66,33 @@ router.route('/:id')
     })
     .post()
 
-router.route('/:id/form')
-    .get(async (req, res) => {
-        try{
-            const id = checkString(req.params.id, 'Game id','GET game/:id/form');
-            const game = await games.getGameById(id);
-            return res.render('game-form', {
-                game: game,
-                title: `Add ${game.title} to profile`
-            });
-        } catch (error) {
-            return res.status(error.status).render("error", {
-                status: error.status,
-                error_message: `${error.function}: ${error.error}`
-            });
-        }
-    })
-    .post()
+router
+  .route("/:id/form")
+  .get(async (req, res) => {
+    try {
+      const id = checkString(req.params.id, "Game id", "GET game/:id/form");
+      const game = await games.getGameById(id);
+      return res.render("game-form", {
+        game: game,
+        title: `Add ${game.name} to profile`,
+        script: "/public/js/gameForm.js"
+      });
+    } catch (error) {
+      return res.status(error.status).render("error", {
+        status: error.status,
+        error_message: `${error.function}: ${error.error}`,
+      });
+    }
+  })
+  .post(async(req, res) => {
+    try {
+        const gameId = checkString(req.params.id, "Game id", "POST game/:id/form");
+        const game = await games.getGameById(gameId);
+        let form = req.body;
+        // console.log(form);
+    } catch(e){
+        
+    }
+  });
 
 export default router;
