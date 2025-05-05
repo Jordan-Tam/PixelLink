@@ -34,12 +34,32 @@ let user7 = await users.createUser("admin", "Admin!000", true);
 //////////////////////////////////////////////////////////////
 const chessForm = [
   {
-    field: "Do you prefer to be white or black?",
+    field: "Which site do you use?",
+    type: "select",
+    options: ["Chess.com", "Lichess"]
+  },
+  {
+    field: "Username on site",
+    type: "text",
+    options: []
+  },
+  {
+    field: "Do you prefer playing as White or Black?",
     type: "select",
     options: ["White", "Black"],
   },
   {
-    field: "What is your rating on Chess.com?",
+    field: "Bullet rating",
+    type: "number",
+    options: [],
+  },
+  {
+    field: "Blitz rating",
+    type: "number",
+    options: [],
+  },
+  {
+    field: "Rapid rating",
     type: "number",
     options: [],
   },
@@ -94,6 +114,16 @@ const marioKartForm = [
     type: "select",
     options: ["Kart", "Bike"],
   },
+  {
+    field: "Preferred CC",
+    type: "select",
+    options: ["50cc", "100cc", "150cc", "200cc"]
+  },
+  {
+    field: "Do you like playing in Mirror Mode?",
+    type: "select",
+    options: ["Yes", "No"]
+  }
 ];
 const marioKart = await games.createGame(
   "Mario Kart 8 Deluxe",
@@ -385,9 +415,34 @@ const review1 = await games.addReview(
   2
 );
 
+const review2 = await games.addReview(
+  chess._id,
+  user3._id,
+  "I love rooks",
+  "I love rooks",
+  5
+);
+
+const review3 = await games.addReview(
+  chess._id,
+  user5._id,
+  "Wait what is this",
+  "i wanted to open google where am i",
+  4
+);
+
+
+//////////////////////////////////////////////////////////////
+// Add Games to User Profiles
+//////////////////////////////////////////////////////////////
+
 let user1ChessForm = [
-  { field_name: "Do you prefer to be white or black?", value: "White" },
-  { field_name: "What is your rating on Chess.com?", value: "600" },
+  { field_name: "Which site do you use?", value: "Chess.com"},
+  { field_name: "Username on site", value: "MagnusCarlsen"},
+  { field_name: "Do you prefer playing as White or Black?", value: "White" },
+  { field_name: "Bullet rating", value: "600" },
+  { field_name: "Blitz rating", value: "600" },
+  { field_name: "Rapid rating", value: "600" },
   { field_name: "What is your favorite opening?", value: "Queen's Gambit" },
 ];
 

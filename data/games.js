@@ -242,7 +242,7 @@ const exportedMethods = {
     for (let r of insertReviewToGameInfo.reviews) {
       sum += r.rating;
     }
-    let newAvg = sum / (insertReviewToGameInfo.reviews.length + 1);
+    let newAvg = sum / (insertReviewToGameInfo.reviews.length);
 
     // Update the movie document's overall rating.
     const updatedGame = {
