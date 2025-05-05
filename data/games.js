@@ -268,22 +268,88 @@ const exportedMethods = {
   },
 
 
+  //Just an inital version: will modify 
   /**
    * An algorithm for picking up to 5 games to recommend to the user.
-   * 1) For each game in the user's profile, get a list of all users who also play that game. 
-   * 2) Combine all the lists from Step 1 into a single set (remove duplicate users).
-   * 3) Create an object that keeps track of how often the algorithm sees a new game (key: game name, value: number of times the algorithm sees it)
-   * 4) For each user in the set, iterate through their games list and increment respective counters in the object.
-   * 5) Convert the object to a list and sort the games by the number of times the algorithm has seen it.
-   * 6) Go through the list in descending order. When the algorithm sees a game that isn't in the user's profile, add it to the recommendations list.
-   * 7) Keep doing this until either 5 games were added to the recommendations list or the entire list has been run through.
    * @param {string} userId The ID of the user receiving the game recommendations.
    * @returns {array} An array of 0 to 5 Game IDs.
    */
   async getRecommendations(userId) {
-    return;
-  },
+    
+    //input validation
+    userId = checkId(userId, "getRecommendations", "users");
+
+    //user and game collections
+    const user = await userData.getUserById(userId);
+    const users_games = user.games; 
+    let userCollection = await userData.getAllUsers();
+
+    let user_array = [];
+
+    //find users who have any games in common at all
+    for (const u of userCollection) {
+      for (const game of users_games) {
+        if (u.games.some(g => g.name === game.name)) {
+          user_array.push(otherUser._id.toString());
+          break;
+        }
+      }
+    }
+
+    //remove dupes
+    user_array = [...new Set(user_array)];
+
+    //key: game title, value: number of occurences
+    const gameFreq = {};
+
+    const gameCollection = await this.getAllGames(); 
+
+    //If the game is not in the users game collection it will be initalized into gameFreq
+    for (const game of gameCollection) {
+      if (!users_games.some(g => g.name === game.name)) {
+        gameFreq[game.name] = 0;
+      }
+    }
+
+    //for every user that had at least one similar game, it will 
+    //increment the counter for every game they play in gameFreq
+    for (const userId of user_array) {
+      const u = await userData.getUserById(userId);
+
+      for (const game of u.games) {
+        if (!users_games.some(g => g.name === game.name)) {
+          gameFreq[game.name] = (gameFreq[game.name] || 0) + 1;
+        }
+      }
+    }
+
+    //Sorts the recommendations from game frequency (descendign order) & only includes game names
+    const sortedRecommendations = Object.entries(gameFreq)
+      .sort((a, b) => b[1] - a[1]) 
+      .map(({name, _}) => name); 
+
+    //array of games to recommend
+    const recommendations = [];
+
+    //goes through recommendations and pushes the 5 highest frequencies
+    if (sortedRecommendations.length >= 5){
+      
+      for(let i = 0; i < 5; i++){
+        recommendations.push(sortedRecommendations[i]);
+      }
+
+    } else {
+
+      //incase there is less than 5 games 
+      for(let i = 0; i < sortedRecommendations.length ; i++){
+        recommendations.push(sortedRecommendations[i]);
+      }
+    }
+
+    return recommendations;
   
+  }
+
 };
 
 export default exportedMethods;
