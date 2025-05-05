@@ -50,7 +50,7 @@ a:visited {
     padding: 10px;
 }
 
-#about {
+#about, #home {
     border: 3mm ridge rgba(50, 61, 220, 0.6);
     padding: 10px;
 }

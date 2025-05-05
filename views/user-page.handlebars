@@ -101,8 +101,8 @@
         {{else}}
             No comments.
         {{/if}}
-        <form action="/{{user._id}}/comment" method="POST"> 
-            <input type="text" id="addComment" name="addComment">
+        <form action="/users/{{user._id}}/comment" method="POST"> 
+            <input type="text" id="comment" name="comment">
             <input type="submit" value="add comment!">
         </form> 
     </div>

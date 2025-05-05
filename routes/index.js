@@ -10,7 +10,8 @@ const constructorMethod = (app) => {
     app.get("/", (req, res) => {
         res.render('landing-page', {
             title: "Landing Page",
-            stylesheet: "/public/css/landing-page.css"
+            stylesheet: "/public/css/landing-page.css",
+            is_logged_in: req.session.user
         });
     });
 

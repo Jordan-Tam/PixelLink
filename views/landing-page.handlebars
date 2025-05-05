@@ -9,13 +9,18 @@
         <p>Connect with like-minded gamers across the world.</p>
     </div>
     <br>
+    {{#if is_logged_in}}
+    <div class="centered">
+        <p id="home"><a href="/home">Go to Home</a></p>
+    </div>
+    {{else}}
     <div class="centered">
         <p id="login"><a href="/login">Login</a></p>
     </div>
     <div class="centered">
         <p id="register"><a href="/register">Register</a></p>
     </div>
-
+    {{/if}}
     <div class="centered">
         <p id="about"><a href="/about">About Us</a></p>
     </div>

@@ -1,6 +1,7 @@
 import {Router} from 'express';
 import {checkString, checkId} from '../helpers.js';
 import users from '../data/users.js';
+import comments from '../data/comments.js';
 import { all } from 'axios';
 
 
@@ -155,6 +156,30 @@ router.route('/:id/friends')
                 error_message: `${error.function}: ${error.error}`
             });
         }
+    });
+
+router.route('/:id/comment')
+    .post(async (req, res) => {
+
+        try {
+            req.params.id = checkId(req.params.id, "POST /:id/comment", "User");
+        } catch (e) {
+
+            // How do we re-render the user page if the ID is bad?
+            // Theoretically, the ID should always be good if this comment was submitted from the website...?
+            return res.status(e.status).render('user-page', {
+                title: "???"
+            });
+        }
+
+        try {
+            await comments.createComment("user", req.params.id, req.session.user._id, req.body.comment);
+        } catch (e) {
+            return res.status(e.status).json({error: e.error});
+        }
+
+        return;
+        
     });
 
 export default router;
