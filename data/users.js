@@ -539,7 +539,35 @@ const exportedMethods = {
 
     },
 
-    async removeGame(id, gameId) {
+    async removeGame(userId, gameId) {
+
+        //Input validation
+        userId = checkId(userId, 'removeGame', 'user');
+        gameId = checkId(gameId, 'removeGame', 'game');
+
+        //throws error if user/game does not exist
+        const user = await this.getUserById(userId);
+        const game = await gameData.getGameById(gameId);
+
+        //Delete game from user
+        const updateInfo = await userCollection.findOneAndUpdate(
+            {_id: new ObjectId(userId)},
+            {$pull: {games: gameId}},
+            {returnDocument: 'after'}
+        );
+
+        //Error
+        if (!updateInfo) {
+            throw {
+                status: 500,
+                function: "removeGame",
+                error: `Could not update user's game list`
+            };
+        }
+
+        updateInfo._id = updateInfo._id.toString();
+        
+        return updateInfo;
 
     },
 
