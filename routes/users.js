@@ -220,6 +220,14 @@ router.route('/:id/comment')
 
         return res.redirect(`/users/${req.params.id}`);
         
+    })
+
+    router.route('/:userId/game/:gameId')
+        .update(async (req, res) => {
+            
+        })
+        .delete(async (req, res) => {
+            
     });
 
 export default router;
