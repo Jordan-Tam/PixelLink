@@ -167,9 +167,8 @@ router.route('/:id/comment')
 
             // How do we re-render the user page if the ID is bad?
             // Theoretically, the ID should always be good if this comment was submitted from the website...?
-            return res.status(e.status).render('user-page', {
-                title: "???"
-            });
+            // You can't, just make sure the code above never errors.
+            return res.status(500).json({error: e.error});
         }
 
         try {
@@ -178,7 +177,7 @@ router.route('/:id/comment')
             return res.status(e.status).json({error: e.error});
         }
 
-        return;
+        return res.redirect(`/users/${req.params.id}`);
         
     });
 
