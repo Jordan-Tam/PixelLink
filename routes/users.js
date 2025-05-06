@@ -1,6 +1,7 @@
 import {Router} from 'express';
 import {checkString, checkId} from '../helpers.js';
 import users from '../data/users.js';
+import games from "../data/games.js";
 import comments from '../data/comments.js';
 import { all } from 'axios';
 
@@ -11,10 +12,13 @@ router.route('/')
     .get(async (req, res) => {
         try {
             const allUsers = await users.getAllUsers(true);
+            const allGames = await games.getAllGames(true);
             return res.render("user-list", {
                 title: "User Browser",
                 stylesheet: "/public/css/user-list.css",
-                users: allUsers
+                users: allUsers,
+                games: allGames,
+                script: "/public/js/user-list.js"
             })
         } catch (error) {
             res.status(500).json({error});
@@ -44,7 +48,6 @@ router.route('/:id')
                     }
                 }
             }
-            console.log(user);
             return res.render('user-page', {
                 user, 
                 stylesheet: "/public/css/user-page.css",

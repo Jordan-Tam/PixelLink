@@ -114,7 +114,6 @@ router
         
 
 
-      // console.log(form);
     } catch (error) {
       return res.status(error.status).render("error", {
         status: error.status,
