@@ -60,16 +60,54 @@ router.route('/:id')
             res.status(404).redirect("/error");
         }
     })
-    .post(async (req, res) => {
+    .patch(async (req, res) => {
         try {
-            const id = checkString(req.params.id, 'User id','POST user/:id');
+            const id = checkString(req.params.id, 'User id','PATCH user/:id');
             let {username, password} = req.body;
-            const nUsername = checkString(username, 'Username', 'POST user/:id');
-            const nPassword = checkString(password, 'Password', 'POST user/:id');
+            const nUsername = checkString(username, 'Username', 'PATCH user/:id');
+            const nPassword = checkString(password, 'Password', 'PATCH user/:id');
+            let loggedInUser = false;
+            //check if user is logged in
+            if(req.session.id){
+                loggedInUser = true;
+            }
+            //check if user is updating their own profile
+            if(req.session.user._id !== id){
+                return res.status(403).render('error', {
+                    status: 403,
+                    error_message: "Permission Denied"
+                });
+            }
+            
+            let notFriended = true; //user isn't friends with themself
             const updatedUser = await users.updateUser(id, nUsername, nPassword);
-            return res.json(updatedUser);
+            req.session.user.username = updatedUser.username; //update the session username
+
+            return res.render('user-page', {
+                user: req.session.user, 
+                stylesheet: "/public/css/user-page.css",
+                hidden: "hidden",
+                loggedInUser,
+                title: `${req.session.user.username}'s Profile`,
+                notFriended
+            });
         } catch (error) {
-            res.status(400).json({error});
+            if(error.function === "updateUser"){
+                //const user = await users.getUserById(req.params.id);
+                return res.render('user-page', {
+                    user: req.session.user, 
+                    stylesheet: "/public/css/user-page.css",
+                    hidden: "hidden",
+                    loggedInUser,
+                    title: `${req.session.user.username}'s Profile`,
+                    notFriended,
+                    error_message: error.error
+                });
+            }
+            return res.status(500).render('error', {
+                status: 500,
+                error_message: "Unknown error in PATCH user/:id"
+            });
         }
     })
 
