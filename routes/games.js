@@ -9,7 +9,7 @@ router.route('/')
     .get()
     .post()
 
-router.route('/list')
+router.route('/')
     .get(async (req, res) => {
         try {
             const gamesList = await games.getAllGames(true);
