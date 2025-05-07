@@ -9,9 +9,6 @@ if (registrationForm) {
 
     registrationForm.addEventListener('submit', (event) => {
 
-        
-        event.preventDefault();
-
         // Rehide the error paragraph.
         error.hidden = true;
 

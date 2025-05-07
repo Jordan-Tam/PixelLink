@@ -87,7 +87,8 @@ const constructorMethod = (app) => {
             let admin = false;
             let newUser = await users.createUser(username, password, admin);
             req.session.user = newUser;
-            return res.render('home', {user: req.session.user});
+            return res.redirect("/home");
+
         } catch (e) {
             return res.status(e.status).render('registration', {
                 title: "Register",
