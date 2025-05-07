@@ -170,6 +170,7 @@ const exportedMethods = {
   async updateGame(id) {
     // Waiting to see how updating a game will work, since updating the questions
     // might cause some big issues in the user collection
+    // would need to iterate thru profiles and remove the corresponding gmae object from the games list
 
 
   },
