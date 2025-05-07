@@ -36,6 +36,19 @@
         {{else}}
             No reviews.
         {{/if}}
+        <form action="/{{game._id}}/reviews" method="POST"> 
+            <input type="text" id="addReview" name="addReview">
+            <label for="rating">Rating:
+                <select id="rating" name="rating" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </label>
+            <input type="submit" value="add review!">
+        </form> 
     </div>
 
     <div class="comments-div">
@@ -46,7 +59,7 @@
             <li>
                 <h4>{{this.content}}</h4>
                 <p>
-                    {{this.time}}  -  {{this.date}}
+                    {{this.timeString}}  -  {{this.dateString}}
                 </p>
             </li>
             {{/each}}
