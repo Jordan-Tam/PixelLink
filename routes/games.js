@@ -55,7 +55,7 @@ router.route('/:id')
             const id = checkString(req.params.id, 'Game id','GET game/:id');
             const game = await games.getGameById(id);
             return res.render('game-page', {
-                title: game.title,
+                title: game.name,
                 stylesheet: "/public/css/game-page.css",
                 game: game
             });
@@ -66,7 +66,7 @@ router.route('/:id')
             });
         }
     })
-    .post()
+    .post() //addGame for the admin, renders add-gae view
 
 router
   .route("/:id/form")
@@ -121,5 +121,35 @@ router
       });
     }
   });
+
+router
+    .route("/:id/reviews")
+    .post(async (req, res) => {
+        try {
+            const gameId = checkId(req.params.id, "POST /:id/review", "Game");
+            if(!req.session.user){ //get user, check if logged in
+               return res.render("error", {
+                status: 403,
+                error_message: "Permission Denied. Must be logged in to post a review."
+               });
+            }
+            const userId = checkString(req.session.user._id, "POST /:id/review", "User");
+            let {title, content, rating} = req.body; //input validation
+            title = checkString(title, "title", "addReview");
+            content = checkString(content, "content", "addReview");
+            rating = checkRating(rating, "addReview");
+            let updatedGame = await games.addReview(gameId, userId, title, content, rating);
+            return res.render('game-page', {
+                title: updatedGame.name,
+                stylesheet: "/public/css/game-page.css",
+                game: updatedGame
+            });
+        } catch (error) {
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: error.error
+            });
+        }
+    })
 
 export default router;
