@@ -222,12 +222,13 @@ router.route('/:id/comment')
         
     })
 
-    router.route('/:userId/game/:gameId')
-        .update(async (req, res) => {
+    //Commented this out to run the app
+    // router.route('/:userId/game/:gameId')
+    //     .update(async (req, res) => {
             
-        })
-        .delete(async (req, res) => {
+    //     })
+    //     .delete(async (req, res) => {
             
-    });
+    // });
 
 export default router;
