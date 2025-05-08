@@ -10,10 +10,14 @@
     <div id="changeAccountInfo-div">
 
         <form {{!-- action="/" method="POST" --}}>
+            <label ></label>
+            <input type="text" id="username" name="username">
             <input type="submit" value="Change Username">
         </form>
 
         <form {{!-- action="/" method="POST" --}}>
+            <label></label>
+            <input type="text" id="password" name="password">
             <input type="submit" value="Change Password">
         </form>
 
@@ -102,11 +106,12 @@
                 {{/if}}
             {{/each}}
         {{else}}
-            No comments.
+            <p>No comments.</p>
         {{/if}}
-        <form action="/users/{{user._id}}/comment" method="POST"> 
+        <p id="commentError" {{hidden}}>{{error_message}}</p>
+        <form id="commentForm" action="/users/{{user._id}}/comment" method="POST"> 
             <input type="text" id="comment" name="comment">
-            <input type="submit" value="add comment!">
+            <input type="submit" id="commentSubmit" name="commentSubmit" value="add comment!">
         </form> 
     </div>
 </main>

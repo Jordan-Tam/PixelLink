@@ -45,6 +45,6 @@ a:active {
     color: rgb(73, 73, 73);
 }
 
-/* .contentParagraph {
-
-} */
+#commentError {
+    color: red;
+}

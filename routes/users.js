@@ -51,6 +51,7 @@ router.route('/:id')
             return res.render('user-page', {
                 user, 
                 stylesheet: "/public/css/user-page.css",
+                script: "/public/js/user-page.js",
                 hidden: "hidden",
                 loggedInUser,
                 title: `${user.username}'s Profile`,
