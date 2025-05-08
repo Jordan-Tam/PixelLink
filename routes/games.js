@@ -9,7 +9,7 @@ router.route('/')
     .get()
     .post()
 
-router.route('/list')
+router.route('/')
     .get(async (req, res) => {
         try {
             const gamesList = await games.getAllGames(true);
@@ -19,8 +19,8 @@ router.route('/list')
                 stylesheet: "/public/css/game-list.css"
             });
         } catch (error) {
-            return res.status(error.status).render("error", {
-                status: error.status,
+            return res.status(error.status || 500).render("error", {
+                status: error.status || 500,
                 error_message: `${error.function}: ${error.error}`
             });
         }
@@ -31,7 +31,7 @@ router.route('/list')
             name = checkString(name, "name", "POST game/list");
             dateReleased = checkDateReleased(dateReleased, "POST game/list");
             form = checkForm(form);
-            if(!req.session.user && !req.session.user.admin){
+            if(!req.session.user || !req.session.user.admin){
                 //Not logged in users and non-admins cannot add a game
                 return res.status(403).json({error: "Permission Denied"});
             }
@@ -55,7 +55,7 @@ router.route('/:id')
             const id = checkString(req.params.id, 'Game id','GET game/:id');
             const game = await games.getGameById(id);
             return res.render('game-page', {
-                title: game.title,
+                title: game.name,
                 stylesheet: "/public/css/game-page.css",
                 game: game
             });
@@ -66,7 +66,7 @@ router.route('/:id')
             });
         }
     })
-    .post()
+    .post() //addGame for the admin, renders add-gae view
 
 router
   .route("/:id/form")
@@ -122,4 +122,68 @@ router
     }
   });
 
+router
+    .route("/:id/reviews")
+    .post(async (req, res) => {
+        try {
+            const gameId = checkId(req.params.id, "POST /:id/review", "Game");
+            if(!req.session.user){ //get user, check if logged in
+               return res.status(403).render("error", {
+                status: 403,
+                error_message: "Permission Denied. Must be logged in to post a review.",
+                stylesheet: "/public/css/error.css",
+                title: "403 Error"
+               });
+            }
+            const userId = checkString(req.session.user._id, "POST /:id/review", "User");
+            let {title, content, rating} = req.body; //input validation
+            title = checkString(title, "title", "addReview");
+            content = checkString(content, "content", "addReview");
+            rating = checkRating(rating, "addReview");
+            const updatedGame = await games.addReview(gameId, userId, title, content, rating);
+            return res.render('game-page', {
+                title: updatedGame.name,
+                stylesheet: "/public/css/game-page.css",
+                game: updatedGame
+            });
+        } catch (error) {
+            return res.status(error.status || 500).render("error", {
+                status: error.status || 500,
+                error_message: error.error,
+                stylesheet: "/public/css/error.css",
+                title: `${error.status || 500} Error`
+            });
+        }
+    });
+router
+    .route("/:gameId/reviews/:reviewId")
+    .patch()
+    .delete(async (req, res) => {
+        try {
+            const gameId = checkId(req.params.gameId, "DELETE /:gameId/reviews/:reviewId", "Game");
+            const reviewId = checkId(req.params.reviewId, "DELETE /:gameId/reviews/:reviewId", "Review");
+            if(!req.session.user || !req.session.user.admin){ //get user, check if logged in
+                return res.status(403).render("error", {
+                    status: 403,
+                    error_message: "Permission Denied. Must be logged in as an admin to delete a review.",
+                    stylesheet: "/public/css/error.css",
+                    title: "403 Error"
+                });
+            }
+            const updatedGame = await games.deleteReview(gameId, reviewId); //assuming dat function named deleteReview
+
+            return res.render("game-page", {
+                title: updatedGame.name,
+                stylesheet: "/public/css/game-page.css",
+                game: updatedGame
+            });
+        } catch (error) {
+            return res.status(error.status || 500).render("error", {
+                status: error.status || 500,
+                error_message: error.error,
+                stylesheet: "/public/css/error.css",
+                title: `${error.status || 500} Error`
+            });
+        }
+    });
 export default router;

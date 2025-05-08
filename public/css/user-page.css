@@ -22,8 +22,12 @@ a:active {
 
 #changeAccountInfo-div {
     display: flex;
-    flex-direction: row;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+#password {
+    margin-bottom: 0.4rem;
 }
 
 .commentDiv {
@@ -45,6 +49,6 @@ a:active {
     color: rgb(73, 73, 73);
 }
 
-/* .contentParagraph {
-
-} */
+#commentError {
+    color: red;
+}

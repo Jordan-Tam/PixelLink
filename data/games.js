@@ -170,7 +170,62 @@ const exportedMethods = {
   async updateGame(id) {
     // Waiting to see how updating a game will work, since updating the questions
     // might cause some big issues in the user collection
+    // would need to iterate thru profiles and remove the corresponding gmae object from the games list
 
+
+  },
+
+
+  async updateAverageRating(gameId) {
+
+    // Input validation.
+    gameId = checkId(gameId, "updateAverageRating", "Game");
+
+    // Get games collection.
+    const gamesCollection = await games();
+
+    // Get game.
+    let game = gamesCollection.findOne({
+        _id: gameId
+    });
+
+    // Check if a game was found.
+    if (!game) {
+        throw {
+            status: 500,
+            function: "updateAverageRating",
+            error: "Game not found."
+        };
+    }
+
+    // Update averageRating of game.
+    let sum = 0;
+    for (let r of game.reviews) {
+      sum += r.rating;
+    }
+    let newAvg = sum / (game.reviews.length);
+
+    // Update the movie document's overall rating.
+    const updatedGame = {
+      averageRating: Number(newAvg.toString().substring(0,3))
+    };
+
+    const updateGame = gamesCollection.findOneAndUpdate(
+      {_id: new ObjectId(gameId)},
+      {$set: updatedGame},
+      {returnDocument: 'after'}
+    );
+
+    // Check if the update was successful.
+    if (!updateGame) {
+      throw {
+        status: 500,
+        function: "addReview",
+        error: "Could not update average rating of game."
+      };
+    }
+
+    return updateGame;
 
   },
 
@@ -205,6 +260,7 @@ const exportedMethods = {
       _id: gameId
     });
 
+    // Check if a game was found.
     if (!game) {
       throw {
         status: 404,
@@ -229,6 +285,7 @@ const exportedMethods = {
       {returnDocument: 'after'}
     );
 
+    // Check if the insertion was successful.
     if (!insertReviewToGameInfo) {
       throw {
         status: 500,
@@ -237,33 +294,105 @@ const exportedMethods = {
       };
     }
 
-    // Update averageRating of game.
-    let sum = 0;
-    for (let r of insertReviewToGameInfo.reviews) {
-      sum += r.rating;
-    }
-    let newAvg = sum / (insertReviewToGameInfo.reviews.length);
+    // Update the game's average rating and return the updated game object.
+    return this.updateAverageRating(gameId);
 
-    // Update the movie document's overall rating.
+  },
+
+  async removeReview(reviewId) {
+
+    // Input validation.
+    reviewId = checkId(reviewId, "removeReview", "Review");
+
+    // Get Games collection.
+    const gamesCollection = await games();
+    
+    // Get game associated with the review.
+    const game = gamesCollection.findOne({
+      "reviews._id": new ObjectId(reviewId)
+    });
+
+    if (!game) {
+      throw {
+        status: 404,
+        function: "removeReview",
+        error: "Review not found."
+      };
+    }
+
+    const deleteReviewInfo = await gamesCollection.findOneAndUpdate(
+      {_id: game._id},
+      {$pull: {reviews: {'_id': new ObjectId(reviewId)}}},
+      {returnDocument: 'after'}
+    );
+
+    if (!deleteReviewInfo) {
+      throw {
+        status: 500,
+        function: "removeReview",
+        error: "Review could not be deleted."
+      };
+    }
+
+    // Update the game's average rating.
+    return this.updateAverageRating(deleteReviewInfo._id);
+    
+  },
+
+  async updateReview(reviewId, title, content, rating) {
+
+    // Input validation.
+    reviewId = checkId(reviewId, "updateReview", "Review");
+    title = checkString(title, "title", "updateReview");
+    content = checkString(content, "content", "updateReview");
+    rating = checkRating(rating, "updateReview");
+
+    // Get games collection.
+    const gamesCollection = await games();
+
+    // Get game associated with the review.
+    const game = gamesCollection.findOne({
+      "reviews._id": new ObjectId(reviewId)
+    });
+
+    if (!game) {
+      throw {
+        status: 404,
+        function: "removeReview",
+        error: "Review not found."
+      };
+    }
+
+    // Find the review associated with reviewId.
+    for (let i = 0; i < game.reviews.length; i++) {
+      if (game.reviews[i]._id.toString() === reviewId) {
+        game.reviews[i].title = title;
+        game.reviews[i].content = content;
+        game.reviews[i].rating = rating;
+        break;
+      }
+    }
+
     const updatedGame = {
-      averageRating: Number(newAvg.toString().substring(0,3))
+      reviews: game.reviews
     };
 
-    const updateGame = gamesCollection.findOneAndUpdate(
-      {_id: new ObjectId(gameId)},
+    const updateReviewInfo = await gamesCollection.findOneAndUpdate(
+      {_id: game._id},
       {$set: updatedGame},
       {returnDocument: 'after'}
     );
 
-    if (!updateGame) {
+    if (!updateReviewInfo) {
       throw {
         status: 500,
-        function: "addReview",
-        error: "Could not update average rating of game."
+        function: "updateReview",
+        error: "Review could not be updated."
       };
     }
 
-    return updateGame;
+    // Return the updated game.
+    return updateReviewInfo;
 
   },
 
