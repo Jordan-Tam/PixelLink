@@ -21,7 +21,9 @@ router.route('/')
         } catch (error) {
             return res.status(error.status || 500).render("error", {
                 status: error.status || 500,
-                error_message: `${error.function}: ${error.error}`
+                error_message: `${error.function}: ${error.error}`,
+                title: `${error.status || 500} Error`,
+                stylesheet: "/public/css/error.css"
             });
         }
     })
@@ -39,12 +41,15 @@ router.route('/')
             const gamesList = await games.getAllGames();
             return res.render('game-list', {
                 games: gamesList,
-                title: "Games List"
+                title: "Games List",
+                stylesheet: "/public/css/game-list.css"
             });
         } catch (error) {
             return res.status(error.status).render("error", {
                 status: error.status,
-                error_message: `${error.function}: ${error.error}`
+                error_message: `${error.function}: ${error.error}`,
+                title: `${error.status} Error`,
+                stylesheet: "/public/css/error.css"
             });
         }
     })
@@ -62,7 +67,9 @@ router.route('/:id')
         } catch (error) {
             return res.status(error.status).render("error", {
                 status: error.status,
-                error_message: `${error.function}: ${error.error}`
+                error_message: `${error.function}: ${error.error}`,
+                title: `${error.status} Error`,
+                stylesheet: "/public/css/error.css"
             });
         }
     })
@@ -83,6 +90,8 @@ router
       return res.status(error.status).render("error", {
         status: error.status,
         error_message: `${error.function}: ${error.error}`,
+        title: `${error.status} Error`,
+        stylesheet: "/public/css/error.css"
       });
     }
   })
@@ -106,8 +115,10 @@ router
         const result = await users.addGame(req.session.user._id, gameId, userGameInfo);
         if (!result || !result.gameAdded) {
             return res.status(500).render("error", {
-            status: 500,
-            error_message: "Internal Server Error"
+                status: 500,
+                error_message: "Internal Server Error",
+                title: `500 Error`,
+                stylesheet: "/public/css/error.css"
             });
         }
         return res.redirect("/users/" + req.session.user._id);
@@ -118,6 +129,8 @@ router
       return res.status(error.status).render("error", {
         status: error.status,
         error_message: `${error.function}: ${error.error}`,
+        title: `${error.status} Error`,
+        stylesheet: "/public/css/error.css"
       });
     }
   });
