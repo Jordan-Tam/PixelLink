@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>{{title}}</title>
-    <link rel="icon" href="/public/images/favicon.svg" />
+    <link rel="icon" href="/public/images/favicon.svg">
     <link rel="stylesheet" href="{{stylesheet}}">
 </head>
 <body>
     {{{body}}}
+    {{#if script}}
     <script src="{{script}}"></script>
+    {{/if}}
 </body>
 </html>

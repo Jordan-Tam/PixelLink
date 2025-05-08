@@ -5,11 +5,11 @@
 <main>
   <form name="userSearchForm" id="userSearchForm" action="/users" method="POST">
     <label for="searchBar">Search by name:</label>
-    <input type="text" name="searchBar" id="searchBar" />
-    <br />
+    <input type="text" name="searchBar" id="searchBar">
+    <br>
     <label for="gameSelect">Search by game:</label>
     <select name="gameSelect" id="gameSelect">
-      <option></option>
+      <option label="none"></option>
       {{#each games}}
         <option>{{this.name}}</option>
       {{/each}}
@@ -17,16 +17,15 @@
     <div id="allFormsContainer">
       {{#each games}}
         <div class="gameFormContainer" hidden>
-          <h5 id = "{{this.name}}">{{this.name}}</h5>
+          <h5 class="gameTitle">{{this.name}}</h5>
           {{#each this.form}}
             <label>{{this.field}}
               {{#if this.options.length}}
                 <select name="gameInput{{@../index}}-{{@index}}" id="gameInput{{@../index}}-{{@index}}">
                   {{#each this.options}}
                     <option
-                      name="gameInput{{@../../index}}-{{@../index}}-{{@index}}"
                       id="gameInput{{@../../index}}-{{@../index}}-{{@index}}"
-                      value={{this}}
+                      value="{{this}}"
                     >{{this}}</option>
                   {{/each}}
                 </select>
@@ -35,15 +34,15 @@
                   type="text"
                   name="gameInput{{@../index}}-{{@index}}"
                   id="gameInput{{@../index}}-{{@index}}"
-                />
+                >
               {{/if}}
             </label>
-            <br />
+            <br>
           {{/each}}
         </div>
       {{/each}}
     </div>
-    <br />
+    <br>
     <button type="submit" name="submitButton" id="submitButton">Submit</button>
   </form>
 
