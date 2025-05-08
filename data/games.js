@@ -185,8 +185,8 @@ const exportedMethods = {
     const gamesCollection = await games();
 
     // Get game.
-    let game = gamesCollection.findOne({
-        _id: gameId
+    let game = await gamesCollection.findOne({
+        _id: new ObjectId(gameId)
     });
 
     // Check if a game was found.
@@ -256,8 +256,8 @@ const exportedMethods = {
     await userData.getUserById(userId);
 
     // Get game.
-    let game = gamesCollection.findOne({
-      _id: gameId
+    let game = await gamesCollection.findOne({
+      _id: new ObjectId(gameId),
     });
 
     // Check if a game was found.
