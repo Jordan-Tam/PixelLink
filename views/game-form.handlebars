@@ -17,6 +17,8 @@
                                 <option value="{{this}}" id = "value{{@index}}">{{this}}</option>
                             {{/each}}
                         </select>
+                    {{else if this.domain.length}}
+                        <input type="number" name="form_input{{@index}}" id="form_input{{@index}}"/>
                     {{else}}
                         <input type="text" name="form_input{{@index}}" id="form_input{{@index}}"/>
                     {{/if}}

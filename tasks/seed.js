@@ -36,37 +36,44 @@ const chessForm = [
   {
     field: "Which site do you use?",
     type: "select",
-    options: ["Chess.com", "Lichess"]
+    options: ["Chess.com", "Lichess"],
+    domain: [],
   },
   {
     field: "Username on site",
     type: "text",
-    options: []
+    options: [],
+    domain: [],
   },
   {
     field: "Do you prefer playing as White or Black?",
     type: "select",
     options: ["White", "Black"],
+    domain: [],
   },
   {
     field: "Bullet rating",
     type: "number",
     options: [],
+    domain: ["0", "3000"],
   },
   {
     field: "Blitz rating",
     type: "number",
     options: [],
+    domain: ["0", "3000"],
   },
   {
     field: "Rapid rating",
     type: "number",
     options: [],
+    domain: ["0", "3000"],
   },
   {
     field: "What is your favorite opening?",
     type: "text",
     options: [],
+    domain: [],
   },
 ];
 const chess = await games.createGame("Chess", "N/A", chessForm);
@@ -89,16 +96,19 @@ const balatroForm = [
       "Flush House",
       "Flush Five",
     ],
+    domain: [],
   },
   {
     field: "What is your favorite legendary joker?",
     type: "select",
     options: ["Chicot", "Perkeo", "Canio", "Triboulet", "Yorick"],
+    domain: [],
   },
   {
-    field: "What is your high score?",
+    field: "How many jokers do you have unlocked?",
     type: "number",
     options: [],
+    domain: ["0", "150"],
   },
 ];
 const balatro = await games.createGame("Balatro", "02/20/2024", balatroForm);
@@ -108,22 +118,26 @@ const marioKartForm = [
     field: "Which is your favorite character to race as?",
     type: "text",
     options: [],
+    domain: [],
   },
   {
     field: "What is your preferred vehicle type?",
     type: "select",
     options: ["Kart", "Bike"],
+    domain: [],
   },
   {
     field: "Preferred CC",
     type: "select",
-    options: ["50cc", "100cc", "150cc", "200cc"]
+    options: ["50cc", "100cc", "150cc", "200cc"],
+    domain: [],
   },
   {
     field: "Do you like playing in Mirror Mode?",
     type: "select",
-    options: ["Yes", "No"]
-  }
+    options: ["Yes", "No"],
+    domain: [],
+  },
 ];
 const marioKart = await games.createGame(
   "Mario Kart 8 Deluxe",
@@ -142,16 +156,19 @@ const amongUsForm = [
       "Scientist",
       "Guardian Angel",
     ],
+    domain: [],
   },
   {
     field: "Do you play with mods?",
     type: "select",
     options: ["Yes", "Sometimes", "No"],
+    domain: [],
   },
   {
     field: "What platform do you play on?",
     type: "select",
     options: ["Mobile", "PC", "Switch", "Xbox", "Playstation"],
+    domain: [],
   },
 ];
 const amongUs = await games.createGame("Among Us", "06/15/2018", amongUsForm);
@@ -202,16 +219,19 @@ const overwatch2Form = [
       "Moira",
       "Zenyatta",
     ],
+    domain: [],
   },
   {
     field: "What is your preferred role?",
     type: "select",
     options: ["Tank", "Damage", "Support"],
+    domain: [],
   },
   {
     field: "What platform do you play on?",
     type: "select",
     options: ["PC", "Switch", "Xbox", "Playstation"],
+    domain: [],
   },
 ];
 const overwatch2 = await games.createGame(
@@ -225,21 +245,25 @@ const minecraftForm = [
     field: "What is your favorite way to play?",
     type: "select",
     options: ["Survival", "Creative"],
+    domain: [],
   },
   {
     field: "What is your favorite online server?",
     type: "text",
     options: [],
+    domain: [],
   },
   {
     field: "What difficulty do you play on?",
     type: "select",
     options: ["Peaceful", "Easy", "Normal", "Hard", "Hardcore"],
+    domain: [],
   },
   {
     field: "Bedrock or Java?",
     type: "select",
     options: ["Bedrock", "Java"],
+    domain: [],
   },
 ];
 const minecraft = await games.createGame(
@@ -253,6 +277,7 @@ const marvelRivalsForm = [
     field: "Which role do you usually play?",
     type: "select",
     options: ["Vanguard", "Duelist", "Strategist"],
+    domain: [],
   },
   {
     field: "Who is your favorite hero to play?",
@@ -296,11 +321,13 @@ const marvelRivalsForm = [
       "Wolverine",
       "Venom",
     ],
+    domain: []
   },
   {
     field: "What platform do you play on?",
     type: "select",
     options: ["PC", "Xbox", "Playstation"],
+    domain: [],
   },
 ];
 const marvelRivals = await games.createGame(
@@ -451,7 +478,7 @@ let userGame1 = await users.addGame(user1._id, chess._id, user1ChessForm);
 let user1BalatroForm = [
   { field_name: "What is your favorite hand?", value: "Flush" },
   { field_name: "What is your favorite legendary joker?", value: "Perkeo" },
-  { field_name: "What is your high score?", value: "1000000000" },
+  { field_name: "How many jokers do you have unlocked?", value: "150" },
 ];
 
 let userGame2 = await users.addGame(user1._id, balatro._id, user1BalatroForm);

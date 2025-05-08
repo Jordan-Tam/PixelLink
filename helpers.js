@@ -252,7 +252,7 @@ const checkUserGameInfo = (userGameInfo, game, funcName) => {
 
   //Get the game's form and ensure it's format is correct.
   let gameForm = game.form;
-  gameForm = checkForm(gameForm);
+  gameForm = checkForm(gameForm, funcName);
 
   // For each response, check if the field_name matches a field in the form
   // Then check to make sure that the type of value is a string
@@ -296,13 +296,24 @@ const checkUserGameInfo = (userGameInfo, game, funcName) => {
               "A question with a number type must receive a value that is a number.",
           };
         }
-        if (question.type === "options" && !options.includes(value)) {
+    if (
+      question.type === "number" && !(parseInt(value) >= parseInt(question.domain[0]) && parseInt(value) <= parseInt(question.domain[1]))
+    ) {
+      // Throw if a number is not between the domain
+      throw {
+        status: 400,
+        function: funcName,
+        error:
+          "A question with a number type must receive a value that is within the domain.",
+      };
+    }
+        if (question.type === "select" && !question.options.includes(value)) {
           // Throw if the user gives an answer that is not one of the options in a question with options type
           throw {
             status: 400,
             function: funcName,
             error:
-              "A question with a number type must receive a value that is a number.",
+              "A question with a select type must receive a value that is one of the options.",
           };
         }
         retval.push({ field_name: field_name, value: value });  // Add the valid field into the return value
@@ -429,40 +440,39 @@ const checkDateReleased = (dateReleased, funcName) => {
  * @returns 
  */
 const checkFormField = (formField, funcName) => {
-
   // Check that formField was supplied.
   if (!formField) {
     throw {
       status: 400,
       function: funcName,
-      error: ""
-    }
+      error: "",
+    };
   }
-  
+
   // Check that formField is an object.
   if (typeof formField !== "object") {
     throw {
       status: 400,
       function: funcName,
-      error: "formField must be an object."
-    }
+      error: "formField must be an object.",
+    };
   }
   if (Array.isArray(formField)) {
     throw {
       status: 400,
       function: funcName,
-      error: "formField must be an object."
-    }
+      error: "formField must be an object.",
+    };
   }
-  
+
   // Check the "field" attribute of the formField object.
   let field = formField.field;
   if (!field) {
     throw {
       status: 400,
       function: funcName,
-      error: "Each form field must have a 'field' property."
-    }
+      error: "Each form field must have a 'field' property.",
+    };
   }
 
   // Check the "type" attribute of the formField object.
@@ -471,8 +481,8 @@ const checkFormField = (formField, funcName) => {
     throw {
       status: 400,
       function: funcName,
-      error: "Each form field must have a 'type' property."
-    }
+      error: "Each form field must have a 'type' property.",
+    };
   }
 
   // Check the "options" attribute of the formField object.
@@ -481,17 +491,27 @@ const checkFormField = (formField, funcName) => {
     throw {
       status: 400,
       function: funcName,
-      error: "Each form field must have an 'options' property."
-    }
+      error: "Each form field must have an 'options' property.",
+    };
   }
 
-  // Make sure there are no other keys in the formFields object.
-  if (Object.keys(formField).length !== 3) {
+  // Check the "domain" attribute of the formField object.
+  let domain = formField.domain;
+  if (!domain) {
     throw {
       status: 400,
       function: funcName,
-      error: "The form field contains unnecessary properties."
-    }
+      error: "Each form field must have an 'domain' property.",
+    };
+  }
+
+  // Make sure there are no other keys in the formFields object.
+  if (Object.keys(formField).length !== 4) {
+    throw {
+      status: 400,
+      function: funcName,
+      error: "The form field contains unnecessary properties.",
+    };
   }
 
   // Check that 'field' and 'type' are strings.
@@ -503,43 +523,94 @@ const checkFormField = (formField, funcName) => {
     throw {
       status: 400,
       function: funcName,
-      error: "formField options must be an array."
-    }
+      error: "formField options must be an array.",
+    };
+  }
+
+  // Check that 'domain' is an array.
+  if (!Array.isArray(domain)) {
+    throw {
+      status: 400,
+      function: funcName,
+      error: "formField domain must be an array.",
+    };
   }
 
   // If type is "text"...
   if (type === "text") {
-
     // ...make sure that the options array is empty.
     if (options.length !== 0) {
       throw {
         status: 400,
         function: funcName,
-        error: "Cannot have a text formField with options."
+        error: "Cannot have a text formField with options.",
       };
     }
+    if (domain.length !== 0) {
+      throw {
+        status: 400,
+        function: funcName,
+        error: "Cannot have a text formField with a domain.",
+      };
+    }
+    
 
-  // If type is "number"...
+    // If type is "number"...
   } else if (type === "number") {
-
     // ...make sure that the options array is empty.
     if (options.length !== 0) {
       throw {
         status: 400,
         function: funcName,
-        error: "Cannot have a number formField with options."
+        error: "Cannot have a number formField with options.",
       };
     }
 
-  // If type is "select"...
-  } else if (type === "select") {
+    if(domain.length !== 2){
+      throw {
+        status: 400,
+        function: funcName,
+        error: "A number question must have two numbers in the array (min and max).",
+      };
+    }
 
+    // Check the domain to make sure it includes string representations of numbers.
+    for (let i = 0; i < domain.length; i++) {
+      domain[i] = checkString(domain[i], "Domain value", "checkFormField");
+      if (isNaN(parseInt(domain[i]))) {
+        throw {
+          status: 400,
+          function: funcName,
+          error:
+            "The domain's values must have string representations of numbers.",
+        };
+      }
+    }
+
+    if (parseInt(domain[0]) >= parseInt(domain[1])) {
+      throw {
+        status: 400,
+        function: funcName,
+        error: "The min of a number question must be lower than the max.",
+      };
+    }
+
+    // If type is "select"...
+  } else if (type === "select") {
     // ...make sure that the options array has at least 2 elements.
     if (options.length < 2) {
       throw {
         status: 400,
         function: funcName,
-        error: "There must be at least 2 options for a select-type formField."
+        error: "There must be at least 2 options for a select-type formField.",
+      };
+    }
+
+    if (domain.length !== 0) {
+      throw {
+        status: 400,
+        function: funcName,
+        error: "Cannot have a text formField with a domain.",
       };
     }
 
@@ -547,19 +618,15 @@ const checkFormField = (formField, funcName) => {
     for (let i = 0; i < options.length; i++) {
       options[i] = checkString(options[i], `Options`, funcName);
     }
-
   } else {
-
     throw {
       status: 500,
       function: funcName,
-      error: "Type must be either 'text', 'number', or 'select'."
+      error: "Type must be either 'text', 'number', or 'select'.",
     };
-    
   }
 
-  return { field: field, type: type, options: options };
-
+  return { field: field, type: type, options: options, domain: domain };
 };
 
 /**
