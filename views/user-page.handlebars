@@ -7,17 +7,21 @@
 
     <!-- If this profile belongs to the user currently logged in, display elements to change account information. -->
     {{#if loggedInUser}}
+    <h3>Change account information:</h3>
     <div id="changeAccountInfo-div">
 
         <form {{!-- action="/" method="POST" --}}>
-            <label ></label>
+            <label for="username">Change Username:</label>
             <input type="text" id="username" name="username">
             <input type="submit" value="Change Username">
         </form>
 
         <form {{!-- action="/" method="POST" --}}>
-            <label></label>
+            <label for="password">Change password:</label>
             <input type="text" id="password" name="password">
+            <br>
+            <label for="confirmPassword">Confirm new password:</label>
+            <input type="text" id="confirmPassword" name="confirmPassword">
             <input type="submit" value="Change Password">
         </form>
 
