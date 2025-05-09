@@ -11,7 +11,7 @@
     <select name="gameSelect" id="gameSelect">
       <option label="none"></option>
       {{#each games}}
-        <option>{{this.name}}</option>
+        <option id={{this._id}}>{{this.name}}</option>
       {{/each}}
     </select>
     <div id="allFormsContainer">
@@ -19,9 +19,10 @@
         <div class="gameFormContainer" hidden>
           <h5 class="gameTitle">{{this.name}}</h5>
           {{#each this.form}}
-            <label>{{this.field}}
+            <label for="gameInput{{@../index}}-{{@index}}" class = "fieldLabel">{{this.field}}</label>
               {{#if this.options.length}}
-                <select name="gameInput{{@../index}}-{{@index}}" id="gameInput{{@../index}}-{{@index}}">
+                <select name="gameInput{{@../index}}-{{@index}}" id="gameInput{{@../index}}-{{@index}}" class = "select">
+                  <option id = "gameInput{{@../index}}-{{@index}}-empty"></option>
                   {{#each this.options}}
                     <option
                       id="gameInput{{@../../index}}-{{@../index}}-{{@index}}"
@@ -29,14 +30,34 @@
                     >{{this}}</option>
                   {{/each}}
                 </select>
+              {{else if this.domain.length}}
+                <br/>
+                <label class = "radioLabel">Less Than &rarr;
+                  <input type="radio" name="operator{{@../index}}-{{@index}}" value = "Less Than">
+                </label>
+                <br/>
+                <label class = "radioLabel">Equal To &rarr;
+                  <input type="radio" name="operator{{@../index}}-{{@index}}" value = "Equal To" checked>
+                </label>
+                <br/>
+                <label class = "radioLabel">Greater Than &rarr;
+                  <input type="radio" name="operator{{@../index}}-{{@index}}" value = "Greater Than">
+                </label>
+                <br/>
+                <input
+                  type="number"
+                  name="gameInput{{@../index}}-{{@index}}"
+                  id="gameInput{{@../index}}-{{@index}}"
+                  class = "number"
+                >
               {{else}}
                 <input
                   type="text"
                   name="gameInput{{@../index}}-{{@index}}"
                   id="gameInput{{@../index}}-{{@index}}"
+                  class = "text"
                 >
               {{/if}}
-            </label>
             <br>
           {{/each}}
         </div>
@@ -56,7 +77,9 @@
               <a href="/games/{{this.gameId}}">{{this.gameName}}</a>
               <ul>
                 {{#each this.userGameInfo}}
+                {{#if this.value}}
                   <li>{{this.field_name}}: {{this.value}}</li>
+                {{/if}}
                 {{/each}}
               </ul>
             </li>

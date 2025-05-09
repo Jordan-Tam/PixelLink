@@ -271,8 +271,13 @@ const checkUserGameInfo = (userGameInfo, game, funcName) => {
       };
     }
 
-    let value = response.value;
-    if (!value) {
+    let unanswered = false;
+    let value = response.value;   // Check to see if the question went unanswered
+    if(value === ""){
+      unanswered = true;
+    }
+
+    if (!value && !unanswered) {
       throw {
         status: 400,
         function: funcName,
@@ -281,13 +286,16 @@ const checkUserGameInfo = (userGameInfo, game, funcName) => {
     }
 
     field_name = checkString(field_name, "field_name", "checkUserGameInfo");
-    value = checkString(value, "value", "checkUserGameInfo");
+    if(!unanswered){
+      value = checkString(value, "value", "checkUserGameInfo");
+    }
+  
 
     let validQuestion = false;
     for (let question of gameForm) {
       if (question.field === field_name) {
         validQuestion = true;
-        if (question.type === "number" && Number.isNaN(parseInt(value))) {
+        if (!unanswered && question.type === "number" && Number.isNaN(parseInt(value))) {
           // Throw if a number is not given to a question with number type
           throw {
             status: 400,
@@ -297,7 +305,12 @@ const checkUserGameInfo = (userGameInfo, game, funcName) => {
           };
         }
     if (
-      question.type === "number" && !(parseInt(value) >= parseInt(question.domain[0]) && parseInt(value) <= parseInt(question.domain[1]))
+      !unanswered &&
+      question.type === "number" &&
+      !(
+        parseInt(value) >= parseInt(question.domain[0]) &&
+        parseInt(value) <= parseInt(question.domain[1])
+      )
     ) {
       // Throw if a number is not between the domain
       throw {
@@ -307,7 +320,11 @@ const checkUserGameInfo = (userGameInfo, game, funcName) => {
           "A question with a number type must receive a value that is within the domain.",
       };
     }
-        if (question.type === "select" && !question.options.includes(value)) {
+        if (
+          !unanswered &&
+          question.type === "select" &&
+          !question.options.includes(value)
+        ) {
           // Throw if the user gives an answer that is not one of the options in a question with options type
           throw {
             status: 400,

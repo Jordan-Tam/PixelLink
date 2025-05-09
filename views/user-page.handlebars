@@ -81,7 +81,9 @@
                 <a href="/game/{{this.gameId}}">{{this.gameName}}</a>
                 <ul>
                 {{#each this.userGameInfo}}
-                <li>{{this.field_name}}: {{this.value}}</li>
+                {{#if this.value.length}}
+                    <li>{{this.field_name}}: {{this.value}}</li>
+                {{/if}}
                 {{/each}}
                 </ul>
                 <form action="/users/game/{{this.gameId}}" method="POST">

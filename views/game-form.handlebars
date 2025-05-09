@@ -13,6 +13,7 @@
                     {{#if this.options.length}}
                         <!-- Drop down -->
                         <select name="form_input{{@index}}" id="form_input{{@index}}">
+                            <option value = "" id = "empty{{@index}}"></option>
                             {{#each this.options}}
                                 <option value="{{this}}" id = "value{{@index}}">{{this}}</option>
                             {{/each}}

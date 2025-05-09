@@ -24,7 +24,46 @@ router.route('/')
             res.status(500).json({error});
         }
     })
-    .post();
+    .post(async (req, res) => {
+        try{
+            let {field_name, value, type, gameId, operator} = req.body;
+            field_name = checkString(field_name, "User POST AJAX");
+            value = checkString(value, "User POST AJAX");
+            type = checkString(type, "User POST AJAX");
+            gameId = checkString(gameId, "User POST AJAX");
+            let userId = req.session.user._id;
+            let result = [];
+            if(type === "text"){
+                result = await users.filterUsersByText(
+                  userId,
+                  gameId,
+                  field_name,
+                  value
+                );
+            }
+            else if(type === "number"){
+                result = await users.filterUsersByNumber(
+                  userId,
+                  gameId,
+                  field_name,
+                  value,
+                  operator
+                );
+            }
+            else if(type === "select"){
+                result = await users.filterUsersBySelect(
+                  userId,
+                  gameId,
+                  field_name,
+                  value
+                );
+            }
+            return res.json(result);
+        }catch(e){
+            //log for now
+            console.log(e)
+        }
+    });
 
 router.route('/:id')
     .get(async (req, res) => {

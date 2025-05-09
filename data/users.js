@@ -675,7 +675,7 @@ const exportedMethods = {
                             if (value.toLowerCase() === field.value.toLowerCase()) {
 
                                 // ...if they match, add the user to the filtered list.
-                                filteredUsersList.push(user);
+                                filteredUsersList.push(user.username);
 
                             }
                         }
@@ -718,17 +718,17 @@ const exportedMethods = {
                             switch(operator) {
                                 case "Equal To":
                                     if (field.value === value) {
-                                        filteredUsersList.push(user);
+                                        filteredUsersList.push(user.username);
                                     }
                                     break;
                                 case "Greater Than":
                                     if (field.value > value) {
-                                        filteredUsersList.push(user);
+                                        filteredUsersList.push(user.username);
                                     }
                                     break;
                                 case "Less Than":
                                     if (field.value < value) {
-                                        filteredUsersList.push(user);
+                                        filteredUsersList.push(user.username);
                                     }
                                     break;
                                 default:
@@ -782,7 +782,7 @@ const exportedMethods = {
 
                             if (value === field.value) {
 
-                                filteredUsersList.push(user);
+                                filteredUsersList.push(user.username);
 
                             }
 
