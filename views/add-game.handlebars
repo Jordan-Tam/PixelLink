@@ -1,0 +1,23 @@
+<header>
+    <a href="/games/" id="goBack">⇦ Return to games list page</a>
+    <h1>Add a new Game to the Pixellink database!</h1>
+</header>
+<main>
+    <form action="/games/" method="POST" id="createGameForm">
+        <label for="gameTitle">Game Title:</label>
+        <input type="text" id="gameTitle" name="gameTitle">
+        <label for="dateReleased">Date Released:</label>
+        <input type="text" id="dateReleased" name="dateReleased" placeholder="mm/dd/yyyy">
+        <label for="gameForm">Form:</label>
+        <div>
+            <label for="field_name">Field Name:</label>
+            <input type="text" id="field_name" name="form[0][field_name]">
+            <label for="field_type">Field Type:</label>
+            <input type="text" id="field_type" name="form[0][type]">
+            <label for="field_options">Options:</label>
+            <input type="text" id="field_options" name="form[0][options]">
+        </div>
+        <input type="button" id="addField" name="addField" value="Add Field"> <!-- this button will create another filed object for the admin to fill out -->
+        <input type="submit" value="Create Game/Submit">
+    </form>
+</main>

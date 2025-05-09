@@ -4,6 +4,10 @@
     {{!-- <p>Click on a game to add it to your profile!</p> --}}
 </header>
 <main>
+    {{#if user.admin}}
+      <!-- links to add/delete for admin goes here -->
+      <a href="/games/new">Create a Game</a>
+    {{/if }}
     {{#each games}}
       <div class="game-div">
         <div class="game-title-div">
@@ -18,7 +22,6 @@
         </div>
         <div class="add-to-profile-div">
           <a href="/games/{{this._id}}/form">Add to Profile</a>
-          <!-- link to delete game for admin goes here? -->
         </div>
       </div>
     {{/each}}

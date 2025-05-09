@@ -6,17 +6,14 @@ import users from "../data/users.js";
 const router = Router();
 
 router.route('/')
-    .get()
-    .post()
-
-router.route('/')
     .get(async (req, res) => {
         try {
             const gamesList = await games.getAllGames(true);
             return res.render('game-list', {
                 games: gamesList,
                 title: "Games List",
-                stylesheet: "/public/css/game-list.css"
+                stylesheet: "/public/css/game-list.css",
+                user: req.session.user
             });
         } catch (error) {
             return res.status(error.status || 500).render("error", {
@@ -53,6 +50,36 @@ router.route('/')
             });
         }
     })
+    .delete()
+
+router.route('/new')
+    .get(async (req, res) => {
+        try {
+            if(!req.session.user || !req.session.user.admin){
+                //Not logged in users and non-admins cannot see the create game form
+                return res.status(403).render("error", {
+                    status: 403,
+                    error_message: "Permission Denied. Must be an admin.",
+                    title: "403 Error",
+                    stylesheet: "/public/css/error.css",
+                    link: "/games/"
+                  });
+            }
+            return res.render("add-game", {
+                title: "Create a Game",
+                stylesheet: "/public/css/add-game.css"
+                //can add script later
+            });
+        } catch (error) {
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`,
+                title: `${error.status} Error`,
+                stylesheet: "/public/css/error.css",
+                link: "/games/"
+            });
+        }
+    });
 
 router.route('/:id')
     .get(async (req, res) => {
@@ -130,7 +157,7 @@ router
         const gameId = checkString(
             req.params.id,
             "Game id",
-            "POST game/:id/form"
+            "POST games/:id/form"
         );
 
         // I don't think I can easily send arrays to the server using a form, so I 
