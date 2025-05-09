@@ -290,6 +290,109 @@ const exportedMethods = {
 
     },
 
+    async updateComment(id, type, content){
+
+
+        id = checkId(id, "updateComment", "Comment");
+        content = checkString(content, "content", "updateComment")
+
+        if (type === "user") {
+
+            // Get users collection.
+            const usersCollection = await users();
+
+            // Get the user associated with the comment.
+            const user = await usersCollection.findOne(
+                {"comments._id": new ObjectId(id)}
+            );
+
+            // Throw an error if the comment does not exist.
+            if (!user) {
+                throw {
+                    status: 404,
+                    function: "updateComment",
+                    error: "Comment not found."
+                };
+            }
+
+            const userComments = user.comments;
+            for (let i = 0; i < userComments.length; i++){
+                if (userComments[i]._id.toString() === id.toString()){
+                    userComments[i].content = content;
+                }
+            }
+
+            // Updates the comment from the user's comments.
+            const updateInfo = await usersCollection.findOneAndUpdate(
+                {_id: new ObjectId(user._id)},
+                {$set: {comments: userComments}},
+                {returnDocument: 'after'}
+            );
+
+            // Throw an error if the update failed.
+            if (!updateInfo) {
+                throw {
+                    status: 500,
+                    function: "updateComment",
+                    error: "Comment could not be deleted."
+                };
+            }
+
+        }
+        else if (type === "game"){
+            const gamesCollection = await games();
+
+            // Get the game associated with the comment.
+            const game = await gamesCollection.findOne(
+                {"comments._id": new ObjectId(id)}
+            );
+
+            // Throw an error if the comment does not exist.
+            if (!game) {
+                throw {
+                    status: 404,
+                    function: "updateComment",
+                    error: "Comment not found."
+                };
+            }
+
+            // Update the comment from the games's comments.
+            const gameComments = game.comments;
+            for (let i = 0; i < gameComments.length; i++){
+                if (gameComments[i]._id.toString() === id.toString()){
+                    gameComments[i].content = content;
+                }
+            }
+
+            // Updates the comment from the user's comments.
+            const updateInfo = await gamesCollection.findOneAndUpdate(
+                {_id: new ObjectId(user._id)},
+                {$set: {comments: gameComments}},
+                {returnDocument: 'after'}
+            );
+
+            // Throw an error if the update failed.
+            if (!updateInfo) {
+                throw {
+                    status: 500,
+                    function: "updateComment",
+                    error: "Comment could not be deleted."
+                };
+            }
+        } else {
+
+            throw {
+                status: 500,
+                function: "removeComment",
+                error: "The type parameter must be either 'user' or 'game'."
+            };
+            
+        }
+
+        return true;
+        
+    }
+
 };
 
 export default exportedMethods;

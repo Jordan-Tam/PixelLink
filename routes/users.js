@@ -98,7 +98,6 @@ router.route('/:id')
         if (req.session.user._id === req.params.id) {
             is_own_profile = true;
         }
-        router.route('/:id')
         // Check if the user is already following this profile.
         let notFriended = true;
         if (!is_own_profile) {
@@ -379,34 +378,105 @@ router.route('/:id/friends')
         }
     });
 
-router.route('/:id/comment')
-    .post(async (req, res) => {
-
-        //!!! I MOVED THIS CODE TO THE POST /:id/ ROUTE AND FORGOT TO DELETE THIS ONE.
-        //!!! THIS ROUTE ISN'T BEING CALLED ANYMORE.
+router.route('/:id/comment/:commentId')
+    .delete(async (req, res) => {
 
         try {
-            req.params.id = checkId(req.params.id, "POST /:id/comment", "User");
-        } catch (e) {
 
-            // How do we re-render the user page if the ID is bad?
-            // Theoretically, the ID should always be good if this comment was submitted from the website...?
-            // You can't, just make sure the code above never errors.
+            req.params.id = checkId(req.params.id, "DELETE /:id/comment/:commentId", "User");
+            req.params.commentId = checkId(req.params.commentId, "DELETE /:id/comment/:commentId", "Comment");
+
+        } catch (e) {
             return res.status(500).json({error: e.error});
         }
 
         try {
-            await comments.createComment("user", req.params.id, req.session.user._id, req.body.comment);
+            const result = await comments.removeComment(req.params.commentId, 'user')
+
+            if (result !== true) {
+                return res.status(500).render("error", {
+                    status: 500,
+                    error_message: "Internal Server Error",
+                    title: `500 Error`,
+                    stylesheet: "/public/css/error.css"
+                });
+            }
+
+            //dummy
+
+            const user = await users.getUserById(req.session.user._id)
+            return res.render('user-page', {
+                user,
+                title: `${user.username}'s Profile`,
+                stylesheet: "/public/css/user-page.css",
+                script: "/public/js/user-page.js",
+                changeUsernameError_hidden: "hidden",
+                changePasswordError_hidden: "hidden",
+                commentError_hidden: "hidden",
+                is_own_profile:true,
+                notFriended: true
+            });
+
+        } catch (error) {
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`,
+                title: `${error.status} Error`,
+                stylesheet: "/public/css/error.css"
+              });
+        }
+        
+    })
+
+    .patch(async (req, res) => {
+
+        try {
+
+            req.params.id = checkId(req.params.id, "PATCH /:id/comment/:commentId", "User");
+            req.params.commentId = checkId(req.params.commentId, "PATCH /:id/comment/:commentId", "Comment");
+            checkString(req.body.comment);
+
         } catch (e) {
-            return res.status(e.status).json({error: e.error});
+            return res.status(500).json({error: e.error});
         }
 
-        return res.redirect(`/users/${req.params.id}`);
-        
+        try {
+
+            const result = await comments.updateComment(req.params.commentId, "user", req.body.comment)
+
+            if (result !== true) {
+                return res.status(500).render("error", {
+                    status: 500,
+                    error_message: "Internal Server Error",
+                    title: `500 Error`,
+                    stylesheet: "/public/css/error.css"
+                });
+            }
+
+            const user = await users.getUserById(req.session.user._id)
+            return res.render('user-page', {
+                user,
+                title: `${user.username}'s Profile`,
+                stylesheet: "/public/css/user-page.css",
+                script: "/public/js/user-page.js",
+                changeUsernameError_hidden: "hidden",
+                changePasswordError_hidden: "hidden",
+                commentError_hidden: "hidden",
+                is_own_profile:true,
+                notFriended: true
+            });
+        } catch (error) {
+            return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`,
+                title: `${error.status} Error`,
+                stylesheet: "/public/css/error.css"
+              });
+        }
+
+
     });
-    // .delete()
-    // .patch()
-    // .delete();
+    
         
 
 export default router;

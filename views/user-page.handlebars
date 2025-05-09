@@ -31,21 +31,6 @@
             <input type="hidden" name='_method' value="PATCH" />
         </form>
 
-        {{!-- <form action="/{{user._id}}" method="POST">
-        <p id="error" {{hidden}}>{{error_message}}</p>
-        <ul>
-            <li> Username: {{user.username}}
-                <label for="change_uname">Change Username?</label>
-                <input type="text" id="change_uname" name="change_uname">
-            </li> 
-            <li> 
-                <label for="change_password">Change Password?</label>
-                <input type="text" id="change_password" name="change_password">
-            </li> 
-        </ul>
-        <input type="submit" value="Make changes">
-        </form> --}}
-
     </div>
 
     <!-- If this profile does NOT belong to the user currently logged in, display a button to follow/unfollow the user (depends on whether the user is already following this profile or not). -->
@@ -104,7 +89,6 @@
     </div>
 
     <br>
-
     <div>
         <h3> Comments: </h3>
         {{#if user.comments.length}}
@@ -114,10 +98,15 @@
                     <p class="dateTimeParagraph">{{this.date}} • {{this.time}}</p>
                     <p class="contentParagraph">{{this.content}}</p>
                 </div>
-                {{#if is_own_profile}}
-                <form action="{{user._id}}/comment/{{this._id}}" method="POST">
+                {{#if ../is_own_profile}}
+                <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="submit" value = "delete comment">
+                </form>
+                <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
+                    <input type="hidden" name="_method" value="PATCH">
+                    <input type="text" name="comment" value="edit comment">
+                    <input type="submit" value = "edit comment">
                 </form>
                 {{/if}}
             {{/each}}
@@ -125,7 +114,7 @@
             <p>No comments.</p>
         {{/if}}
         <p id="commentError" {{commentError_hidden}}>{{commentError_message}}</p>
-        <form id="commentForm" action="/users/{{user._id}}/comment" method="POST"> 
+        <form id="commentForm" action="/users/{{user._id}}" method="POST"> 
             <input type="text" id="comment" name="comment">
             <input type="submit" id="commentSubmit" name="commentSubmit" value="add comment!">
         </form> 
