@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {checkString, checkId} from '../helpers.js';
+import {checkString, checkId, checkUsername, checkPassword} from '../helpers.js';
 import users from '../data/users.js';
 import games from "../data/games.js";
 import comments from '../data/comments.js';
@@ -28,93 +28,223 @@ router.route('/')
 
 router.route('/:id')
     .get(async (req, res) => {
-        try {
-            const id = checkString(req.params.id, 'User id','GET user/:id');
-            const user = await users.getUserById(id);
-            let loggedInUser = false;
-            if(req.session.user && req.session.user._id == id){//checks if user is visiting their own profile page
-                loggedInUser = true;
-            }
 
-            //check to see if the user is friends with the profile they are checking
-            let notFriended = true;
-            if (!loggedInUser){
-                const sessionUser = await users.getUserById(req.session.user._id)
-                const friendsList = sessionUser.friends;
-                for (let i = 0; i < friendsList.length; i++){
-                    if (friendsList[i] === id){
-                        notFriended = false;
-                        break;
-                    }
+        // Validate the "id" path variable.
+        try {
+            req.params.id = checkId(req.params.id, "GET /users/:id", "User");
+        } catch (e) {
+
+        }
+
+        // Get the user associated with req.params.id.
+        let user = undefined;
+        try {
+            user = await users.getUserById(req.params.id);
+        } catch (e) {
+
+        }
+
+        // Check if this is the user's own profile.
+        let is_own_profile = false;
+        if (req.session.user._id === req.params.id) {
+            is_own_profile = true;
+        }
+
+        // Check if the user is already following this profile.
+        let notFriended = true;
+        if (!is_own_profile) {
+            const yourself = await users.getUserById(req.session.user._id);
+            for (let i = 0; i < yourself.friendsList.length; i++) { 
+                if (yourself.friendsList[i] === req.params.id){
+                    notFriended = false;
+                    break;
                 }
             }
-            return res.render('user-page', {
-                user, 
+        }
+
+        // Render the user profile.
+        return res.render('user-page', {
+            user,
+            title: `${user.username}'s Profile`,
+            stylesheet: "/public/css/user-page.css",
+            script: "/public/js/user-page.js",
+            changeUsernameError_hidden: "hidden",
+            changePasswordError_hidden: "hidden",
+            commentError_hidden: "hidden",
+            is_own_profile,
+            notFriended
+        });
+        
+    })
+
+    .post(async (req, res) => {
+
+        // Validate the "id" path variable.
+        try {
+
+            req.params.id = checkId(req.params.id, "POST /:id", "User");
+        
+        } catch (e) {
+
+            return res.status(e.status).render('error', {
+                status: e.status,
+                error_message: e.error
+            });
+        }
+
+        // Add the comment.
+        try {
+
+            await comments.createComment("user", req.params.id, req.session.user._id, req.body.comment);
+        
+        } catch (e) {
+            
+            return res.status(e.status).render('user-page', {
+                user: req.session.user, 
+                title: `${req.session.user.username}'s Profile`,
                 stylesheet: "/public/css/user-page.css",
                 script: "/public/js/user-page.js",
-                hidden: "hidden",
-                loggedInUser,
-                title: `${user.username}'s Profile`,
-                notFriended
+                changeUsernameError_hidden: "hidden",
+                changePasswordError_hidden: "hidden",
+                commentError_message: e.error,
+                is_own_profile: true,
+                notFriended: true,
             });
-        } catch (error) {
-            res.status(404).redirect("/error");
+        
         }
-    })
-    .patch(async (req, res) => {
-        try {
-            const id = checkString(req.params.id, 'User id','PATCH user/:id');
-            let {username, password} = req.body;
-            const nUsername = checkString(username, 'Username', 'PATCH user/:id');
-            const nPassword = checkString(password, 'Password', 'PATCH user/:id');
-            let loggedInUser = false;
-            //check if user is logged in
-            if(req.session.id){
-                loggedInUser = true;
-            }
-            //check if user is updating their own profile
-            if(req.session.user._id !== id){
-                return res.status(403).render('error', {
-                    status: 403,
-                    error_message: "Permission Denied"
-                });
-            }
-            
-            let notFriended = true; //user isn't friends with themself
-            const updatedUser = await users.updateUser(id, nUsername, nPassword);
-            req.session.user.username = updatedUser.username; //update the session username
 
-            return res.render('user-page', {
-                user: req.session.user, 
-                stylesheet: "/public/css/user-page.css",
-                hidden: "hidden",
-                loggedInUser,
-                title: `${req.session.user.username}'s Profile`,
-                notFriended
-            });
-        } catch (error) {
-            if(error.function === "updateUser"){
-                //const user = await users.getUserById(req.params.id);
-                return res.render('user-page', {
-                    user: req.session.user, 
-                    stylesheet: "/public/css/user-page.css",
-                    hidden: "hidden",
-                    loggedInUser,
-                    title: `${req.session.user.username}'s Profile`,
-                    notFriended,
-                    error_message: error.error
-                });
-            }
-            return res.status(500).render('error', {
-                status: 500,
-                error_message: "Unknown error in PATCH user/:id"
+        // Redirect to "GET /:id" to re-render the page.
+        return res.redirect(`/users/${req.params.id}`);
+        
+    })
+
+    .patch(async (req, res) => {
+
+        // Get User document for the signed-in user.
+        // This is necessary because req.session.user only stores the user's _id.
+        // In order to get everything else related to the user we need to retrieve it from the database first.
+        let user = await users.getUserById(req.session.user._id);
+
+        // Validate the "id" path variable.
+        try {
+            req.params.id = checkId(req.params.id, "PATCH /:id/username", "User");
+        } catch (e) {
+            return res.status(e.status).render('error', {
+                status: e.status,
+                error_message: e.error
             });
         }
+
+        // Make sure the user is updating their own account.
+        if (req.session.user._id !== req.params.id) {
+            return res.status(403).render('error', {
+                status: 403,
+                error_message: "Forbidden"
+            });
+        }
+
+        // If a username is in the req.body, this is the change username form.
+        if (req.body.username !== undefined) {
+
+            console.log("username");
+
+            // Input validation for username.
+            let username = req.body.username;
+            try {
+                username = checkUsername(username, "PATCH /:id/username");
+            } catch (e) {
+                console.log(req.session.user);
+                return res.status(e.status).render('user-page', {
+                    user, 
+                    title: `${req.session.user.username}'s Profile`,
+                    stylesheet: "/public/css/user-page.css",
+                    script: "/public/js/user-page.js",
+                    changeUsernameError_message: e.error,
+                    changePasswordError_hidden: "hidden",
+                    commentError_hidden: "hidden",
+                    is_own_profile: true,
+                    notFriended: true,
+                });
+            }
+
+            console.log("username2");
+
+            // Update username.
+            try {
+                await users.updateUsername(req.session.user._id, username);
+                console.log("username3");
+                req.session.user.username = username;
+                console.log("username4");
+            } catch (e) {
+                console.log(e);
+                return res.status(e.status ? e.status : 500).render('user-page', {
+                    user,
+                    title: `${req.session.user.username}'s Profile`,
+                    stylesheet: "/public/css/user-page.css",
+                    script: "/public/js/user-page.js",
+                    changeUsernameError_message: e.error,
+                    changePasswordError_hidden: "hidden",
+                    commentError_hidden: "hidden",
+                    is_own_profile: true,
+                    notFriended: true,
+                });
+            }
+
+            console.log("username5");
+        
+        }
+        
+        // If a password is in the req.body, this is the change password form.
+        else if (req.body.password !== undefined) {
+
+            console.log("password");
+
+            // Input validation for password.
+            // Ignore confirmPassword.
+            let password = req.body.password;
+            try {
+                password = checkPassword(password, "PATCH /:id/password");
+            } catch (e) {
+                return res.status(e.status).render('user-page', {
+                    user,
+                    title: `${req.session.user.username}'s Profile`,
+                    stylesheet: "/public/css/user-page.css",
+                    script: "/public/js/user-page.js",
+                    changeUsernameError_hidden: "hidden",
+                    changePasswordError_message: e.error,
+                    commentError_hidden: "hidden",
+                    is_own_profile: true,
+                    notFriended: true,
+                });
+            }
+
+            // Update password.
+            try {
+                await users.updatePassword(req.session.user._id, password);
+            } catch (e) {
+                return res.status(e.status).render('user-page', {
+                    user,
+                    title: `${req.session.user.username}'s Profile`,
+                    stylesheet: "/public/css/user-page.css",
+                    script: "/public/js/user-page.js",
+                    changeUsernameError_hidden: "hidden",
+                    changePasswordError_message: e.error,
+                    commentError_hidden: "hidden",
+                    is_own_profile: true,
+                    notFriended: true,
+                });
+            }
+
+        }
+
+        res.redirect(`/users/${req.session.user._id}`);        
+        
     })
+
 
 router.route('/:id/friends')
     .get(async (req, res) => {
-        try{
+        try {
             const id = checkString(req.params.id, 'User id','GET user/:id/friends');
             const user = await users.getUserById(id);
             let friends = user.friends; //list of user's friends' ids

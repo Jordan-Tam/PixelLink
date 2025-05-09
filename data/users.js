@@ -4,6 +4,9 @@ import bcrypt from 'bcryptjs';
 const saltRounds = 10;
 
 import {users, games} from '../config/mongoCollections.js'
+
+import gamesDataFunctions from './games.js';
+
 import {
     checkUsername,
     checkPassword,
@@ -130,38 +133,98 @@ const exportedMethods = {
 
     },
 
+
     /**
-     * Updates the username and password of the User document associated with the given ID.
-     * @param {string} id 
-     * @param {string} username
-     * @param {string} password 
-     * @returns {object} The updated User document (with the _id property converted to a string).
+     * 
+     * @param {*} id 
+     * @param {*} username 
+     * @returns 
      */
-    async updateUser (id, username, password) {
+    async updateUsername(id, username) {
 
         // Input validation.
-        id = checkId(id, "updateUser", "User");
-        username = checkUsername(username, "updateUser");
-        password = checkPassword(password, "updateUser");
-    
-        // Get the user associated with the given ID.
-        // This function will throw an error if no user is found.
-        let user = await this.getUserById(id);
+        id = checkId(id, "updateUsername", "User");
+        username = checkUsername(username, "updateUsername");
 
-        // If the username changed, make sure it is not taken.
-        if(username !== user.username) {
-            let takenUsernames = await this.getTakenUsernames();
-            if (takenUsernames.includes(username.toLowerCase())) {
+        // Check if the user ID exists.
+        // This function will throw an error if no user is found.
+        await this.getUserById(id);
+
+        // Make sure the new username is not taken.
+        let takenUsernames = await this.getTakenUsernames();
+        if (takenUsernames.includes(username.toLowerCase())) {
+            throw {
+                status: 400,
+                function: "updateUsername",
+                error: "Username already taken."
+            };
+        }
+
+        const updatedUser = {
+            username
+        };
+
+        const usersCollection = await users();
+        const updateInfo = await usersCollection.findOneAndUpdate(
+            {_id: new ObjectId(id)},
+            {$set: updatedUser},
+            {returnDocument: 'after'}
+        );
+
+        if (!updateInfo) {
+            throw {
+                status: 500,
+                function: "updateUsername",
+                error: `Could not update user with ID of ${id}.`
+            };
+        }
+
+        // Update all the comments.
+        let usersList = await this.getAllUsers();
+
+        for (let user of usersList) {
+            for (let i = 0; i < user.comments.length; i++) {
+                if (user.comments[i].userId === id) {
+                    user.comments[i].username = username;
+                }
+            }
+
+            const updateCommentsInfo = await usersCollection.findOneAndUpdate(
+                {_id: new ObjectId(user._id)},
+                {$set: {comments: user.comments}},
+                {returnDocument: 'after'}
+            )
+
+            if (!updateCommentsInfo) {
                 throw {
-                    status: 400,
-                    function: "updateUser",
-                    error: "Username already taken."
+                    status: 500,
+                    function: "updateUsername",
+                    error: "Could not update username of user's previous comments."
                 };
             }
         }
+
+        // TODO: let gamesList = await gamesDataFunctions.getAllGames();
+        // TODO: change reviews AND comments
+
+
+        updateInfo._id = updateInfo._id.toString();
         
+        return updateInfo;
+
+    },
+
+    async updatePassword(id, password) {
+
+        // Input validation.
+        id = checkId(id, "updatePassword", "User");
+        password = checkPassword(password, "updatePassword");
+
+        // Check if the user ID exists.
+        // This function will throw an error if no user is found.
+        await this.getUserById(id);
+
         const updatedUser = {
-            username,
             password
         };
 
@@ -175,15 +238,16 @@ const exportedMethods = {
         if (!updateInfo) {
             throw {
                 status: 500,
-                function: "updateUser",
+                function: "updatePassword",
                 error: `Could not update user with ID of ${id}.`
             };
         }
 
-        updatedUser._id = updatedUser._id.toString();
+        updateInfo._id = updateInfo._id.toString();
         
-        return updatedUser;
-    }, 
+        return updateInfo;
+
+    },
     
 
     /**

@@ -49,6 +49,6 @@ a:active {
     color: rgb(73, 73, 73);
 }
 
-#commentError {
+#changeUsernameError, #changePasswordError, #commentError {
     color: red;
 }

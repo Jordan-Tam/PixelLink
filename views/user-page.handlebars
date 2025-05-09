@@ -6,23 +6,29 @@
 <main>
 
     <!-- If this profile belongs to the user currently logged in, display elements to change account information. -->
-    {{#if loggedInUser}}
+    {{#if is_own_profile}}
     <h3>Change account information:</h3>
     <div id="changeAccountInfo-div">
 
-        <form {{!-- action="/" method="POST" --}}>
+        <p id="changeUsernameError" {{changeUsernameError_hidden}}>{{changeUsernameError_message}}</p>
+
+        <form action="/users/{{user._id}}" method="POST">
             <label for="username">Change Username:</label>
             <input type="text" id="username" name="username">
             <input type="submit" value="Change Username">
+            <input type="hidden" name='_method' value="PATCH" />
         </form>
 
-        <form {{!-- action="/" method="POST" --}}>
+        <p id="changePasswordError" {{changePasswordError_hidden}}>{{changePasswordError_message}}</p>
+
+        <form action="/users/{{user._id}}" method="POST">
             <label for="password">Change password:</label>
             <input type="text" id="password" name="password">
             <br>
             <label for="confirmPassword">Confirm new password:</label>
             <input type="text" id="confirmPassword" name="confirmPassword">
             <input type="submit" value="Change Password">
+            <input type="hidden" name='_method' value="PATCH" />
         </form>
 
         {{!-- <form action="/{{user._id}}" method="POST">
@@ -102,7 +108,7 @@
                     <p class="dateTimeParagraph">{{this.date}} • {{this.time}}</p>
                     <p class="contentParagraph">{{this.content}}</p>
                 </div>
-                {{#if loggedInUser}}
+                {{#if is_own_profile}}
                 <form action="{{user._id}}/comment/{{this._id}}" method="POST">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="submit" value = "delete comment">
@@ -112,7 +118,7 @@
         {{else}}
             <p>No comments.</p>
         {{/if}}
-        <p id="commentError" {{hidden}}>{{error_message}}</p>
+        <p id="commentError" {{commentError_hidden}}>{{commentError_message}}</p>
         <form id="commentForm" action="/users/{{user._id}}/comment" method="POST"> 
             <input type="text" id="comment" name="comment">
             <input type="submit" id="commentSubmit" name="commentSubmit" value="add comment!">

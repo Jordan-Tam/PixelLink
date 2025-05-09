@@ -1,3 +1,7 @@
+// Change Username Form
+
+// Change Password Form
+
 // Comment Form
 let commentForm = document.getElementById("commentForm");
 let comment = document.getElementById("comment");
