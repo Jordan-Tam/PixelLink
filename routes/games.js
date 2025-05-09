@@ -75,6 +75,11 @@ router.route('/:id')
     })
     .post() //addGame for the admin, renders add-gae view
 
+// router.route('/:id/comment/:commentId')
+//     .post()
+//     .patch()
+//     .delete()
+    
 router
   .route("/:id/form")
   .get(async (req, res) => {
