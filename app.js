@@ -114,7 +114,7 @@ app.use("/games", async (req, res, next) => {
 //* Middleware 7: If a non-admin tries to access post or delete "/games/", redirect them to 403 error(with link back to games list page)
 app.use("/games", async(req, res, next) => {
   if (req.method === "POST" || req.method === "DELETE"){
-    if(!req.session.user || !req.session.user.admin){
+    if((!req.path.includes("/form")) && (!req.session.user || !req.session.user.admin)){
       return res.status(403).render("error", {
         status: 403,
         title: "403 Error",
