@@ -73,10 +73,12 @@
                 </ul>
                 <a href="/games/{{this.gameId}}/form">Edit Game Information</a>
                 
+                {{#if is_own_profile}}
                 <form action="/games/{{this.gameId}}/form" method="POST">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="submit" value="Remove Game">
                 </form>
+                {{/if}}
 
             </li>
              {{/each}}

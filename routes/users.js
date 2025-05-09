@@ -362,12 +362,7 @@ router.route('/:id/friends')
 
             //Render the users friends list after removing the friend
             //Wanted to render the removed friends page with the button changed but its causing errors...
-            return res.render('friends-list', {
-                id: user._id, 
-                friends: user.friends,
-                username: user.username,
-                title: `${user.username}'s Friends List`
-            });
+            return res.redirect("/users/" + id);
 
 
         } catch (error) {
@@ -405,17 +400,7 @@ router.route('/:id/comment/:commentId')
             //dummy
 
             const user = await users.getUserById(req.session.user._id)
-            return res.render('user-page', {
-                user,
-                title: `${user.username}'s Profile`,
-                stylesheet: "/public/css/user-page.css",
-                script: "/public/js/user-page.js",
-                changeUsernameError_hidden: "hidden",
-                changePasswordError_hidden: "hidden",
-                commentError_hidden: "hidden",
-                is_own_profile:true,
-                notFriended: true
-            });
+            return res.redirect(`/users/${req.params.id}`);
 
         } catch (error) {
             return res.status(error.status).render("error", {
@@ -428,54 +413,54 @@ router.route('/:id/comment/:commentId')
         
     })
 
-    .patch(async (req, res) => {
+    // .patch(async (req, res) => {
 
-        try {
+    //     try {
 
-            req.params.id = checkId(req.params.id, "PATCH /:id/comment/:commentId", "User");
-            req.params.commentId = checkId(req.params.commentId, "PATCH /:id/comment/:commentId", "Comment");
-            checkString(req.body.comment);
+    //         req.params.id = checkId(req.params.id, "PATCH /:id/comment/:commentId", "User");
+    //         req.params.commentId = checkId(req.params.commentId, "PATCH /:id/comment/:commentId", "Comment");
+    //         checkString(req.body.comment);
 
-        } catch (e) {
-            return res.status(500).json({error: e.error});
-        }
+    //     } catch (e) {
+    //         return res.status(500).json({error: e.error});
+    //     }
 
-        try {
+    //     try {
 
-            const result = await comments.updateComment(req.params.commentId, "user", req.body.comment)
+    //         const result = await comments.updateComment(req.params.commentId, "user", req.body.comment)
 
-            if (result !== true) {
-                return res.status(500).render("error", {
-                    status: 500,
-                    error_message: "Internal Server Error",
-                    title: `500 Error`,
-                    stylesheet: "/public/css/error.css"
-                });
-            }
+    //         if (result !== true) {
+    //             return res.status(500).render("error", {
+    //                 status: 500,
+    //                 error_message: "Internal Server Error",
+    //                 title: `500 Error`,
+    //                 stylesheet: "/public/css/error.css"
+    //             });
+    //         }
 
-            const user = await users.getUserById(req.session.user._id)
-            return res.render('user-page', {
-                user,
-                title: `${user.username}'s Profile`,
-                stylesheet: "/public/css/user-page.css",
-                script: "/public/js/user-page.js",
-                changeUsernameError_hidden: "hidden",
-                changePasswordError_hidden: "hidden",
-                commentError_hidden: "hidden",
-                is_own_profile:true,
-                notFriended: true
-            });
-        } catch (error) {
-            return res.status(error.status).render("error", {
-                status: error.status,
-                error_message: `${error.function}: ${error.error}`,
-                title: `${error.status} Error`,
-                stylesheet: "/public/css/error.css"
-              });
-        }
+    //         const user = await users.getUserById(req.session.user._id)
+    //         return res.render('user-page', {
+    //             user,
+    //             title: `${user.username}'s Profile`,
+    //             stylesheet: "/public/css/user-page.css",
+    //             script: "/public/js/user-page.js",
+    //             changeUsernameError_hidden: "hidden",
+    //             changePasswordError_hidden: "hidden",
+    //             commentError_hidden: "hidden",
+    //             is_own_profile:true,
+    //             notFriended: true
+    //         });
+    //     } catch (error) {
+    //         return res.status(error.status).render("error", {
+    //             status: error.status,
+    //             error_message: `${error.function}: ${error.error}`,
+    //             title: `${error.status} Error`,
+    //             stylesheet: "/public/css/error.css"
+    //           });
+    //     }
 
 
-    });
+    // });
     
         
 

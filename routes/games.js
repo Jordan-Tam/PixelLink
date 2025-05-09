@@ -241,17 +241,7 @@ router
         }
 
         const updatedUser = await users.getUserById(req.session.user._id)
-            return res.render('user-page', {
-                user: updatedUser,
-                title: `${user.username}'s Profile`,
-                stylesheet: "/public/css/user-page.css",
-                script: "/public/js/user-page.js",
-                changeUsernameError_hidden: "hidden",
-                changePasswordError_hidden: "hidden",
-                commentError_hidden: "hidden",
-                is_own_profile: true,
-                notFriended: true
-            });
+        return res.redirect(`/users/${req.session.user._id}`);
     } catch (error) {
 
         return res.status(error.status).render("error", {
@@ -298,17 +288,7 @@ router
         }
 
         const updatedUser = await users.getUserById(uid);
-        return res.render('user-page', {
-            user: updatedUser,
-            title: `${user.username}'s Profile`,
-            stylesheet: "/public/css/user-page.css",
-            script: "/public/js/user-page.js",
-            changeUsernameError_hidden: "hidden",
-            changePasswordError_hidden: "hidden",
-            commentError_hidden: "hidden",
-            is_own_profile: true,
-            notFriended: true
-        });
+        return res.redirect("/users/" + req.session.user._id);
 
     } catch (error){
 
