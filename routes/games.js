@@ -213,11 +213,18 @@ router
             });
         }
 
-        return res.render('game-page', {
-            title: game.name,
-            stylesheet: "/public/css/game-page.css",
-            game: game
-        });
+        const updatedUser = await users.getUserById(req.session.user._id)
+            return res.render('user-page', {
+                user: updatedUser,
+                title: `${user.username}'s Profile`,
+                stylesheet: "/public/css/user-page.css",
+                script: "/public/js/user-page.js",
+                changeUsernameError_hidden: "hidden",
+                changePasswordError_hidden: "hidden",
+                commentError_hidden: "hidden",
+                is_own_profile: true,
+                notFriended: true
+            });
     } catch (error) {
 
         return res.status(error.status).render("error", {
