@@ -333,6 +333,9 @@ router.route('/:id/friends')
 router.route('/:id/comment')
     .post(async (req, res) => {
 
+        //!!! I MOVED THIS CODE TO THE POST /:id/ ROUTE AND FORGOT TO DELETE THIS ONE.
+        //!!! THIS ROUTE ISN'T BEING CALLED ANYMORE.
+
         try {
             req.params.id = checkId(req.params.id, "POST /:id/comment", "User");
         } catch (e) {
@@ -355,28 +358,6 @@ router.route('/:id/comment')
     // .delete()
     // .patch()
     // .delete();
-    //Duplicate?
-    // .post(async (req, res) => {
-
-    //     try {
-    //         req.params.id = checkId(req.params.id, "POST /:id/comment", "User");
-    //     } catch (e) {
-
-    //         // How do we re-render the user page if the ID is bad?
-    //         // Theoretically, the ID should always be good if this comment was submitted from the website...?
-    //         // You can't, just make sure the code above never errors.
-    //         return res.status(500).json({error: e.error});
-    //     }
-
-    //     try {
-    //         await comments.createComment("user", req.params.id, req.session.user._id, req.body.comment);
-    //     } catch (e) {
-    //         return res.status(e.status).json({error: e.error});
-    //     }
-
-    //     return res.redirect(`/users/${req.params.id}`);
-        
-    // });
         
 
 export default router;
