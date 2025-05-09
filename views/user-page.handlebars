@@ -12,22 +12,22 @@
 
         <p id="changeUsernameError" {{changeUsernameError_hidden}}>{{changeUsernameError_message}}</p>
 
-        <form action="/users/{{user._id}}" method="POST">
+        <form id="changeUsernameForm" action="/users/{{user._id}}" method="POST">
             <label for="username">Change Username:</label>
             <input type="text" id="username" name="username">
-            <input type="submit" value="Change Username">
+            <input type="submit" id="changeUsernameSubmit" name="changeUsernameSubmit" value="Change Username">
             <input type="hidden" name='_method' value="PATCH" />
         </form>
 
         <p id="changePasswordError" {{changePasswordError_hidden}}>{{changePasswordError_message}}</p>
 
-        <form action="/users/{{user._id}}" method="POST">
+        <form id="changePasswordForm" action="/users/{{user._id}}" method="POST">
             <label for="password">Change password:</label>
             <input type="text" id="password" name="password">
             <br>
             <label for="confirmPassword">Confirm new password:</label>
             <input type="text" id="confirmPassword" name="confirmPassword">
-            <input type="submit" value="Change Password">
+            <input type="submit" id="changePasswordSubmit" name="changePasswordSubmit" value="Change Password">
             <input type="hidden" name='_method' value="PATCH" />
         </form>
 
