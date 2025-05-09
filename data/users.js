@@ -681,6 +681,41 @@ const exportedMethods = {
 
     },
 
+
+    /**
+     * 
+     * @param {*} userId The ID of the user making the query; used to prevent the user's own profile from showing up in the filtered results.
+     * @param {*} gameId The ID of the game the user wants to search.
+     */
+    async filterUsersByGame(userId, gameId){
+        // Get list of all user objects.
+        const usersList = await this.getAllUsers();
+
+        // Initialize a list to store all users that fit the filter requirements.
+        let filteredUsersList = [];
+
+        // For each user...
+        for (let user of usersList) {
+
+            if (user._id === userId) continue;
+
+            // ..go through their list of games..
+            for (let game of user.games) {
+
+                // ...to see if they play the game associated with "gameId"...
+                if (game.gameId.toString() === gameId) {
+                    // ...if so, add the user to the filtered list.
+                    filteredUsersList.push(user.username);
+                }
+            }
+        }
+
+        return filteredUsersList;
+
+    },
+
+
+
     /**
      * 
      * @param {*} userId The ID of the user making the query; used to prevent the user's own profile from showing up in the filtered results.
@@ -729,6 +764,8 @@ const exportedMethods = {
         return filteredUsersList;
 
     },
+
+    
 
     /**
      * 

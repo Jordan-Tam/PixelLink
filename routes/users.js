@@ -11,8 +11,9 @@ const router = Router();
 router.route('/')
     .get(async (req, res) => {
         try {
-            const allUsers = await users.getAllUsers(true);
+            let allUsers = await users.getAllUsers(true);
             const allGames = await games.getAllGames(true);
+            allUsers = allUsers.filter((elem) => elem.username !== req.session.user.username);    // Remove yourself
             return res.render("user-list", {
                 title: "User Browser",
                 stylesheet: "/public/css/user-list.css",
@@ -26,12 +27,22 @@ router.route('/')
     })
     .post(async (req, res) => {
         try{
-            let {field_name, value, type, gameId, operator} = req.body;
+            let body = req.body;
+            let userId = req.session.user._id;
+            if(Object.keys(body).length === 1){   // This means we only have gameId and are searching just for the game
+                let id = body.gameId
+                id = checkString(id, "User POST AJAX");
+                let r = await users.filterUsersByGame(userId, id)
+                return res.json(r);
+            }
+            let {field_name, value, type, gameId, operator} = body;
             field_name = checkString(field_name, "User POST AJAX");
             value = checkString(value, "User POST AJAX");
             type = checkString(type, "User POST AJAX");
             gameId = checkString(gameId, "User POST AJAX");
-            let userId = req.session.user._id;
+            if(operator !== "Greater Than"  && operator !== "Less Than" && operator !== "Equal To" && operator !== ""){
+                return res.json("Invalid operator value");
+            }
             let result = [];
             if(type === "text"){
                 result = await users.filterUsersByText(
@@ -46,7 +57,7 @@ router.route('/')
                   userId,
                   gameId,
                   field_name,
-                  value,
+                  parseInt(value),
                   operator
                 );
             }
@@ -60,8 +71,7 @@ router.route('/')
             }
             return res.json(result);
         }catch(e){
-            //log for now
-            console.log(e)
+            return res.json(e.error);
         }
     });
 
