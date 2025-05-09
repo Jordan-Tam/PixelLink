@@ -667,7 +667,6 @@ const exportedMethods = {
             {returnDocument: 'after'}
         );
 
-
         //Error
         if (!updateInfo) {
             throw {
@@ -676,7 +675,22 @@ const exportedMethods = {
                 error: `Could not update user's game list`
             };
         }
+
+        const gamesCollection = await games();
         
+        let updatedGame = await gamesCollection.findOneAndUpdate(
+            {_id: new ObjectId(gameId)},
+            {$set: {numPlayers: game.numPlayers - 1}},
+            {returnDocument:'after'}
+        );
+        if (!updatedGame) {
+            throw {
+                status: 500,
+                function: "removeGame",
+                error: `Could not update games player count`
+            };
+        }
+
         return {gameRemoved: true};
 
     },
