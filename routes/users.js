@@ -54,8 +54,8 @@ router.route('/:id')
         let notFriended = true;
         if (!is_own_profile) {
             const yourself = await users.getUserById(req.session.user._id);
-            for (let i = 0; i < yourself.friendsList.length; i++) { 
-                if (yourself.friendsList[i] === req.params.id){
+            for (let i = 0; i < yourself.friends.length; i++) { 
+                if (yourself.friends[i] === req.params.id){
                     notFriended = false;
                     break;
                 }
@@ -354,12 +354,66 @@ router.route('/:id/comment')
     })
 
     //Commented this out to run the app
-    // router.route('/:userId/game/:gameId')
-    //     .update(async (req, res) => {
+    router.route('/game/:gameId')
+        // .update(async (req, res) => {
             
-    //     })
-    //     .delete(async (req, res) => {
-            
-    // });
+        // })
+        .delete(async (req, res) => {
+
+            try {
+
+                req.params.gameId = checkId(req.params.gameId, "DELETE /:userId/game/:gameId", "game");
+
+                //Should never happen?
+                if(!req.session.user){ 
+                    return res.status(403).json({error: "Permission Denied"});
+                }
+
+
+            } catch (error) {
+                return res.status(500).json({error: e.error});
+            }
+
+            try {
+
+                const uid = req.session.user._id;
+
+                const user = await users.getUserById(uid);
+                const game = await games.getGameById(req.params.gameId);
+
+                const userGames = user.games;
+
+                //If a user tries to remove a game thats not in their game list
+                //Should never happen?
+
+                //Looks for the game in the users lists of games 
+                let gameSearch = false;
+                for(let i in userGames){
+                    if (userGames[i].gameId.toString() === req.params.gameId.toString()){
+                        gameSearch = true; 
+                        break;
+                    } else{
+                        console.log(userGames[i].gameId +  "!= " + req.params.gameId);
+                    }
+                }
+
+                if (!gameSearch){
+                    return res.status(404).json({error: "Game Not Found"});
+                }
+
+                //Will throw error if something goes wrong
+                await users.removeGame(uid, req.params.gameId);
+
+                return res.render('game-page', {
+                    title: game.name,
+                    stylesheet: "/public/css/game-page.css",
+                    game: game
+                });
+            } catch (error) {
+
+                return res.status(error.status).json({error: error.error});
+
+            }
+    });
 
 export default router;

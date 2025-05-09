@@ -609,16 +609,20 @@ const exportedMethods = {
         userId = checkId(userId, 'removeGame', 'user');
         gameId = checkId(gameId, 'removeGame', 'game');
 
+
+        const userCollection = await users();
+
         //throws error if user/game does not exist
         const user = await this.getUserById(userId);
-        const game = await gameData.getGameById(gameId);
+        const game = await gamesDataFunctions.getGameById(gameId);
 
         //Delete game from user
         const updateInfo = await userCollection.findOneAndUpdate(
             {_id: new ObjectId(userId)},
-            {$pull: {games: gameId}},
+            {$pull: {games: {gameId: new ObjectId(gameId) }}},
             {returnDocument: 'after'}
         );
+
 
         //Error
         if (!updateInfo) {
