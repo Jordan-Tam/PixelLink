@@ -78,15 +78,19 @@
         <ul>
             {{#each user.games}}
             <li> 
-                <a href="/game/{{this.gameId}}">{{this.gameName}}</a>
+                <a href="/games/{{this.gameId}}">{{this.gameName}}</a>
                 <ul>
                 {{#each this.userGameInfo}}
                 <li>{{this.field_name}}: {{this.value}}</li>
                 {{/each}}
                 </ul>
-                <form action="/users/{{user.id}}/game/{{this.gameId}}" method="POST">
-                    <input type="submit" value="Delete Game">
+                <a href="/games/{{this.gameId}}/form">Edit Game Information</a>
+                
+                <form action="/games/{{this.gameId}}/form" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="submit" value="Remove Game">
                 </form>
+
             </li>
              {{/each}}
         </ul>

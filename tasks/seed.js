@@ -483,6 +483,10 @@ let user1BalatroForm = [
 
 let userGame2 = await users.addGame(user1._id, balatro._id, user1BalatroForm);
 
+let removeUserGame = await users.removeGame(user1._id, balatro._id);
+
+//console.log(await users.getUserById(user1._id));
+
 
 console.log("Done seeding database.");
 

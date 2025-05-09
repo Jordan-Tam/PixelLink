@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {checkString, checkId, checkUsername, checkPassword} from '../helpers.js';
+import {checkString, checkId, checkUsername, checkPassword, checkUserGameInfo} from '../helpers.js';
 import users from '../data/users.js';
 import games from "../data/games.js";
 import comments from '../data/comments.js';
@@ -49,13 +49,13 @@ router.route('/:id')
         if (req.session.user._id === req.params.id) {
             is_own_profile = true;
         }
-
+        router.route('/:id')
         // Check if the user is already following this profile.
         let notFriended = true;
         if (!is_own_profile) {
             const yourself = await users.getUserById(req.session.user._id);
-            for (let i = 0; i < yourself.friendsList.length; i++) { 
-                if (yourself.friendsList[i] === req.params.id){
+            for (let i = 0; i < yourself.friends.length; i++) { 
+                if (yourself.friends[i] === req.params.id){
                     notFriended = false;
                     break;
                 }
@@ -351,15 +351,32 @@ router.route('/:id/comment')
 
         return res.redirect(`/users/${req.params.id}`);
         
-    })
+    });
+    // .delete()
+    // .patch()
+    // .delete();
+    //Duplicate?
+    // .post(async (req, res) => {
 
-    //Commented this out to run the app
-    // router.route('/:userId/game/:gameId')
-    //     .update(async (req, res) => {
-            
-    //     })
-    //     .delete(async (req, res) => {
-            
+    //     try {
+    //         req.params.id = checkId(req.params.id, "POST /:id/comment", "User");
+    //     } catch (e) {
+
+    //         // How do we re-render the user page if the ID is bad?
+    //         // Theoretically, the ID should always be good if this comment was submitted from the website...?
+    //         // You can't, just make sure the code above never errors.
+    //         return res.status(500).json({error: e.error});
+    //     }
+
+    //     try {
+    //         await comments.createComment("user", req.params.id, req.session.user._id, req.body.comment);
+    //     } catch (e) {
+    //         return res.status(e.status).json({error: e.error});
+    //     }
+
+    //     return res.redirect(`/users/${req.params.id}`);
+        
     // });
+        
 
 export default router;

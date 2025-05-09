@@ -1,7 +1,7 @@
 <header>
     <!-- logo img -->
     <h1>Game Form</h1><br>
-    <p>Fill out the form below to add {{game.name}} to your profile.</p>
+    <p>Fill out the form below to display {{game.name}} on your profile.</p>
 </header>
 <main>
     <!-- for each field object in form array, display with form tag -->
@@ -25,6 +25,10 @@
                 </label><br>
             {{/each}}
             <input type="submit" value="Submit Form"/>
+             <!-- PATCH is NOT working, with or without the if statement -->
+             {{#if update}}
+                <input type="hidden" name='_method' value="PATCH" />
+            {{/if}}
         </form>
     {{else}}
         <p>No fields to fill out in {{game.name}}'s Add to Profile form!</p>

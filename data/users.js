@@ -599,7 +599,35 @@ const exportedMethods = {
 
     },
 
-    async updateGame(id, gameId, userGameInfo) {
+    async updateGame(userId, gameId, userGameInfo) {
+
+        userId = checkId(userId, 'updateGame', 'user');
+        gameId = checkId(gameId, 'updateGame', 'game');
+
+        const userCollection = await users();
+
+        //throws error if user/game does not exist
+        const user = await this.getUserById(userId);
+        const game = await gamesDataFunctions.getGameById(gameId);
+
+        userGameInfo = checkUserGameInfo(userGameInfo, game.name, 'updateGame');
+
+        const updateInfo = await userCollection.findOneAndUpdate(
+            {_id: new ObjectId(userId)},
+            {$set: {games: {userGameInfo: userGameInfo }}},
+            {returnDocument: 'after'}
+        );
+
+        //Error
+        if (!updateInfo) {
+            throw {
+                status: 500,
+                function: "updateGame",
+                error: `Could not update user's game form`
+            };
+        }
+        
+        return {gameUpdated: true};
 
     },
 
@@ -609,16 +637,20 @@ const exportedMethods = {
         userId = checkId(userId, 'removeGame', 'user');
         gameId = checkId(gameId, 'removeGame', 'game');
 
+
+        const userCollection = await users();
+
         //throws error if user/game does not exist
         const user = await this.getUserById(userId);
-        const game = await gameData.getGameById(gameId);
+        const game = await gamesDataFunctions.getGameById(gameId);
 
         //Delete game from user
         const updateInfo = await userCollection.findOneAndUpdate(
             {_id: new ObjectId(userId)},
-            {$pull: {games: gameId}},
+            {$pull: {games: {gameId: new ObjectId(gameId) }}},
             {returnDocument: 'after'}
         );
+
 
         //Error
         if (!updateInfo) {
@@ -628,10 +660,8 @@ const exportedMethods = {
                 error: `Could not update user's game list`
             };
         }
-
-        updateInfo._id = updateInfo._id.toString();
         
-        return updateInfo;
+        return {gameRemoved: true};
 
     },
 
