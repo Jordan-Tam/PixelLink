@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {checkString, checkId, checkUsername, checkPassword} from '../helpers.js';
+import {checkString, checkId, checkUsername, checkPassword, checkUserGameInfo} from '../helpers.js';
 import users from '../data/users.js';
 import games from "../data/games.js";
 import comments from '../data/comments.js';
@@ -88,7 +88,7 @@ router.route('/:id')
         if (req.session.user._id === req.params.id) {
             is_own_profile = true;
         }
-
+        router.route('/:id')
         // Check if the user is already following this profile.
         let notFriended = true;
         if (!is_own_profile) {
@@ -372,6 +372,9 @@ router.route('/:id/friends')
 router.route('/:id/comment')
     .post(async (req, res) => {
 
+        //!!! I MOVED THIS CODE TO THE POST /:id/ ROUTE AND FORGOT TO DELETE THIS ONE.
+        //!!! THIS ROUTE ISN'T BEING CALLED ANYMORE.
+
         try {
             req.params.id = checkId(req.params.id, "POST /:id/comment", "User");
         } catch (e) {
@@ -390,69 +393,10 @@ router.route('/:id/comment')
 
         return res.redirect(`/users/${req.params.id}`);
         
-    })
-
-    //Commented this out to run the app
-    router.route('/game/:gameId')
-        // .update(async (req, res) => {
-            
-        // })
-        .delete(async (req, res) => {
-
-            try {
-
-                req.params.gameId = checkId(req.params.gameId, "DELETE /:userId/game/:gameId", "game");
-
-                //Should never happen?
-                if(!req.session.user){ 
-                    return res.status(403).json({error: "Permission Denied"});
-                }
-
-
-            } catch (error) {
-                return res.status(500).json({error: e.error});
-            }
-
-            try {
-
-                const uid = req.session.user._id;
-
-                const user = await users.getUserById(uid);
-                const game = await games.getGameById(req.params.gameId);
-
-                const userGames = user.games;
-
-                //If a user tries to remove a game thats not in their game list
-                //Should never happen?
-
-                //Looks for the game in the users lists of games 
-                let gameSearch = false;
-                for(let i in userGames){
-                    if (userGames[i].gameId.toString() === req.params.gameId.toString()){
-                        gameSearch = true; 
-                        break;
-                    } else{
-                        console.log(userGames[i].gameId +  "!= " + req.params.gameId);
-                    }
-                }
-
-                if (!gameSearch){
-                    return res.status(404).json({error: "Game Not Found"});
-                }
-
-                //Will throw error if something goes wrong
-                await users.removeGame(uid, req.params.gameId);
-
-                return res.render('game-page', {
-                    title: game.name,
-                    stylesheet: "/public/css/game-page.css",
-                    game: game
-                });
-            } catch (error) {
-
-                return res.status(error.status).json({error: error.error});
-
-            }
     });
+    // .delete()
+    // .patch()
+    // .delete();
+        
 
 export default router;

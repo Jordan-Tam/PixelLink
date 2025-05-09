@@ -12,22 +12,22 @@
 
         <p id="changeUsernameError" {{changeUsernameError_hidden}}>{{changeUsernameError_message}}</p>
 
-        <form action="/users/{{user._id}}" method="POST">
+        <form id="changeUsernameForm" action="/users/{{user._id}}" method="POST">
             <label for="username">Change Username:</label>
             <input type="text" id="username" name="username">
-            <input type="submit" value="Change Username">
+            <input type="submit" id="changeUsernameSubmit" name="changeUsernameSubmit" value="Change Username">
             <input type="hidden" name='_method' value="PATCH" />
         </form>
 
         <p id="changePasswordError" {{changePasswordError_hidden}}>{{changePasswordError_message}}</p>
 
-        <form action="/users/{{user._id}}" method="POST">
+        <form id="changePasswordForm" action="/users/{{user._id}}" method="POST">
             <label for="password">Change password:</label>
             <input type="text" id="password" name="password">
             <br>
             <label for="confirmPassword">Confirm new password:</label>
             <input type="text" id="confirmPassword" name="confirmPassword">
-            <input type="submit" value="Change Password">
+            <input type="submit" id="changePasswordSubmit" name="changePasswordSubmit" value="Change Password">
             <input type="hidden" name='_method' value="PATCH" />
         </form>
 
@@ -78,7 +78,7 @@
         <ul>
             {{#each user.games}}
             <li> 
-                <a href="/game/{{this.gameId}}">{{this.gameName}}</a>
+                <a href="/games/{{this.gameId}}">{{this.gameName}}</a>
                 <ul>
                 {{#each this.userGameInfo}}
                 {{#if this.value.length}}
@@ -86,10 +86,13 @@
                 {{/if}}
                 {{/each}}
                 </ul>
-                <form action="/users/game/{{this.gameId}}" method="POST">
+                <a href="/games/{{this.gameId}}/form">Edit Game Information</a>
+                
+                <form action="/games/{{this.gameId}}/form" method="POST">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="submit" value="Remove Game">
                 </form>
+
             </li>
              {{/each}}
         </ul>

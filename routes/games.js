@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {checkString, checkDateReleased, checkForm, checkUserGameInfo} from '../helpers.js';
+import {checkString, checkDateReleased, checkForm, checkUserGameInfo, checkId} from '../helpers.js';
 import games from '../data/games.js';
 import users from "../data/users.js";
 
@@ -75,17 +75,47 @@ router.route('/:id')
     })
     .post() //addGame for the admin, renders add-gae view
 
+// router.route('/:id/comment/:commentId')
+//     .post()
+//     .patch()
+//     .delete()
+    
 router
   .route("/:id/form")
   .get(async (req, res) => {
     try {
       const id = checkString(req.params.id, "Game id", "GET game/:id/form");
+
+      const user = await users.getUserById(req.session.user._id); 
       const game = await games.getGameById(id);
-      return res.render("game-form", {
-        game: game,
-        title: `Add ${game.name} to profile`,
-        script: "/public/js/gameForm.js"
-      });
+      const userGames = user.games;
+      const gameNames = [];
+
+      for(let i = 0; i < userGames.length; i++){
+        gameNames.push(userGames[i].gameName);
+      } 
+      //If the game is in the users data already then it will load the form with PATCH method
+      //Todo: get the users answers on the screen
+      if (!gameNames.includes(game.name)){
+
+        return res.render("game-form", {
+            update: false,
+            game: game,
+            title: `Add ${game.name} to profile`,
+            script: "/public/js/gameForm.js"
+        });
+
+      } else {
+
+        return res.render("game-form", {
+            update: true,
+            game: game,
+            title: `Edit ${game.name}`,
+            script: "/public/js/gameForm.js",
+
+        });
+
+      }
     } catch (error) {
       return res.status(error.status).render("error", {
         status: error.status,
@@ -133,7 +163,117 @@ router
         stylesheet: "/public/css/error.css"
       });
     }
-  });
+  })
+
+
+//DELETE AND PATCH BELOW
+  
+.delete(async (req, res) => {
+
+    try {
+        
+        req.params.id = checkId(req.params.id, "DELETE /game/:gameId/form", "game");
+
+        if(!req.session.user){ 
+            return res.status(403).json({error: "Permission Denied"});
+        }
+
+
+    } catch (e) {
+        return res.status(500).json({error: e.error});
+    }
+
+    try {
+
+        const uid = req.session.user._id;
+
+        const user = await users.getUserById(uid);
+        const game = await games.getGameById(req.params.id);
+
+        const userGames = user.games;
+
+        //Looks for the game in the users lists of games 
+        let gameSearch = false;
+        for(let i in userGames){
+            if (userGames[i].gameId.toString() === req.params.id.toString()){
+                gameSearch = true; 
+                break;
+            } 
+        }
+
+        if (!gameSearch){
+            return res.status(404).json({error: "Game Not Found"});
+        }
+
+        //Will throw error if something goes wrong
+        const result = await users.removeGame(uid, req.params.id);
+        if (!result || !result.gameRemoved) {
+            return res.status(500).render("error", {
+                status: 500,
+                error_message: "Internal Server Error",
+                title: `500 Error`,
+                stylesheet: "/public/css/error.css"
+            });
+        }
+
+        return res.render('game-page', {
+            title: game.name,
+            stylesheet: "/public/css/game-page.css",
+            game: game
+        });
+    } catch (error) {
+
+        return res.status(error.status).render("error", {
+            status: error.status,
+            error_message: `${error.function}: ${error.error}`,
+            title: `${error.status} Error`,
+            stylesheet: "/public/css/error.css"
+          });
+
+    }
+})
+.patch(async (req, res) => {
+    try {
+        req.params.gameId = checkId(req.params.id, "PATCH /game/:gameId", "game");
+    } catch (e) {
+        return res.status(500).json({error: e.error});
+    }
+
+    try  {
+
+        let userGameInfo = [];
+        for(const elem in req.body){
+            userGameInfo.push({field_name: elem, value: req.body[elem]});
+        }
+        const uid = req.session.user._id;
+
+        const user = await users.getUserById(uid);
+
+        const game = await games.getGameById(req.params.gameId);
+        userGameInfo = checkUserGameInfo(userGameInfo, game, "Game form POST route");
+        
+
+        const result = await games.updateGame(user._id, game.gameId, userGameInfo);
+        if (!result || !result.gameUpdated) {
+            return res.status(500).render("error", {
+                status: 500,
+                error_message: "Internal Server Error",
+                title: `500 Error`,
+                stylesheet: "/public/css/error.css"
+            });
+        }
+
+    } catch (error){
+
+        return res.status(error.status).render("error", {
+            status: error.status,
+            error_message: `${error.function}: ${error.error}`,
+            title: `${error.status} Error`,
+            stylesheet: "/public/css/error.css"
+          });
+
+    }
+});
 
 router
     .route("/:id/reviews")
