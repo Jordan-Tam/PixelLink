@@ -97,7 +97,7 @@ router
       //If the game is in the users data already then it will load the form with PATCH method
       //Todo: get the users answers on the screen
       if (!gameNames.includes(game.name)){
-
+        console.log('2')
         return res.render("game-form", {
             update: false,
             game: game,
@@ -107,6 +107,7 @@ router
 
       } else {
 
+        console.log('1')
         return res.render("game-form", {
             update: true,
             game: game,
@@ -164,11 +165,8 @@ router
       });
     }
   })
-
-
-//DELETE AND PATCH BELOW
-  
-.delete(async (req, res) => {
+    //DELETE AND PATCH BELOW
+  .delete(async (req, res) => {
 
     try {
         
@@ -231,8 +229,8 @@ router
           });
 
     }
-})
-.patch(async (req, res) => {
+  })
+  .patch(async (req, res) => {
     try {
         req.params.gameId = checkId(req.params.id, "PATCH /game/:gameId", "game");
     } catch (e) {
@@ -242,18 +240,21 @@ router
     try  {
 
         let userGameInfo = [];
+
         for(const elem in req.body){
             userGameInfo.push({field_name: elem, value: req.body[elem]});
         }
+
+
         const uid = req.session.user._id;
 
         const user = await users.getUserById(uid);
 
         const game = await games.getGameById(req.params.gameId);
-        userGameInfo = checkUserGameInfo(userGameInfo, game, "Game form POST route");
-        
+        userGameInfo = checkUserGameInfo(userGameInfo, game, "Game form PATCH route");
 
-        const result = await games.updateGame(user._id, game.gameId, userGameInfo);
+        const result = await users.updateGame(user._id, game._id, userGameInfo);
+
         if (!result || !result.gameUpdated) {
             return res.status(500).render("error", {
                 status: 500,
@@ -262,6 +263,12 @@ router
                 stylesheet: "/public/css/error.css"
             });
         }
+
+        return res.render('game-page', {
+            title: game.name,
+            stylesheet: "/public/css/game-page.css",
+            game: game
+        });
 
     } catch (error){
 
@@ -273,7 +280,7 @@ router
           });
 
     }
-});
+  });
 
 router
     .route("/:id/reviews")

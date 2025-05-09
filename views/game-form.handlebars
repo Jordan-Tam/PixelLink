@@ -7,6 +7,10 @@
     <!-- for each field object in form array, display with form tag -->
     {{#if game.form.length}}
         <form action="/games/{{game._id}}/form" method="POST" name = "gameForm" id = "gameForm">
+            {{#if update}}
+                <p> update </p>
+               <input type="hidden" name='_method' value="PATCH" />
+            {{/if}}
             {{#each game.form}}
                 <label for="form_input{{@index}}" id="label{{@index}}">
                     {{this.field}}
@@ -27,9 +31,6 @@
             {{/each}}
             <input type="submit" value="Submit Form"/>
              <!-- PATCH is NOT working, with or without the if statement -->
-             {{#if update}}
-                <input type="hidden" name='_method' value="PATCH" />
-            {{/if}}
         </form>
     {{else}}
         <p>No fields to fill out in {{game.name}}'s Add to Profile form!</p>

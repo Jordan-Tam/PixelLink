@@ -29,16 +29,33 @@ if (gameForm) {
 
     let newForm = document.createElement("form");   // Create a new form to be submitted instead
     newForm.hidden = true;  // Hide the form from the user, since I need to attach it to the DOM before submitting.
-    newForm.setAttribute("method", "POST");
+    newForm.setAttribute("method", gameForm.method);
     newForm.setAttribute("action", gameForm.action);
+
     for (let elem of userGameInfo) {
-      let answer = document.createElement("input"); // Fill in my mock form
-      answer.id = elem.field_name;
-      answer.name = elem.field_name;
-      answer.value = elem.value;
-      newForm.appendChild(answer);
+
+      if(elem.type !== 'hidden'){
+        let answer = document.createElement("input"); // Fill in my mock form
+        answer.id = elem.field_name;
+        answer.name = elem.field_name;
+        answer.value = elem.value;
+        newForm.appendChild(answer);
+      }
+      
     }
+
+    let methodInput = gameForm.querySelector('input[name="_method"]');
+    if (methodInput) {
+      let methodClone = document.createElement("input");
+      methodClone.type = "hidden";
+      methodClone.name = "_method";
+      methodClone.value = methodInput.value;
+      newForm.appendChild(methodClone);
+    }
+
+    
     document.body.appendChild(newForm); // Apparently the form needs to actually be attached to the DOM in order to be submitted, so I just do it here before submitting.
     newForm.submit();
   });
 }
+

@@ -610,14 +610,30 @@ const exportedMethods = {
         const user = await this.getUserById(userId);
         const game = await gamesDataFunctions.getGameById(gameId);
 
-        userGameInfo = checkUserGameInfo(userGameInfo, game.name, 'updateGame');
+        userGameInfo = checkUserGameInfo(userGameInfo, game, 'updateGame');
+
+        // const newInfo = {
+        //     id: gameId,
+        //     name: game.name,
+        //     userGameInfo: userGameInfo
+        // }
+
+        const userGames = user.games;
+
+        for (let i = 0; i < userGames.length; i++){
+            if (userGames[i].gameId.toString() === gameId.toString()){
+                userGames[i].userGameInfo = userGameInfo;
+            }
+        }
 
         const updateInfo = await userCollection.findOneAndUpdate(
             {_id: new ObjectId(userId)},
-            {$set: {games: {userGameInfo: userGameInfo }}},
+            {$set: {games: userGames}},
             {returnDocument: 'after'}
         );
 
+        //console.log(updateInfo.games[0]);
+        
         //Error
         if (!updateInfo) {
             throw {
