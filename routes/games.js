@@ -110,6 +110,7 @@ router.route('/:id')
                 title: game.name,
                 stylesheet: "/public/css/game-page.css",
                 game: game,
+                script: "/public/js/game-page.js",
                 is_admin: user.admin
             });
         } catch (error) {
@@ -331,10 +332,8 @@ router
             }
             const userId = checkString(req.session.user._id, "POST /:id/review", "User");
             let {title, content, rating} = req.body; //input validation
-            title = checkString(title, "title", "addReview");
-            content = checkString(content, "content", "addReview");
             rating = checkRating(rating, "addReview");
-            const updatedGame = await games.addReview(gameId, userId, title, content, rating);
+            await games.addReview(gameId, userId, title, content, rating);
             return res.redirect(`/games/${gameId}`);
         } catch (error) {
             return res.status(error.status || 500).render("error", {
