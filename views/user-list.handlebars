@@ -22,7 +22,7 @@
             <label for="gameInput{{@../index}}-{{@index}}" class = "fieldLabel">{{this.field}}</label>
               {{#if this.options.length}}
                 <select name="gameInput{{@../index}}-{{@index}}" id="gameInput{{@../index}}-{{@index}}" class = "select">
-                  <option id = "gameInput{{@../index}}-{{@index}}-empty"></option>
+                  <option label="none" id="gameInput{{@../index}}-{{@index}}-empty"></option>
                   {{#each this.options}}
                     <option
                       id="gameInput{{@../../index}}-{{@../index}}-{{@index}}"
@@ -31,19 +31,19 @@
                   {{/each}}
                 </select>
               {{else if this.domain.length}}
-                <br/>
+                <br>
                 <label class = "radioLabel">Less Than &rarr;
                   <input type="radio" name="operator{{@../index}}-{{@index}}" value = "Less Than">
                 </label>
-                <br/>
+                <br>
                 <label class = "radioLabel">Equal To &rarr;
                   <input type="radio" name="operator{{@../index}}-{{@index}}" value = "Equal To" checked>
                 </label>
-                <br/>
+                <br>
                 <label class = "radioLabel">Greater Than &rarr;
                   <input type="radio" name="operator{{@../index}}-{{@index}}" value = "Greater Than">
                 </label>
-                <br/>
+                <br>
                 <input
                   type="number"
                   name="gameInput{{@../index}}-{{@index}}"
