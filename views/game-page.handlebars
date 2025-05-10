@@ -63,6 +63,12 @@
                     <p class="dateTimeParagraph">{{this.date}} • {{this.time}}</p>
                     <p class="contentParagraph">{{this.content}}</p>
                 </div>
+                {{#if ../is_admin}}
+                 <form action="/games/{{../game._id}}/comment/{{this._id}}" method="POST"> 
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="submit" value="delete {{this.username}}'s comment">
+                </form> 
+                {{/if}}
             {{/each}}
         {{else}}
             <p>No comments.</p>

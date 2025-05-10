@@ -2,6 +2,7 @@ import {Router} from 'express';
 import {checkString, checkDateReleased, checkForm, checkUserGameInfo, checkId} from '../helpers.js';
 import games from '../data/games.js';
 import users from "../data/users.js";
+import comments from "../data/comments.js";
 
 const router = Router();
 
@@ -102,10 +103,14 @@ router.route('/:id')
         try{
             const id = checkString(req.params.id, 'Game id','GET game/:id');
             const game = await games.getGameById(id);
+
+            const user = await users.getUserById(req.session.user._id);
+
             return res.render('game-page', {
                 title: game.name,
                 stylesheet: "/public/css/game-page.css",
-                game: game
+                game: game,
+                is_admin: user.admin
             });
         } catch (error) {
             return res.status(error.status).render("error", {
@@ -117,11 +122,6 @@ router.route('/:id')
         }
     })
     .post() //addGame for the admin, renders add-gae view
-
-// router.route('/:id/comment/:commentId')
-//     .post()
-//     .patch()
-//     .delete()
     
 router
   .route("/:id/form")
@@ -335,11 +335,7 @@ router
             content = checkString(content, "content", "addReview");
             rating = checkRating(rating, "addReview");
             const updatedGame = await games.addReview(gameId, userId, title, content, rating);
-            return res.render('game-page', {
-                title: updatedGame.name,
-                stylesheet: "/public/css/game-page.css",
-                game: updatedGame
-            });
+            return res.redirect(`/games/${gameId}`);
         } catch (error) {
             return res.status(error.status || 500).render("error", {
                 status: error.status || 500,
@@ -366,11 +362,42 @@ router
             }
             const updatedGame = await games.deleteReview(gameId, reviewId); //assuming dat function named deleteReview
 
-            return res.render("game-page", {
-                title: updatedGame.name,
-                stylesheet: "/public/css/game-page.css",
-                game: updatedGame
+            return res.redirect(`/games/${gameId}`);
+        } catch (error) {
+            return res.status(error.status || 500).render("error", {
+                status: error.status || 500,
+                error_message: error.error,
+                stylesheet: "/public/css/error.css",
+                title: `${error.status || 500} Error`
             });
+        }
+    });
+router
+    .route("/:gameId/comment/:commentId")
+    .delete(async (req, res) => {
+        try{
+            const gameId = checkId(req.params.gameId, "DELETE /:gameId/reviews/:reviewId", "Game");
+            const commentId = checkId(req.params.commentId, "DELETE /:gameId/reviews/:commentId", "Comment");
+            if(!req.session.user || !req.session.user.admin){ //get user, check if logged in
+                return res.status(403).render("error", {
+                    status: 403,
+                    error_message: "Permission Denied. Must be logged in as an admin to delete a review.",
+                    stylesheet: "/public/css/error.css",
+                    title: "403 Error"
+                });
+            }
+
+            const result = await comments.removeComment(commentId, "game");
+
+            if (result !== true) {
+                return res.status(500).render("error", {
+                    status: 500,
+                    error_message: "Internal Server Error",
+                    title: `500 Error`,
+                    stylesheet: "/public/css/error.css"
+                });
+            }
+            return res.redirect(`/games/${gameId}`)
         } catch (error) {
             return res.status(error.status || 500).render("error", {
                 status: error.status || 500,
