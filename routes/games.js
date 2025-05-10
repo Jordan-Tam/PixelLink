@@ -345,7 +345,8 @@ router
                     status: 400,
                     error_message: "You can only leave one review per game.",
                     stylesheet: "/public/css/error.css",
-                    title: "400 Error"
+                    title: "400 Error",
+                    link: `/games/${gameId}`
                   });
             }
             let {title, content, rating} = req.body; //input validation
