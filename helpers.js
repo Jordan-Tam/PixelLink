@@ -746,6 +746,35 @@ const sanitizeBody = (body) => {
 
 }
 
+/*  
+* @param {string} number 
+* @param {string} funcName  
+* @returns number 
+*/ 
+
+const stringToNumber = (str, funcName) => { 
+  if(typeof str === undefined || str === null){ 
+    throw { 
+    status: 400, 
+    function: funcName, 
+    error: "Input is undefined." 
+    } 
+  } 
+  if (typeof str !== "string"){ 
+    throw { 
+    status: 400, 
+    function: funcName, 
+    error: "Input is not a string." 
+    } 
+  } 
+
+  const number = Number(str); 
+  return number; 
+} 
+
+ 
+ 
+
 export {
   checkString,
   checkDateReleased,
@@ -759,4 +788,5 @@ export {
   checkUserGameInfo,
   checkRating,
   sanitizeBody,
+  stringToNumber
 };
