@@ -5,7 +5,7 @@
 <main>
 
     <div class="dateReleased-div">
-        <h3><span>Release Date:</h3>
+        <h3><span>Release Date:</span></h3>
         <p>{{game.dateReleased}}</p>
     </div>
 
@@ -36,8 +36,10 @@
         {{else}}
             No reviews.
         {{/if}}
-        <form action="/{{game._id}}/reviews" method="POST"> 
-            <input type="text" id="addReview" name="addReview">
+        <form action="/games/{{game._id}}/reviews" method="POST">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title">
+            <input type="text" id="content" name="content">
             <label for="rating">Rating:
                 <select id="rating" name="rating" required>
                     <option value="1">1</option>
@@ -67,7 +69,7 @@
         {{else}}
         <p>No comments.</p>
         {{/if}}
-        <form action="/{{user._id}}/comment" method="POST"> 
+        <form action="games/{{game._id}}/comment" method="POST"> 
             <input type="text" id="addComment" name="addComment">
             <input type="submit" value="add comment!">
         </form> 
