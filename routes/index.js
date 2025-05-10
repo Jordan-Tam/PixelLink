@@ -34,6 +34,7 @@ const constructorMethod = (app) => {
     app.post("/login", async (req, res) => {
 
         // Get username and password from the request body; ignore confirmPassword.
+        
         let {username, password} = req.body;
 
         try {

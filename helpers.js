@@ -1,4 +1,5 @@
 import {ObjectId} from "mongodb";
+import xss from "xss"
 
 // Strings to be used for checking username and password constraints.
 const UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -718,6 +719,33 @@ const checkRating = (rating, funcName) => {
 
 }
 
+const sanitizeBody = (body) => {
+
+  if(!body){    // Make sure the body is provided
+    throw {
+      status: 400,
+      function: "sanitizeBody",
+      error: "req.body must be provided."
+    }
+  }
+
+  if(typeof body !== "object"){   // Make sure the body is an object
+    throw {
+      status: 400,
+      function: "sanitizeBody",
+      error: "req.body must be an object."
+    }
+  }
+
+
+  for(let key in body){    // Loop through each key
+    body[key] = xss(body[key]); // Run xss on each value
+  }
+
+  return body;
+
+}
+
 export {
   checkString,
   checkDateReleased,
@@ -730,4 +758,5 @@ export {
   checkId,
   checkUserGameInfo,
   checkRating,
+  sanitizeBody,
 };

@@ -2,6 +2,7 @@ import express from "express";
 import exphbs from "express-handlebars";
 import configRoutesFunction from "./routes/index.js";
 import session from "express-session";
+import { sanitizeBody } from "./helpers.js";
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   // If the user posts to the server with a property called _method, rewrite the request's method to be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets rewritten in this middleware to a PUT route.
@@ -56,7 +57,18 @@ app.use(async (req, res, next) => {
   next();
 });
 
-//* Middleware 2: If a logged-in user tries to access the login page, redirect them to the home page.
+
+//* Middleware 2: If the request is a POST request, sanitize the req.body
+app.use(async (req, res, next) => {
+  if (req.method === "POST" && req.body) {
+    req.body = sanitizeBody(req.body);
+  }
+
+  next();
+});
+
+
+//* Middleware 3: If a logged-in user tries to access the login page, redirect them to the home page.
 app.use("/login", async (req, res, next) => {
   if (req.method === "GET") {
     if (req.session.user) {
@@ -67,7 +79,7 @@ app.use("/login", async (req, res, next) => {
   next();
 });
 
-//* Middleware 3: If a logged-in user tries to access the register page, redirect them to the home page.
+//* Middleware 4: If a logged-in user tries to access the register page, redirect them to the home page.
 app.use("/register", async (req, res, next) => {
   if (req.method === "GET") {
     if (req.session.user) {
@@ -78,7 +90,7 @@ app.use("/register", async (req, res, next) => {
   next();
 });
 
-//* Middleware 4: If an unauthenticated user tries to access the home page, redirect them to the login page.
+//* Middleware 5: If an unauthenticated user tries to access the home page, redirect them to the login page.
 app.use("/home", async (req, res, next) => {
   if (req.method === "GET") {
     if (!req.session.user) {
@@ -89,7 +101,7 @@ app.use("/home", async (req, res, next) => {
   next();
 })
 
-//* Middleware 5: If an unauthenticated user tries to access any "/user" page, redirect them to the login page.
+//* Middleware 6: If an unauthenticated user tries to access any "/user" page, redirect them to the login page.
 app.use("/users", async (req, res, next) => {
   if (req.method === "GET") {
     if (!req.session.user) {
@@ -100,7 +112,7 @@ app.use("/users", async (req, res, next) => {
   next();
 });
 
-//* Middleware 6: If an unauthenticated user tries to access any "/games" page, redirect them to the login page.
+//* Middleware 7: If an unauthenticated user tries to access any "/games" page, redirect them to the login page.
 app.use("/games", async (req, res, next) => {
   if (req.method === "GET") {
     if (!req.session.user) {
@@ -111,7 +123,7 @@ app.use("/games", async (req, res, next) => {
   next();
 });
 
-//* Middleware 7: If a non-admin tries to access post or delete "/games/", redirect them to 403 error(with link back to games list page)
+//* Middleware 8: If a non-admin tries to access post or delete "/games/", redirect them to 403 error(with link back to games list page)
 app.use("/games", async(req, res, next) => {
   if (req.method === "POST" || req.method === "DELETE"){
     if((!req.path.includes("/form")) && (!req.session.user || !req.session.user.admin)){
@@ -127,7 +139,7 @@ app.use("/games", async(req, res, next) => {
   next();
 });
 
-//* Middleware 8: If an unauthenticated user tries to access the signout page, redirect them to the login page.
+//* Middleware 9: If an unauthenticated user tries to access the signout page, redirect them to the login page.
 app.use("/signout", async (req, res, next) => {
   if (req.method === "GET") {
     if (!req.session.user) {
