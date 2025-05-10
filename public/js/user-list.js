@@ -75,9 +75,10 @@ if (userSearchForm) {
         body: JSON.stringify(query),
       });
       let data = await response.json();
-      if (!response.ok) {
+      if (!response.ok || typeof data === "string") {
         // Something went wrong
         error.textContent = "Error: " + data;
+        return;
       } else {
         if (first) {
           validPeople = data;

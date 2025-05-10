@@ -1,12 +1,6 @@
 let gameForm = document.getElementById("gameForm");
 
 
-// We needed a way to keep track of the field-value pairs when a user submits a game form
-// I definitely overcomplicated things but basically what I do is I intercept the 
-// original form and make a new one with the desired format, submitting that one instead.
-// There are definitely easier ways to do this but it works so yeah.
-// I also plan to add client-side checking, but wanted to get the functionality working first
-
 if (gameForm) {
   gameForm.addEventListener("submit", (event) => {
     event.preventDefault();

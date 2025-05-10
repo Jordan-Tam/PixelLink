@@ -12,7 +12,8 @@ import {
     checkPassword,
     checkAdmin,
     checkId,
-    checkUserGameInfo
+    checkUserGameInfo,
+    checkString
 } from "../helpers.js";
 
 
@@ -703,6 +704,10 @@ const exportedMethods = {
      * @param {*} gameId The ID of the game the user wants to search.
      */
     async filterUsersByGame(userId, gameId){
+
+        userId = checkString(userId, "userId", "filterUsersByGame");
+        gameId = checkString(gameId, "gameId", "filterUsersByGame");
+
         // Get list of all user objects.
         const usersList = await this.getAllUsers();
 
@@ -720,7 +725,7 @@ const exportedMethods = {
                 // ...to see if they play the game associated with "gameId"...
                 if (game.gameId.toString() === gameId) {
                     // ...if so, add the user to the filtered list.
-                    filteredUsersList.push(user.username);
+                    filteredUsersList.push(user.username.toLowerCase());
                 }
             }
         }
@@ -739,6 +744,11 @@ const exportedMethods = {
      * @param {*} value The value 
      */
     async filterUsersByText(userId, gameId, field_name, value) {
+
+        userId = checkString(userId, "userId", "filterUsersByText");
+        gameId = checkString(gameId, "gameId", "filterUsersByText");
+        field_name = checkString(field_name, "field_name", "filterUsersByText");
+        value = checkString(value, "value", "filterUsersByText");
 
         // Get list of all user objects.
         const usersList = await this.getAllUsers();
@@ -767,7 +777,9 @@ const exportedMethods = {
                             if (value.toLowerCase() === field.value.toLowerCase()) {
 
                                 // ...if they match, add the user to the filtered list.
-                                filteredUsersList.push(user.username);
+                                filteredUsersList.push(
+                                  user.username.toLowerCase()
+                                );
 
                             }
                         }
@@ -793,6 +805,19 @@ const exportedMethods = {
      */
     async filterUsersByNumber(userId, gameId, field_name, value, operator) {
 
+        userId = checkString(userId, "userId", "filterUsersByNumber");
+        gameId = checkString(gameId, "gameId", "filterUsersByNumber");
+        field_name = checkString(field_name, "field_name", "filterUsersByNumber");
+        operator = checkString(operator, "operator", "filterUsersByNumber");
+        
+        if(typeof value !== "number"){
+            throw {
+              status: 400,
+              function: "filterUsersByNumber",
+              error: `Value is not a number.`,
+            };
+        }
+
         const usersList = await this.getAllUsers();
 
         let filteredUsersList = [];
@@ -806,23 +831,31 @@ const exportedMethods = {
                 if (game.gameId.toString() === gameId) {
 
                     for (let field of game.userGameInfo) {
+                        
+                        field.value = parseInt(field.value);    // Turn the string into a number for comparison
 
                         if (field_name === field.field_name) {
 
                             switch(operator) {
                                 case "Equal To":
                                     if (field.value === value) {
-                                        filteredUsersList.push(user.username);
+                                        filteredUsersList.push(
+                                          user.username.toLowerCase()
+                                        );
                                     }
                                     break;
                                 case "Greater Than":
                                     if (field.value > value) {
-                                        filteredUsersList.push(user.username);
+                                        filteredUsersList.push(
+                                          user.username.toLowerCase()
+                                        );
                                     }
                                     break;
                                 case "Less Than":
                                     if (field.value < value) {
-                                        filteredUsersList.push(user.username);
+                                        filteredUsersList.push(
+                                          user.username.toLowerCase()
+                                        );
                                     }
                                     break;
                                 default:
@@ -858,6 +891,11 @@ const exportedMethods = {
      */
     async filterUsersBySelect(userId, gameId, field_name, value) {
 
+        userId = checkString(userId, "userId", "filterUsersBySelect");
+        gameId = checkString(gameId, "gameId", "filterUsersBySelect");
+        field_name = checkString(field_name, "field_name", "filterUsersBySelect");
+        value = checkString(value, "value", "filterUsersBySelect");
+
         const usersList = await this.getAllUsers();
 
         let filteredUsersList = [];
@@ -876,7 +914,9 @@ const exportedMethods = {
 
                             if (value === field.value) {
 
-                                filteredUsersList.push(user.username);
+                                filteredUsersList.push(
+                                  user.username.toLowerCase()
+                                );
 
                             }
 
