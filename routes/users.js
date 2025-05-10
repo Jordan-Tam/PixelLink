@@ -314,7 +314,7 @@ router.route('/:id/friends')
     .post(async (req, res) => {
         try {
             const id = checkId(req.params.id, "POST user/:id/friends", "User");
-            if(!req.session.user || req.session.user._id === id){ //checks if user is visiting their own profile page
+            if(!req.session.user || req.session.user._id === id){ //checks if user is trying to friend themselves (should never happen)
                 //render the 403 error
                 return res.status(403).json({error: "Permission Denied"});
             }
@@ -331,12 +331,7 @@ router.route('/:id/friends')
                 friendsArr.push(friend); //array of users(friends)
             }
             //Changed this to take you to your friends list since it only adds the friend on your side.
-            return res.render('friends-list', {
-                id: user._id,
-                friends: friendsArr,
-                username: user.username,
-                title: `${user.username}'s Friends List`
-            });
+            return res.redirect(`/users/${id}`);
         } catch (e) {
             return res.status(500).json({error: e.error});
         }
@@ -361,7 +356,6 @@ router.route('/:id/friends')
             const user = await users.getUserById(req.session.user._id);
 
             //Render the users friends list after removing the friend
-            //Wanted to render the removed friends page with the button changed but its causing errors...
             return res.redirect("/users/" + id);
 
 
