@@ -13,34 +13,43 @@ await db.dropDatabase();
 // Users
 //////////////////////////////////////////////////////////////
 
-let user1 = await users.createUser("JohnDoe", "Password123@", false);
+let admin = await users.createUser("admin", "Admin!000", true);
 
-let user2 = await users.createUser("owen-treanor", "D0nkeyK0ng!", true);
+let JohnDoe_user = await users.createUser("JohnDoe", "Password123@", false);
 
-let user3 = await users.createUser("gamer7", "iAMAGAMER%1", false);
+let owenTreanor_user = await users.createUser("owen-treanor", "D0nkeyK0ng!", false);
 
-let user4 = await users.createUser("Josh6", "ABCabc123!", false);
+let gamer7_user = await users.createUser("gamer7", "iAMAGAMER%1", false);
 
-let user5 = await users.createUser("user5", "!!3PPOOQQqq", false);
+let Josh6_user = await users.createUser("Josh6", "ABCabc123!", false);
 
-let user6 = await users.createUser("James12345", "myPassword7%%", false);
+let user5_user = await users.createUser("user5", "!!3PPOOQQqq", false);
 
-let user7 = await users.createUser("admin", "Admin!000", true);
+let James12345_user = await users.createUser("James12345", "myPassword7%%", false);
 
-// console.log(await users.getAllUsers());
+let Jordan_user = await users.createUser("Jordan", "ABCabc123!", false);
+
+let superman_user = await users.createUser("Superman", "ABCabc123!", false);
+
+let batman_user = await users.createUser("BATMAN", "ABCabc123!", false);
+
+let stevens_user = await users.createUser("Stevens", "ABCabc123!", false);
+
+let william_user = await users.createUser("will.i.am", "ABCabc123!", false);
+
 
 //////////////////////////////////////////////////////////////
 // Games
 //////////////////////////////////////////////////////////////
 const chessForm = [
   {
-    field: "Which site do you use?",
+    field: "Platform",
     type: "select",
     options: ["Chess.com", "Lichess"],
     domain: [],
   },
   {
-    field: "Username on site",
+    field: "Username on platform",
     type: "text",
     options: [],
     domain: [],
@@ -70,7 +79,7 @@ const chessForm = [
     domain: ["0", "3000"],
   },
   {
-    field: "What is your favorite opening?",
+    field: "Favorite opening",
     type: "text",
     options: [],
     domain: [],
@@ -336,45 +345,118 @@ const marvelRivals = await games.createGame(
   marvelRivalsForm
 );
 
-// const allGames = await games.getAllGames();
-// console.log(allGames);
+const clashOfClans_form = [
+  {
+    field: "Username",
+    type: "text",
+    options: [],
+    domain: [],
+  },
+  {
+    field: "Do you participate in Clan Wars?",
+    type: "select",
+    options: ["Yes", "No"],
+    domain: [],
+  },
+  {
+    field: "Town Hall level",
+    type: "select",
+    options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17"],
+    domain: [],
+  },
+  {
+    field: "Favorite elixir troop",
+    type: "select",
+    options: [
+      "Barbarian",
+      "Archer"
+    ],
+    domain: [],
+  },
+  {
+    field: "Favorite dark elixir troop",
+    type: "select",
+    options: [
+      "Minion",
+      "Hog Rider",
+      "Valkyrie"
+    ],
+    domain: [],
+  },
+  {
+    field: "Favorite Hero",
+    type: "select",
+    options: [
+      "Barbarian King",
+      "Archer Queen"
+    ],
+    domain: [],
+  }
+];
+
+const clashOfClans = await games.createGame(
+  "Clash of Clans",
+  "08/02/2012",
+  clashOfClans_form
+);
+
+const superSmashBros_form = [
+  {
+    field: "test",
+    type: "text",
+    options: [],
+    domain: [],
+  }
+]
+
+const superSmashBros = await games.createGame(
+  "Super Smash Bros.",
+  "04/26/1999",
+  superSmashBros_form
+);
 
 //////////////////////////////////////////////////////////////
 // Game Comments
 //////////////////////////////////////////////////////////////
 
-const commentG1 = await comments.createComment(
+const chess_comment1 = await comments.createComment(
   "game",
   chess._id.toString(),
-  user2._id.toString(),
+  owenTreanor_user._id.toString(),
   "I am the best."
 );
 
-const commentG2 = await comments.createComment(
+/* const chess_comment2 = await comments.createComment(
+  "game",
+  chess._id.toString(),
+
+); */
+
+const balatro_comment1 = await comments.createComment(
   "game",
   balatro._id.toString(),
-  user2._id.toString(),
+  owenTreanor_user._id.toString(),
   "I love this game."
 );
 
-const commentG3 = await comments.createComment(
-  "game",
-  amongUs._id.toString(),
-  user5._id.toString(),
-  "I'm so sus!"
-);
-
-const commentG4 = await comments.createComment(
+const balatro_comment2 = await comments.createComment(
   "game",
   balatro._id.toString(),
-  user7._id.toString(),
+  user5_user._id.toString(),
   "Blueprint is the GOAT"
 );
 
-const commentG5 = await comments.createComment(
+const amongUs_comment1 = await comments.createComment(
+  "game",
+  amongUs._id.toString(),
+  user5_user._id.toString(),
+  "I'm so sus!"
+);
+
+const minecraft_comment1 = await comments.createComment(
   "game",
   minecraft._id.toString(),
-  user1._id.toString(),
+  william_user._id.toString(),
   "Chicken Jockey!!"
 );
 
@@ -384,43 +466,43 @@ const commentG5 = await comments.createComment(
 
 const commentU1 = await comments.createComment(
   "user",
-  user2._id.toString(),
-  user1._id.toString(),
+  owenTreanor_user._id.toString(),
+  JohnDoe_user._id.toString(),
   "I am so much better than you."
 );
 
 const commentU2 = await comments.createComment(
   "user",
-  user4._id.toString(),
-  user3._id.toString(),
+  Josh6_user._id.toString(),
+  gamer7_user._id.toString(),
   "Let's play Minecraft!"
 );
 
 const commentU3 = await comments.createComment(
   "user",
-  user5._id.toString(),
-  user6._id.toString(),
+  James12345_user._id.toString(),
+  Jordan_user._id.toString(),
   "I like your profile picture."
 );
 
 const commentU4 = await comments.createComment(
   "user",
-  user7._id.toString(),
-  user1._id.toString(),
+  gamer7_user._id.toString(),
+  gamer7_user._id.toString(),
   "You are ugly."
 );
 
 const commentU5 = await comments.createComment(
   "user",
-  user2._id.toString(),
-  user5._id.toString(),
+  gamer7_user._id.toString(),
+  gamer7_user._id.toString(),
   "Hello"
 );
 
 const commentU6 = await comments.createComment(
   "user",
-  user2._id.toString(),
-  user5._id.toString(),
+  gamer7_user._id.toString(),
+  gamer7_user._id.toString(),
   "What's your steamID?"
 );
 
@@ -436,7 +518,7 @@ const commentU6 = await comments.createComment(
 
 const review1 = await games.addReview(
   chess._id,
-  user1._id,
+  JohnDoe_user._id,
   "Lacking Content",
   "This game hasn't gotten any updates in centuries.",
   2
@@ -444,7 +526,7 @@ const review1 = await games.addReview(
 
 const review2 = await games.addReview(
   chess._id,
-  user3._id,
+  gamer7_user._id,
   "I love rooks",
   "I love rooks",
   5
@@ -452,7 +534,7 @@ const review2 = await games.addReview(
 
 const review3 = await games.addReview(
   chess._id,
-  user5._id,
+  user5_user._id,
   "Wait what is this",
   "i wanted to open google where am i",
   4
@@ -463,27 +545,27 @@ const review3 = await games.addReview(
 // Add Games to User Profiles
 //////////////////////////////////////////////////////////////
 
-let user1ChessForm = [
-  { field_name: "Which site do you use?", value: "Chess.com"},
-  { field_name: "Username on site", value: "MagnusCarlsen"},
+let JohnDoe_form_chess = [
+  { field_name: "Platform", value: "Chess.com"},
+  { field_name: "Username on platform", value: "MagnusCarlsen"},
   { field_name: "Do you prefer playing as White or Black?", value: "White" },
   { field_name: "Bullet rating", value: "600" },
   { field_name: "Blitz rating", value: "600" },
   { field_name: "Rapid rating", value: "600" },
-  { field_name: "What is your favorite opening?", value: "Queen's Gambit" },
+  { field_name: "Favorite opening", value: "Queen's Gambit" },
 ];
 
-let userGame1 = await users.addGame(user1._id, chess._id, user1ChessForm);
+let JohnDoe_game_chess = await users.addGame(JohnDoe_user._id, chess._id, JohnDoe_form_chess);
 
-let user1BalatroForm = [
+let JohnDoe_form_balatro = [
   { field_name: "What is your favorite hand?", value: "Flush" },
   { field_name: "What is your favorite legendary joker?", value: "Perkeo" },
   { field_name: "How many jokers do you have unlocked?", value: "150" },
 ];
 
-let userGame2 = await users.addGame(user1._id, balatro._id, user1BalatroForm);
+let JohnDoe_game_balatro = await users.addGame(JohnDoe_user._id, balatro._id, JohnDoe_form_balatro);
 
-let removeUserGame = await users.removeGame(user1._id, balatro._id);
+//let removeUserGame = await users.removeGame(user1._id, balatro._id);
 
 //console.log(await users.getUserById(user1._id));
 
