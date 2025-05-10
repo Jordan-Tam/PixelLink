@@ -26,7 +26,7 @@ a:active {
     gap: 1rem;
 }
 
-.commentDiv {
+.commentDiv, .reviewDiv {
     border: 1px solid black;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -49,6 +49,6 @@ a:active {
     width: 82px;
 }
 
-/* .contentParagraph {
-
-} */
+.reviewTitle {
+    font-weight: bold;
+}

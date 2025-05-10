@@ -253,7 +253,7 @@ const exportedMethods = {
 
     // Check if user ID exists.
     // This function will throw an error if no user is found.
-    await userData.getUserById(userId);
+    let user = await userData.getUserById(userId);
 
     // Get game.
     let game = await gamesCollection.findOne({
@@ -273,6 +273,7 @@ const exportedMethods = {
     let newReview = {
       _id: new ObjectId(),
       userId,
+      username: user.username,
       title,
       content,
       rating

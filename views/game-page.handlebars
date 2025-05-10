@@ -23,18 +23,19 @@
         <p>{{game.averageRating}}</p>
     </div>
 
-    <div class="reviews-div">
+    <div>
         <h3>Reviews:</h3>
         {{#if game.reviews.length}}
-            <div class="single-review-div">
-                {{#each game.reviews}}
-                    <h4>{{this.title}}</h4>
-                    <p>{{this.content}}</p>
-                    <p>Rating: {{this.rating}}</p>
-                {{/each}}
-            </div>
+            {{#each game.reviews}}
+                <div class="reviewDiv">
+                    <p class="usernameParagraph">{{this.username}}</p>
+                    <p class="reviewTitle">{{this.title}}</p>
+                    <p class="reviewContent">{{this.content}}</p>
+                    <p class="reviewRating">Rating: {{this.rating}}</p>
+                </div>
+            {{/each}}
         {{else}}
-            No reviews.
+            <p>No reviews.</p>
         {{/if}}
         <form action="/games/{{game._id}}/reviews" method="POST">
             <label for="title">Title:</label>

@@ -15,27 +15,29 @@ await db.dropDatabase();
 
 let admin = await users.createUser("admin", "Admin!000", true);
 
-let JohnDoe_user = await users.createUser("JohnDoe", "Password123@", false);
+let JohnDoe = await users.createUser("JohnDoe", "Password123@", false);
 
-let owenTreanor_user = await users.createUser("owen-treanor", "D0nkeyK0ng!", false);
+let owenTreanor = await users.createUser("owen-treanor", "D0nkeyK0ng!", false);
 
-let gamer7_user = await users.createUser("gamer7", "iAMAGAMER%1", false);
+let gamer7 = await users.createUser("gamer7", "iAMAGAMER%1", false);
 
-let Josh6_user = await users.createUser("Josh6", "ABCabc123!", false);
+let Josh6 = await users.createUser("Josh6", "ABCabc123!", false);
 
-let user5_user = await users.createUser("user5", "!!3PPOOQQqq", false);
+let user5 = await users.createUser("user5", "!!3PPOOQQqq", false);
 
-let James12345_user = await users.createUser("James12345", "myPassword7%%", false);
+let James12345 = await users.createUser("James12345", "myPassword7%%", false);
 
-let Jordan_user = await users.createUser("Jordan", "ABCabc123!", false);
+let JamesMom = await users.createUser("JamesMom", "ABCabc123!", false);
 
-let superman_user = await users.createUser("Superman", "ABCabc123!", false);
+let Jordan = await users.createUser("Jordan", "ABCabc123!", false);
 
-let batman_user = await users.createUser("BATMAN", "ABCabc123!", false);
+let superman = await users.createUser("Superman", "ABCabc123!", false);
 
-let stevens_user = await users.createUser("Stevens", "ABCabc123!", false);
+let batman = await users.createUser("BATMAN", "ABCabc123!", false);
 
-let william_user = await users.createUser("will.i.am", "ABCabc123!", false);
+let stevens = await users.createUser("Stevens", "ABCabc123!", false);
+
+let william = await users.createUser("will.i.am", "ABCabc123!", false);
 
 
 //////////////////////////////////////////////////////////////
@@ -369,7 +371,23 @@ const clashOfClans_form = [
     type: "select",
     options: [
       "Barbarian",
-      "Archer"
+      "Archer",
+      "Giant",
+      "Goblin",
+      "Wall Breaker",
+      "Balloon",
+      "Wizard",
+      "Healer",
+      "Dragon",
+      "P.E.K.K.A.",
+      "Baby Dragon",
+      "Miner",
+      "Electo Dragon",
+      "Yeti",
+      "Dragon Rider",
+      "Electro Titan",
+      "Root Rider",
+      "Thrower"
     ],
     domain: [],
   },
@@ -379,7 +397,16 @@ const clashOfClans_form = [
     options: [
       "Minion",
       "Hog Rider",
-      "Valkyrie"
+      "Valkyrie",
+      "Golem",
+      "Witch",
+      "Lava Hound",
+      "Bowler",
+      "Ice Golem",
+      "Headhunter",
+      "Apprentice Warden",
+      "Druid",
+      "Furnace"
     ],
     domain: [],
   },
@@ -388,7 +415,10 @@ const clashOfClans_form = [
     type: "select",
     options: [
       "Barbarian King",
-      "Archer Queen"
+      "Archer Queen",
+      "Minion Prince",
+      "Grand Warden",
+      "Royal Champion"
     ],
     domain: [],
   }
@@ -402,12 +432,41 @@ const clashOfClans = await games.createGame(
 
 const superSmashBros_form = [
   {
-    field: "test",
-    type: "text",
-    options: [],
+    field: "Favorite Character",
+    type: "select",
+    options: [
+      "Mario",
+      "Yoshi",
+      "Donkey Kong",
+      "Link",
+      "Samus",
+      "Kirby",
+      "Fox",
+      "Pikachu",
+      "Luigi",
+      "Jigglypuff",
+      "Captain Falcon",
+      "Ness"
+    ],
     domain: [],
+  },
+  {
+    field: "Favorite Stage",
+    type: "select",
+    options: [
+      "Peach's Castle",
+      "Mushroom Kingdom",
+      "Yoshi's Island",
+      "Congo Jungle",
+      "Hyrule Castle",
+      "Planet Zebes",
+      "Dream Land",
+      "Sector Z",
+      "Saffron City"
+    ],
+    domain: []
   }
-]
+];
 
 const superSmashBros = await games.createGame(
   "Super Smash Bros.",
@@ -419,44 +478,171 @@ const superSmashBros = await games.createGame(
 // Game Comments
 //////////////////////////////////////////////////////////////
 
-const chess_comment1 = await comments.createComment(
+const amongUs_comment1 = await comments.createComment(
   "game",
-  chess._id.toString(),
-  owenTreanor_user._id.toString(),
-  "I am the best."
+  amongUs._id.toString(),
+  user5._id.toString(),
+  "I'm so sus!"
 );
-
-/* const chess_comment2 = await comments.createComment(
-  "game",
-  chess._id.toString(),
-
-); */
 
 const balatro_comment1 = await comments.createComment(
   "game",
   balatro._id.toString(),
-  owenTreanor_user._id.toString(),
+  owenTreanor._id.toString(),
   "I love this game."
 );
 
 const balatro_comment2 = await comments.createComment(
   "game",
   balatro._id.toString(),
-  user5_user._id.toString(),
+  user5._id.toString(),
   "Blueprint is the GOAT"
 );
 
-const amongUs_comment1 = await comments.createComment(
+const chess_comment1 = await comments.createComment(
   "game",
-  amongUs._id.toString(),
-  user5_user._id.toString(),
-  "I'm so sus!"
+  chess._id.toString(),
+  owenTreanor._id.toString(),
+  "I am the best."
+);
+
+const chess_comment2 = await comments.createComment(
+  "game",
+  chess._id.toString(),
+  superman._id.toString(),
+  "Batman is awful at chess."
+);
+
+const chess_comment3 = await comments.createComment(
+  "game",
+  chess._id.toString(),
+  batman._id.toString(),
+  "Superman's favorite thing to do is save people. His second favorite thing to do is lie to them."
+);
+
+const clashOfClans_comment1 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  william._id.toString(),
+  "I need a clan to join."
+);
+
+const clashOfClans_comment2 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  Josh6._id.toString(),
+  "You can join mine."
+);
+
+const clashOfClans_comment3 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  william._id.toString(),
+  "Thanks. What's the ID?"
+);
+
+const clashOfClans_comment4 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  Josh6._id.toString(),
+  "I don't feel like putting it here. I'll DM it to you instead."
+);
+
+const clashOfClans_comment5 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  william._id.toString(),
+  "Thanks. DM where though?"
+);
+
+const clashOfClans_comment6 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  Josh6._id.toString(),
+  "I don't feel like putting it here. I'll visit your house instead."
+);
+
+const clashOfClans_comment7 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  william._id.toString(),
+  "Thanks. How do you know where I live though?"
+);
+
+const clashOfClans_comment8 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  Josh6._id.toString(),
+  "I don't. Can you give me your home address?"
+);
+
+const clashOfClans_comment9 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  william._id.toString(),
+  "I don't feel like putting it here. I'll DM it to you instead."
+);
+
+const clashOfClans_comment10 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  Josh6._id.toString(),
+  "Thanks. DM where though?"
+);
+
+const clashOfClans_comment11 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  william._id.toString(),
+  "I don't feel like putting it here. I'll visit your house instead."
+);
+
+const clashOfClans_comment12 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  Josh6._id.toString(),
+  "Thanks. How do you know where I live though?"
+);
+
+const clashOfClans_comment13 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  william._id.toString(),
+  "I'm at your front porch. Open the door."
+);
+
+const clashOfClans_comment14 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  Josh6._id.toString(),
+  "??????"
+);
+
+const clashOfClans_comment15 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  Josh6._id.toString(),
+  "ok it turns out my dad was just pranking me. i had no idea he was on this site."
+);
+
+const clashOfClans_comment16 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  James12345._id.toString(),
+  "I need a clan to join."
+);
+
+const clashOfClans_comment17 = await comments.createComment(
+  "game",
+  clashOfClans._id.toString(),
+  JamesMom._id.toString(),
+  "James, I hope you've been applying for jobs."
 );
 
 const minecraft_comment1 = await comments.createComment(
   "game",
   minecraft._id.toString(),
-  william_user._id.toString(),
+  william._id.toString(),
   "Chicken Jockey!!"
 );
 
@@ -464,45 +650,45 @@ const minecraft_comment1 = await comments.createComment(
 // User Comments
 //////////////////////////////////////////////////////////////
 
-const commentU1 = await comments.createComment(
+const owenTreanor_comment1 = await comments.createComment(
   "user",
-  owenTreanor_user._id.toString(),
-  JohnDoe_user._id.toString(),
+  owenTreanor._id.toString(),
+  JohnDoe._id.toString(),
   "I am so much better than you."
 );
 
-const commentU2 = await comments.createComment(
+const Josh6_comment1 = await comments.createComment(
   "user",
-  Josh6_user._id.toString(),
-  gamer7_user._id.toString(),
+  Josh6._id.toString(),
+  gamer7._id.toString(),
   "Let's play Minecraft!"
 );
 
-const commentU3 = await comments.createComment(
+const James12345_comment1 = await comments.createComment(
   "user",
-  James12345_user._id.toString(),
-  Jordan_user._id.toString(),
+  James12345._id.toString(),
+  Jordan._id.toString(),
   "I like your profile picture."
 );
 
-const commentU4 = await comments.createComment(
+const gamer7_comment1 = await comments.createComment(
   "user",
-  gamer7_user._id.toString(),
-  gamer7_user._id.toString(),
+  gamer7._id.toString(),
+  gamer7._id.toString(),
   "You are ugly."
 );
 
-const commentU5 = await comments.createComment(
+const gamer7_comment2 = await comments.createComment(
   "user",
-  gamer7_user._id.toString(),
-  gamer7_user._id.toString(),
+  gamer7._id.toString(),
+  gamer7._id.toString(),
   "Hello"
 );
 
-const commentU6 = await comments.createComment(
+const gamer7_comment3 = await comments.createComment(
   "user",
-  gamer7_user._id.toString(),
-  gamer7_user._id.toString(),
+  gamer7._id.toString(),
+  gamer7._id.toString(),
   "What's your steamID?"
 );
 
@@ -516,25 +702,25 @@ const commentU6 = await comments.createComment(
 // Game Reviews
 //////////////////////////////////////////////////////////////
 
-const review1 = await games.addReview(
+const chess_review1 = await games.addReview(
   chess._id,
-  JohnDoe_user._id,
+  JohnDoe._id,
   "Lacking Content",
   "This game hasn't gotten any updates in centuries.",
   2
 );
 
-const review2 = await games.addReview(
+const chess_review2 = await games.addReview(
   chess._id,
-  gamer7_user._id,
+  gamer7._id,
   "I love rooks",
   "I love rooks",
   5
 );
 
-const review3 = await games.addReview(
+const chess_review3 = await games.addReview(
   chess._id,
-  user5_user._id,
+  user5._id,
   "Wait what is this",
   "i wanted to open google where am i",
   4
@@ -555,7 +741,7 @@ let JohnDoe_form_chess = [
   { field_name: "Favorite opening", value: "Queen's Gambit" },
 ];
 
-let JohnDoe_game_chess = await users.addGame(JohnDoe_user._id, chess._id, JohnDoe_form_chess);
+let JohnDoe_game_chess = await users.addGame(JohnDoe._id, chess._id, JohnDoe_form_chess);
 
 let JohnDoe_form_balatro = [
   { field_name: "What is your favorite hand?", value: "Flush" },
@@ -563,7 +749,7 @@ let JohnDoe_form_balatro = [
   { field_name: "How many jokers do you have unlocked?", value: "150" },
 ];
 
-let JohnDoe_game_balatro = await users.addGame(JohnDoe_user._id, balatro._id, JohnDoe_form_balatro);
+let JohnDoe_game_balatro = await users.addGame(JohnDoe._id, balatro._id, JohnDoe_form_balatro);
 
 //let removeUserGame = await users.removeGame(user1._id, balatro._id);
 
