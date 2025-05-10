@@ -16,20 +16,23 @@ const exportedMethods = {
   /**
    * Adds a Game document to the Games collection.
    * @param {string} name The name of the game.
+   * @param {string} description The description of the game.
    * @param {string} dateReleased The day the game was released.
    * @param {string[]} form The form fields that a user needs to fill out in order to add the game to their user profile.
    * @returns {object} The newly created Game document (with the _id property converted to a string).
    */
-  async createGame(name, dateReleased, form) {
+  async createGame(name, description, dateReleased, form) {
 
     // Input validation.
     name = checkString(name, "name", "createGame");
+    description = checkString(description, "description", "createGame");
     dateReleased = checkDateReleased(dateReleased, "createGame");
     form = checkForm(form);
 
     // Create the new game object.
     let newGame = {
       name: name,
+      description, description,
       dateReleased: dateReleased,
       numPlayers: 0,
       form: form,

@@ -176,11 +176,9 @@ router
             "POST games/:id/form"
         );
 
-        // I don't think I can easily send arrays to the server using a form, so I 
-        // send the form as an object, and reformat it here for the checkUserGameInfo function
         let body = req.body;
         let userGameInfo = [];
-        for(const elem in body){
+        for(const elem in body){        // Fill in the userGameInfo array using the req.body values
             userGameInfo.push({field_name: elem, value: body[elem]});
         }
         const game = await games.getGameById(gameId);
