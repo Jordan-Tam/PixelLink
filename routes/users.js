@@ -302,10 +302,11 @@ router.route('/:id/friends')
                 friendsArr.push(friend); //array of users(friends)
             }
             return res.render('friends-list', {
+                title: `${user.username}'s Friends List`,
+                stylesheet: "/public/css/friends-list.css",
                 id: user._id,
                 friends: friendsArr,
                 username: user.username,
-                title: `${user.username}'s Friends List`
             });
         } catch (error) {
             return res.status(500).json({error});
@@ -365,6 +366,54 @@ router.route('/:id/friends')
                 error_message: `${error.function}: ${error.error}`
             });
         }
+    });
+
+router.route('/:id/followers')
+    .get(async (req, res) => {
+
+        try {
+
+            // Validate the "id" path variable.
+            req.params.id = checkId(req.params.id, "PATCH /:id/username", "User");
+        
+        } catch (e) {
+
+            return res.status(e.status).render('error', {
+                status: e.status,
+                error_message: e.error
+            });
+        
+        }
+
+        try {
+
+            const user = await users.getUserById(req.params.id);
+
+            let followers = user.followers;
+            
+            let followersArray = [];
+
+            for (let follower_id of followers) {
+                const follower = await users.getUserById(follower_id);
+                followersArray.push(follower);
+            }
+
+            return res.render("followers-list", {
+                title: `${user.username}'s Followers`,
+                stylesheet: "/public/css/followers-list.css",
+                user,
+                followers: followersArray
+            });
+
+        } catch (e) {
+
+            return res.status(e.status).render("error", {
+                status: e.status,
+                error_message: e.error
+            });
+
+        }
+
     });
 
 router.route('/:id/comment/:commentId')

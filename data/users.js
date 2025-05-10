@@ -512,7 +512,7 @@ const exportedMethods = {
             throw {
                 status: 500,
                 function: "addFriend",
-                error: `Could not update follower list of user who is being friended.`
+                error: `Could not update follower list of user who is being followed.`
             };
         }
         
@@ -540,8 +540,7 @@ const exportedMethods = {
  
         // Check if there is a user associated with "friendId".
         // This function will throw an error if no user is found.
-        await this.getUserById(friendId);
-
+        const friend_to_remove = await this.getUserById(friendId);
         
         // Get the Users collection.
         const userCollection = await users();
@@ -560,6 +559,21 @@ const exportedMethods = {
                 function: "removeFriend",
                 error: `Could not update user's friends list`
             };
+        }
+
+        //
+        const updateInfo2 = await userCollection.findOneAndUpdate(
+            {_id: new ObjectId(friendId)},
+            {$pull: {followers: id}},
+            {returnDocument: 'after'}
+        );
+
+        if (!updateInfo2) {
+            throw {
+                status: 500,
+                function: "removeFriend",
+                error: `Could not update follower list of user who is being unfollowed.`
+            }; 
         }
 
         updateInfo._id = updateInfo._id.toString();
