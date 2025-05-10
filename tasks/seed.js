@@ -398,7 +398,7 @@ const clashOfClans_form = [
       "P.E.K.K.A.",
       "Baby Dragon",
       "Miner",
-      "Electo Dragon",
+      "Electro Dragon",
       "Yeti",
       "Dragon Rider",
       "Electro Titan",
@@ -720,6 +720,22 @@ const gamer7_comment3 = await comments.createComment(
 // Game Reviews
 //////////////////////////////////////////////////////////////
 
+const balatro_review1 = await games.addReview(
+  balatro._id,
+  JamesMom._id,
+  "Too addicting",
+  "My son won't stop playing this and I need him to get a job.",
+  1
+)
+
+const balatro_review2 = await games.addReview(
+  balatro._id,
+  James12345._id,
+  "90% of Gambling Addicts Quit Right Before They're About to Hit it Big",
+  "90% of Gambling Addicts Quit Right Before They're About to Hit it Big. 90% of Gambling Addicts Quit Right Before They're About to Hit it Big. 90% of Gambling Addicts Quit Right Before They're About to Hit it Big. 90% of Gambling Addicts Quit Right Before They're About to Hit it Big. 90% of Gambling Addicts Quit Right Before They're About to Hit it Big.",
+  5
+);
+
 const chess_review1 = await games.addReview(
   chess._id,
   JohnDoe._id,
@@ -744,12 +760,77 @@ const chess_review3 = await games.addReview(
   4
 );
 
+const minecraft_review1 = await games.addReview(
+  minecraft._id,
+  user5._id,
+  "I give this game 5 stars",
+  "I give this game 5 stars",
+  1
+);
+
+const minecraft_review2 = await games.addReview(
+  minecraft._id,
+  gamer7._id,
+  "Did anyone get into this game because of the Minecraft movie?",
+  "This game is nothing like the movie. My avatar looks nothing like Jack Black",
+  2
+);
+
+const minecraft_review3 = await games.addReview(
+  minecraft._id,
+  batman._id,
+  "Much better than Chess",
+  "Not that I suck at chess, but I found this game significantly more fun to play.",
+  5
+);
+
+const minecraft_review4 = await games.addReview(
+  minecraft._id,
+  superman._id,
+  "Batman is lying",
+  "He is awful at chess.",
+  5
+);
+
+const minecraft_review5 = await games.addReview(
+  minecraft._id,
+  william._id,
+  "Not as good as Clash of Clans",
+  "I think Clash of Clans is a better game. My son Josh also agrees.",
+  2
+);
+
+const minecraft_review6 = await games.addReview(
+  minecraft._id,
+  Josh6._id,
+  "THIS IS A GREAT GAME!!!",
+  "I LOVE IT I LOVE IT I LOVE IT I LOVE IT",
+  5
+);
+
+const marvelRivals_review1 = await games.addReview(
+  marvelRivals._id,
+  stevens._id,
+  "Act like an angel and dress like crazy",
+  "Da da da da",
+  5
+)
 
 //////////////////////////////////////////////////////////////
 // Add Games to User Profiles
 //////////////////////////////////////////////////////////////
 
-let JohnDoe_form_chess = [
+await users.addGame(admin._id, chess._id, [
+  { field_name: "Platform", value: "Chess.com"},
+  { field_name: "Username on platform", value: "Admin"},
+  { field_name: "Do you prefer playing as White or Black?", value: "Black" },
+  { field_name: "Bullet rating", value: "1200" },
+  { field_name: "Blitz rating", value: "1500" },
+  { field_name: "Rapid rating", value: "2000" },
+  { field_name: "Favorite opening", value: "French Defense" },
+]);
+
+await users.addGame(JohnDoe._id, chess._id, [
   { field_name: "Platform", value: "Chess.com"},
   { field_name: "Username on platform", value: "MagnusCarlsen"},
   { field_name: "Do you prefer playing as White or Black?", value: "White" },
@@ -757,17 +838,97 @@ let JohnDoe_form_chess = [
   { field_name: "Blitz rating", value: "600" },
   { field_name: "Rapid rating", value: "600" },
   { field_name: "Favorite opening", value: "Queen's Gambit" },
-];
+]);
 
-let JohnDoe_game_chess = await users.addGame(JohnDoe._id, chess._id, JohnDoe_form_chess);
+await users.addGame(Jordan._id, chess._id, [
+  { field_name: "Platform", value: "Chess.com"},
+  { field_name: "Username on platform", value: "Jordan"},
+  { field_name: "Do you prefer playing as White or Black?", value: "Black" },
+  { field_name: "Bullet rating", value: "1200" },
+  { field_name: "Blitz rating", value: "1200" },
+  { field_name: "Rapid rating", value: "1200" },
+  { field_name: "Favorite opening", value: "Caro-Kann Defense" },
+]);
 
-let JohnDoe_form_balatro = [
+await users.addGame(superman._id, chess._id, [
+  { field_name: "Platform", value: "Lichess"},
+  { field_name: "Username on platform", value: "Superman"},
+  { field_name: "Do you prefer playing as White or Black?", value: "White" },
+  { field_name: "Bullet rating", value: "3000" },
+  { field_name: "Blitz rating", value: "2345" },
+  { field_name: "Rapid rating", value: "2999" },
+  { field_name: "Favorite opening", value: "London System" },
+]);
+
+await users.addGame(batman._id, chess._id, [
+  { field_name: "Platform", value: "Lichess"},
+  { field_name: "Username on platform", value: "Batman"},
+  { field_name: "Do you prefer playing as White or Black?", value: "Black" },
+  { field_name: "Bullet rating", value: "231" },
+  { field_name: "Blitz rating", value: "447" },
+  { field_name: "Rapid rating", value: "582" },
+  { field_name: "Favorite opening", value: "Damiano Defence" },
+]);
+
+await users.addGame(JohnDoe._id, balatro._id, [
   { field_name: "What is your favorite hand?", value: "Flush" },
   { field_name: "What is your favorite legendary joker?", value: "Perkeo" },
   { field_name: "How many jokers do you have unlocked?", value: "150" },
-];
+]);
 
-let JohnDoe_game_balatro = await users.addGame(JohnDoe._id, balatro._id, JohnDoe_form_balatro);
+await users.addGame(admin._id, clashOfClans._id, [
+  { field_name: "Username", value: "admin1" },
+  { field_name: "Do you participate in Clan Wars?", value: "No" },
+  { field_name: "Town Hall level", value: "17" },
+  { field_name: "Favorite elixir troop", value: "Barbarian" },
+  { field_name: "Favorite dark elixir troop", value: "Minion" },
+  { field_name: "Favorite Hero", value: "Barbarian King" }
+]);
+
+await users.addGame(gamer7._id, clashOfClans._id, [
+  { field_name: "Username", value: "Supercell" },
+  { field_name: "Do you participate in Clan Wars?", value: "No" },
+  { field_name: "Town Hall level", value: "12" },
+  { field_name: "Favorite elixir troop", value: "Goblin" },
+  { field_name: "Favorite dark elixir troop", value: "Valkyrie" },
+  { field_name: "Favorite Hero", value: "Minion Prince" }
+]);
+
+await users.addGame(user5._id, clashOfClans._id, [
+  { field_name: "Username", value: "User 5" },
+  { field_name: "Do you participate in Clan Wars?", value: "Yes" },
+  { field_name: "Town Hall level", value: "10" },
+  { field_name: "Favorite elixir troop", value: "Wizard" },
+  { field_name: "Favorite dark elixir troop", value: "Hog Rider" },
+  { field_name: "Favorite Hero", value: "Royal Champion" }
+]);
+
+await users.addGame(JamesMom._id, clashOfClans._id, [
+  { field_name: "Username", value: "James's Mom" },
+  { field_name: "Do you participate in Clan Wars?", value: "Yes" },
+  { field_name: "Town Hall level", value: "16" },
+  { field_name: "Favorite elixir troop", value: "Dragon Rider" },
+  { field_name: "Favorite dark elixir troop", value: "Apprentice Warden" },
+  { field_name: "Favorite Hero", value: "Barbarian King" }
+]);
+
+await users.addGame(superman._id, clashOfClans._id, [
+  { field_name: "Username", value: "BatmanSucksAtChess" },
+  { field_name: "Do you participate in Clan Wars?", value: "Yes" },
+  { field_name: "Town Hall level", value: "17" },
+  { field_name: "Favorite elixir troop", value: "Yeti" },
+  { field_name: "Favorite dark elixir troop", value: "Headhunter" },
+  { field_name: "Favorite Hero", value: "Grand Warden" }
+]);
+
+await users.addGame(batman._id, clashOfClans._id, [
+  { field_name: "Username", value: "IDoNotSuckAtChess" },
+  { field_name: "Do you participate in Clan Wars?", value: "No" },
+  { field_name: "Town Hall level", value: "11" },
+  { field_name: "Favorite elixir troop", value: "Electro Dragon" },
+  { field_name: "Favorite dark elixir troop", value: "Hog Rider" },
+  { field_name: "Favorite Hero", value: "Archer Queen" }
+]);
 
 //let removeUserGame = await users.removeGame(user1._id, balatro._id);
 
