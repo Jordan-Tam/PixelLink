@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {checkString, checkDateReleased, checkForm, checkUserGameInfo, checkId} from '../helpers.js';
+import {checkString, checkDateReleased, checkForm, checkUserGameInfo, checkId, checkRating, stringToNumber} from '../helpers.js';
 import games from '../data/games.js';
 import users from "../data/users.js";
 import comments from "../data/comments.js";
@@ -331,7 +331,25 @@ router
                });
             }
             const userId = checkString(req.session.user._id, "POST /:id/review", "User");
+            const game = await games.getGameById(gameId);
+            let alreadyReviewed = false;
+            for (let review of game.reviews) {
+                if(review.userId.toString() === userId){
+                    alreadyReviewed = true;
+                    break;
+                }
+            }
+
+            if(alreadyReviewed){ //duplicate review check
+                return res.status(400).render("error", {
+                    status: 400,
+                    error_message: "You can only leave one review per game.",
+                    stylesheet: "/public/css/error.css",
+                    title: "400 Error"
+                  });
+            }
             let {title, content, rating} = req.body; //input validation
+            rating = stringToNumber(rating, "addReview");
             rating = checkRating(rating, "addReview");
             await games.addReview(gameId, userId, title, content, rating);
             return res.redirect(`/games/${gameId}`);
