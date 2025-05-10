@@ -1,6 +1,19 @@
 * {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    line-height: 2rem;
 }
+
+html {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+body {
+    width: 45%;
+}
+
 
 h1 {
     flex-direction: column;
@@ -11,6 +24,10 @@ h1 {
 
 img {
     margin-bottom: 50px;
+}
+
+#tagline {
+    font-style: italic;
 }
 
 .centered-form {
@@ -25,6 +42,14 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.centered-text {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 a {
