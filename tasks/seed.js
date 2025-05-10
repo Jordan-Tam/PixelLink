@@ -796,7 +796,7 @@ const minecraft_review5 = await games.addReview(
   minecraft._id,
   william._id,
   "Not as good as Clash of Clans",
-  "I think Clash of Clans is a better game. My son Josh also agrees.",
+  "I think Clash of Clans is a better game. I am certain that my son Josh feels the same way.",
   2
 );
 

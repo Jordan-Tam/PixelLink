@@ -18,8 +18,13 @@
         {{/if}}
     </div>
 
+    <div>
+        <h3>Number of Reviews:</h3>
+        <p>{{game.reviews.length}}</p>
+    </div>
+
     <div class="rating-div">
-        <h3>Rating:</h3>
+        <h3>Average Rating:</h3>
         <p>{{game.averageRating}}</p>
     </div>
 
@@ -37,11 +42,15 @@
         {{else}}
             <p>No reviews.</p>
         {{/if}}
+        <h3>Add a Review:</h3>
         <p id="reviewError" {{reviewError_hidden}}>{{reviewError_message}}</p>
         <form id="reviewForm" action="/games/{{game._id}}/reviews" method="POST">
-            <label for="title">Title:</label>
+            <label for="title">Review Title:</label>
             <input type="text" id="title" name="title">
+            <br><br>
+            <label for="content">Review Content:</label>
             <input type="text" id="content" name="content">
+            <br><br>
             <label for="rating">Rating:
                 <select id="rating" name="rating" required>
                     <option value="1">1</option>
@@ -51,6 +60,7 @@
                     <option value="5">5</option>
                 </select>
             </label>
+            <br><br>
             <input type="submit" id="reviewSubmit" name="reviewSubmit" value="add review!">
         </form> 
     </div>
@@ -61,7 +71,7 @@
             {{#each game.comments}}
                 <div class="commentDiv">
                     <p class="usernameParagraph">{{this.username}}</p>
-                    <p class="dateTimeParagraph">{{this.dateString}} • {{this.timeString}}</p>
+                    <p class="dateTimeParagraph">{{this.date}} • {{this.time}}</p>
                     <p class="contentParagraph">{{this.content}}</p>
                 </div>
                 {{#if ../is_admin}}
