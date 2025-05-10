@@ -53,21 +53,18 @@
         </form> 
     </div>
 
-    <div class="comments-div">
+    <div>
         <h3>Comments:</h3>
         {{#if game.comments.length}}
-        <ul>
             {{#each game.comments}}
-            <li>
-                <h4>{{this.content}}</h4>
-                <p>
-                    {{this.timeString}}  -  {{this.dateString}}
-                </p>
-            </li>
+                <div class="commentDiv">
+                    <p class="usernameParagraph">{{this.username}}</p>
+                    <p class="dateTimeParagraph">{{this.date}} • {{this.time}}</p>
+                    <p class="contentParagraph">{{this.content}}</p>
+                </div>
             {{/each}}
-        </ul>
         {{else}}
-        <p>No comments.</p>
+            <p>No comments.</p>
         {{/if}}
         <form action="games/{{game._id}}/comment" method="POST"> 
             <input type="text" id="addComment" name="addComment">

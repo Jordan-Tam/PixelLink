@@ -23,10 +23,10 @@
 
         <form id="changePasswordForm" action="/users/{{user._id}}" method="POST">
             <label for="password">Change password:</label>
-            <input type="text" id="password" name="password">
+            <input type="password" id="password" name="password">
             <br>
             <label for="confirmPassword">Confirm new password:</label>
-            <input type="text" id="confirmPassword" name="confirmPassword">
+            <input type="password" id="confirmPassword" name="confirmPassword">
             <input type="submit" id="changePasswordSubmit" name="changePasswordSubmit" value="Change Password">
             <input type="hidden" name='_method' value="PATCH">
         </form>
