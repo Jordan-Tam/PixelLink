@@ -181,7 +181,7 @@ const exportedMethods = {
             };
         }
 
-        // Update all the comments.
+        // Update all the user profile comments.
         let usersList = await this.getAllUsers();
 
         for (let user of usersList) {
@@ -206,8 +206,52 @@ const exportedMethods = {
             }
         }
 
-        // TODO: let gamesList = await gamesDataFunctions.getAllGames();
-        // TODO: change reviews AND comments
+        // Update all the game profile comments and reviews.
+        const gamesCollection = await games();
+
+        let gamesList = await gamesDataFunctions.getAllGames();
+
+        for (let game of gamesList) {
+            for (let i = 0; i < game.comments.length; i++) {
+                if (game.comments[i].userId === id) {
+                    game.comments[i].username = username;
+                }
+            }
+
+            for (let i = 0; i < game.reviews.length; i++) {
+                if (game.reviews[i].userId === id) {
+                    game.reviews[i].username = username;
+                }
+            }
+
+            const updateCommentsInfo = await gamesCollection.findOneAndUpdate(
+                {_id: new ObjectId(game._id)},
+                {$set: {comments: game.comments}},
+                {returnDocument: 'after'}
+            )
+
+            if (!updateCommentsInfo) {
+                throw {
+                    status: 500,
+                    function: "updateUsername",
+                    error: "Could not update username of user's previous comments."
+                };
+            }
+
+            const updateReviewsInfo = await gamesCollection.findOneAndUpdate(
+                {_id: new ObjectId(game._id)},
+                {$set: {reviews: game.reviews}},
+                {returnDocument: 'after'}
+            )
+
+            if (!updateReviewsInfo) {
+                throw {
+                    status: 500,
+                    function: "updateUsername",
+                    error: "Could not update username of user's previous comments."
+                };
+            }
+        }
 
 
         updateInfo._id = updateInfo._id.toString();
