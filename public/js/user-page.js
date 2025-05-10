@@ -1,3 +1,7 @@
+const UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const LOWERCASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
+const NUMBERS = "0123456789";
+
 // Change Username Form
 let changeUsernameForm = document.getElementById("changeUsernameForm");
 let username = document.getElementById("username");
@@ -43,11 +47,64 @@ if (changeUsernameForm !== null) {
 // Change Password Form
 let changePasswordForm = document.getElementById("changePasswordForm");
 let password = document.getElementById("password");
+let confirmPassword = document.getElementById("confirmPassword");
 let changePasswordSubmit = document.getElementById("changePasswordSubmit");
 let changePasswordError = document.getElementById("changePasswordError");
 
 if (changePasswordForm !== null) {
     changePasswordForm.addEventListener("submit", (event) => {
+
+        // Rehide the error paragraph.
+        error.hidden = true;
+
+        let password_input = password.value;
+        let confirmPassword_input = confirmPassword.value;
+
+        if (password_input !== confirmPassword_input) {
+            event.preventDefault();
+            error.innerHTML = "Password and Confirm Password fields do not match.";
+            error.hidden = false;
+            return;
+        }
+
+        if (password_input.length < 8) {
+            event.preventDefault();
+            error.innerHTML = "Password must be 8+ characters.";
+            error.hidden = false;
+            return;
+        }
+
+        const characters = {
+            lower: 0,
+            upper: 0,
+            special: 0,
+            number: 0
+        };
+
+        for (let char of password_input) {
+            if (UPPERCASE_LETTERS.indexOf(char) > -1) {
+                characters.upper++;
+            } else if (LOWERCASE_LETTERS.indexOf(char) > -1) {
+                characters.lower++;
+            } else if (NUMBERS.indexOf(char) > -1) {
+                characters.number++;
+            } else {
+                if (" ".indexOf(char) > -1) {
+                    event.preventDefault();
+                    error.innerHTML = "Password cannot have spaces.";
+                    error.hidden = false;
+                    return;
+                }
+                characters.special++;
+            }
+        }
+
+        if (characters['lower'] === 0 || characters['upper'] === 0 || characters['special'] === 0 || characters['number'] === 0) {
+            event.preventDefault();
+            error.innerHTML = "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.";
+            error.hidden = false;
+            return;
+        }
 
     });
 }

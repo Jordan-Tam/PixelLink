@@ -8,7 +8,23 @@ const router = Router();
 router.route('/')
     .get(async (req, res) => {
         try {
+
+            // Get list of all games.
             const gamesList = await games.getAllGames(true);
+
+            // Get user document of the logged-in user.
+            const user = await users.getUserById(req.session.user._id);
+
+            // Add a property to all games that are already in the logged-in user's profile.
+            for (let i = 0; i < gamesList.length; i++) {
+                for (let userGame of user.games) {
+                    if (gamesList[i].name === userGame.gameName) {
+                        gamesList[i].game_added = true;
+                        continue;
+                    }
+                }
+            }
+
             return res.render('game-list', {
                 games: gamesList,
                 title: "Games List",

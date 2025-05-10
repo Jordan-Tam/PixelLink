@@ -21,7 +21,13 @@
           <p><span>Release Date:</span> {{this.dateReleased}}</p>
         </div>
         <div class="add-to-profile-div">
-          <a href="/games/{{this._id}}/form">Add to Profile</a>
+          <a href="/games/{{this._id}}/form">
+            {{#if this.game_added}}
+            Edit Profile
+            {{else}}
+            Add to Profile
+            {{/if}}
+          </a>
         </div>
       </div>
     {{/each}}
