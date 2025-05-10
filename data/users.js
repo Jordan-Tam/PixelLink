@@ -270,8 +270,11 @@ const exportedMethods = {
         // This function will throw an error if no user is found.
         await this.getUserById(id);
 
+        // Hash the password.
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
         const updatedUser = {
-            password
+            password: hashedPassword
         };
 
         const userCollection = await users();

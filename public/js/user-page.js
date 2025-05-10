@@ -12,7 +12,7 @@ if (changeUsernameForm !== null) {
     changeUsernameForm.addEventListener("submit", (event) => {
 
         // Rehide the error paragraph.
-        error.hidden = true;
+        changeUsernameError.hidden = true;
 
         // Get user input.
         let username_input = username.value.trim();
@@ -55,10 +55,15 @@ if (changePasswordForm !== null) {
     changePasswordForm.addEventListener("submit", (event) => {
 
         // Rehide the error paragraph.
-        error.hidden = true;
+        changePasswordError.hidden = true;
 
         let password_input = password.value;
         let confirmPassword_input = confirmPassword.value;
+
+        console.log("hi");
+        console.log("Password: " + password_input);
+        console.log("Confirm: " + confirmPassword_input);
+        console.log("bye");
 
         if (password_input !== confirmPassword_input) {
             event.preventDefault();
@@ -69,7 +74,7 @@ if (changePasswordForm !== null) {
 
         if (password_input.length < 8) {
             event.preventDefault();
-            error.innerHTML = "Password must be 8+ characters.";
+            error.innerHTML = "Password must be 8+ characters...";
             error.hidden = false;
             return;
         }
