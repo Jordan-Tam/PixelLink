@@ -390,6 +390,50 @@ router
             });
         }
     });
+
+router
+    .route("/:id/comment")
+    .post(async (req, res) => {
+
+        // Validate the "id" path variable.
+        try {
+
+            req.params.id = checkId(req.params.id, "POST /:id", "Game");
+        
+        } catch (e) {
+
+            return res.status(e.status).render('error', {
+                status: e.status,
+                error_message: e.error,
+                stylesheet: "/public/css/error.css",
+                title: `${e.status} Error`
+            });
+        }
+
+        // Add the comment.
+        try {
+            const game = await games.getGameById(req.params.id);
+            await comments.createComment("game", req.params.id, req.session.user._id, req.body.comment);
+        } catch (e) {
+            
+            return res.status(e.status).render('game-page', {
+                game: game,
+                title: `${req.session.user.username}'s Profile`,
+                stylesheet: "/public/css/game-page.css",
+                script: "/public/js/game-page.js",
+                commentError: "hidden",
+                reviewError: "hidden",
+                commentError_message: e.error
+                //revewError_message?
+            });
+        
+        }
+
+        // Redirect to "GET /:id" to re-render the page.
+        return res.redirect(`/games/${req.params.id}`);
+        
+    })
+
 router
     .route("/:gameId/comment/:commentId")
     .delete(async (req, res) => {
