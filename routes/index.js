@@ -121,16 +121,16 @@ const constructorMethod = (app) => {
         res.sendFile(path.resolve("static/about.html"));
     })
 
-    // 404 Error
-    app.get("/error", (req, res) => {
-        res.sendFile(path.resolve("static/error.html"));
-    });
-
     // User routes
     app.use("/users", userRoutes);
 
     // Game routes
     app.use("/games", gameRoutes);
+
+    // 404 Error
+    app.get("/error", (req, res) => {
+        res.sendFile(path.resolve("static/error.html"));
+    });
 
     // Redirect everything else to /error
     app.use("*", (req, res) => {

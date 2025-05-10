@@ -127,7 +127,8 @@ const exportedMethods = {
 
         return {
             username: user.username,
-            _id: user._id.toString()
+            _id: user._id.toString(),
+            admin: user.admin
             // All other user info to add to the cookie.
         };
 
