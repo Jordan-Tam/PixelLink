@@ -71,12 +71,12 @@
                             <p><span class="gameFieldName">{{this.field_name}}:</span> {{this.value}}</p>
                         {{/if}}
                     {{/each}}
-                    <a href="/games/{{this.gameId}}/form">Edit Game Information</a>
                     {{#if ../is_own_profile}}
-                    <form action="/games/{{this.gameId}}/form" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="submit" value="Remove Game">
-                    </form>
+                        <a href="/games/{{this.gameId}}/form">Edit Game Information</a>
+                        <form action="/games/{{this.gameId}}/form" method="POST">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="submit" value="Remove Game">
+                        </form>
                     {{/if}}
                 </div>
             {{/each}}
@@ -92,16 +92,23 @@
                     <p class="usernameParagraph">{{this.username}}</p>
                     <p class="dateTimeParagraph">{{this.date}} • {{this.time}}</p>
                     <p class="contentParagraph">{{this.content}}</p>
-                    {{#if ../is_own_profile}}
-                    <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="submit" value = "delete comment">
-                    </form>
-                    <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
-                        <input type="hidden" name="_method" value="PATCH">
-                        <input type="text" class="editComment" name="editComment" value="{{this.content}}">
-                        <input type="submit" value = "edit comment">
-                    </form>
+                    {{#if this.is_own_comment}}
+                        <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="submit" value = "delete comment">
+                        </form>
+                        <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
+                            <input type="hidden" name="_method" value="PATCH">
+                            <input type="text" class="editComment" name="editComment" value="{{this.content}}">
+                            <input type="submit" value = "edit comment">
+                        </form>
+                    {{else}}
+                        {{#if ../is_own_profile}}
+                            <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="submit" value = "delete comment">
+                            </form>
+                        {{/if}}
                     {{/if}}
                 </div>
             {{/each}}

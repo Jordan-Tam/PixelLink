@@ -110,6 +110,13 @@ router.route('/:id')
             });
         }
 
+        // Add a property to all of this user's comments indicating whether that comment was made by the currently signed-in user.
+        for (let comment of user.comments) {
+            if (comment.userId === req.session.user._id.toString()) {
+                comment.is_own_comment = true;
+            }
+        }
+
         // Check if this is the user's own profile.
         let is_own_profile = false;
         if (req.session.user._id === req.params.id) {
