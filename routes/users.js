@@ -13,11 +13,22 @@ router.route('/')
         try {
             let allUsers = await users.getAllUsers(true);
             const allGames = await games.getAllGames(true);
-            allUsers = allUsers.filter((elem) => elem.username !== req.session.user.username);    // Remove yourself
+            let allOtherUsers = allUsers.filter((elem) => elem.username !== req.session.user.username);    // Remove yourself
+            let myself = allUsers.filter((elem) => elem.username === req.session.user.username)[0]; // Find yourself
+            let userFollowPairs = []
+            for(let u of allOtherUsers){
+                if(myself.friends.includes(u._id.toString())){  // Check if we are following each user
+                    userFollowPairs.push({user: u, following: true})
+                }
+                else{
+                    userFollowPairs.push({ user: u, following: false });
+                }
+            }
+            
             return res.render("user-list", {
                 title: "User Browser",
                 stylesheet: "/public/css/user-list.css",
-                users: allUsers,
+                users: userFollowPairs,
                 games: allGames,
                 script: "/public/js/user-list.js"
             })
