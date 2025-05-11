@@ -329,7 +329,8 @@ router
                 status: 403,
                 error_message: "Permission Denied. Must be logged in to post a review.",
                 stylesheet: "/public/css/error.css",
-                title: "403 Error"
+                title: "403 Error",
+                link: "/"
                });
             }
             const userId = checkString(req.session.user._id, "POST /:id/review", "User");
@@ -352,6 +353,8 @@ router
                   });
             }
             let {title, content, rating} = req.body; //input validation
+            title = title.trim();
+            content = content.trim();
             rating = stringToNumber(rating, "addReview");
             rating = checkRating(rating, "addReview");
             await games.addReview(gameId, userId, title, content, rating);
@@ -367,7 +370,58 @@ router
     });
 router
     .route("/:gameId/reviews/:reviewId")
-    .patch()
+    .patch(async (req, res) => {
+        try {
+            const gameId = checkId(req.params.gameId, "PATCH /:gameId/reviews/:reviewId", "Game");
+            //check logged in and users own review
+            if(!req.session.user){ //get user, check if logged in
+                return res.status(403).render("error", {
+                 status: 403,
+                 error_message: "Permission Denied. Must be logged in to post a review.",
+                 stylesheet: "/public/css/error.css",
+                 title: "403 Error",
+                 link: "/"
+                });
+            }
+            const game = await games.getGameById(gameId);
+            const reviewId = checkId(req.params.reviewId, "PATCH /:gameId/reviews/:reviewId", "Review");
+            let own_review = false;
+            for (let i = 0; i < game.reviews.length; i++) { //find the corresponding review
+                if (game.reviews[i]._id.toString() === reviewId) {
+                    if(game.reviews[i].userId === req.session.user._id){
+                        own_review = true;
+                        break;
+                    }
+                }
+            }
+            
+            if(!own_review){
+                return res.status(403).render("error", {
+                    status: 403,
+                    error_message: "Permission Denied. You can only edit your own review.",
+                    stylesheet: "/public/css/error.css",
+                    title: "403 Error",
+                    link: `/games/${gameId}`
+                   });
+            }
+            
+            let {title, content, rating} = req.body;
+            title = title.trim();
+            content = content.trim();
+            rating = stringToNumber(rating, "addReview");
+            rating = checkRating(rating, "addReview");
+            await games.updateReview(reviewId, title, content, rating); //update the review
+            return res.redirect(`/games/${gameId}`);
+        } catch (error) {
+            console.log(error); //TEST
+            return res.status(error.status || 500).render("error", {
+                status: error.status || 500,
+                error_message: error.error,
+                stylesheet: "/public/css/error.css",
+                title: `${error.status || 500} Error`
+            });
+        }
+    })
     .delete(async (req, res) => {
         try {
             const gameId = checkId(req.params.gameId, "DELETE /:gameId/reviews/:reviewId", "Game");

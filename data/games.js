@@ -359,7 +359,7 @@ const exportedMethods = {
     const gamesCollection = await games();
 
     // Get game associated with the review.
-    const game = gamesCollection.findOne({
+    const game = await gamesCollection.findOne({
       "reviews._id": new ObjectId(reviewId)
     });
 

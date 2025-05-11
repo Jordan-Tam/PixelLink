@@ -1,3 +1,13 @@
+// Update Review Form
+let updateReviewForm = document.getElementById("updateReviewForm");
+let editReviewButton = document.getElementById("editReviewButton");
+
+if(updateReviewForm !== null) {
+    editReviewButton.addEventListener("click", (event) => {
+        updateReviewForm.hidden = false; //show update form
+        //input checking
+    });
+}
 
 //Review Form
 let reviewForm = document.getElementById("reviewForm");

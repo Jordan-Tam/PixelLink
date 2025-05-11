@@ -149,7 +149,10 @@ app.use("/signout", async (req, res, next) => {
   next();
 });
 
-app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
+app.engine("handlebars", exphbs.engine({
+   defaultLayout: "main",
+   helpers: {eq: (a, b) => a === b} //equality helper
+  }));
 app.set("view engine", "handlebars");
 configRoutesFunction(app);
 

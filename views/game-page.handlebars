@@ -43,6 +43,26 @@
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="submit" value="delete {{this.username}}'s review">
                 </form> 
+                <button id="editReviewButton">Edit {{this.username}}'s Review</button>
+                <form action="/games/{{../game._id}}/reviews/{{this._id}}" method="POST" id="updateReviewForm" hidden> 
+                    <input type="hidden" name="_method" value="PATCH">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" value="{{this.title}}" required>
+                    <br><br>
+                    <label for="content">Content:</label>
+                    <input type="text" id="content" name="content" value="{{this.content}}" required>
+                    <br><br>
+                    <label for="rating">Rating:
+                        <select id="rating" name="rating" required>
+                            <option value="1" {{#if (eq this.rating 1)}}selected{{/if}}>1</option>
+                            <option value="2" {{#if (eq this.rating 2)}}selected{{/if}}>2</option>
+                            <option value="3" {{#if (eq this.rating 3)}}selected{{/if}}>3</option>
+                            <option value="4" {{#if (eq this.rating 4)}}selected{{/if}}>4</option>
+                            <option value="5" {{#if (eq this.rating 5)}}selected{{/if}}>5</option>
+                        </select>
+                    </label>
+                    <input type="submit" value="update {{this.username}}'s review">
+                </form> 
                 {{/if}}
             {{/each}}
         {{else}}
