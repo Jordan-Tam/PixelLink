@@ -82,7 +82,10 @@ router.route('/:id')
         try {
             req.params.id = checkId(req.params.id, "GET /users/:id", "User");
         } catch (e) {
-
+            return res.status(e.status).render("error", {
+                status: e.status,
+                error_message: e.error
+            });
         }
 
         // Get the user associated with req.params.id.
@@ -90,7 +93,10 @@ router.route('/:id')
         try {
             user = await users.getUserById(req.params.id);
         } catch (e) {
-
+            return res.status(e.status).render("error", {
+                status: e.status,
+                error_message: e.error
+            });
         }
 
         // Check if this is the user's own profile.

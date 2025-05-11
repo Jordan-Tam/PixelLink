@@ -63,7 +63,6 @@
     <div>
         <h3> Games: </h3>
         {{#if user.games}}
-
             {{#each user.games}}
                 <div class="gameDiv">
                     <h4><a href="/games/{{this.gameId}}" class="gameTitle">{{this.gameName}}</a></h4>
@@ -81,38 +80,6 @@
                     {{/if}}
                 </div>
             {{/each}}
-
-        <ul>
-            {{#each user.games}}
-            <li> 
-                <a href="/games/{{this.gameId}}">{{this.gameName}}</a>
-                <ul>
-                {{#each this.userGameInfo}}
-                {{#if this.value.length}}
-                    <li>{{this.field_name}}: {{this.value}}</li>
-                {{/if}}
-                {{/each}}
-                </ul>
-                <a href="/games/{{this.gameId}}/form">Edit Game Information</a>
-
-                {{#if ../is_own_profile}}
-                <form action="/games/{{this.gameId}}/form" method="POST">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="submit" value="Remove Game">
-                </form>
-                {{/if}}
-
-            </li>
-             {{/each}}
-        </ul>
-        {{#if is_own_profile}}
-            <a href="/games/">Find more games!</a>
-        {{/if}}
-        {{else}}
-        No games.
-        {{#if is_own_profile}}
-            <a href="/games/">Find your favorite games!</a>
-        {{/if}}
         {{/if}}
     </div>
 
