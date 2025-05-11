@@ -207,6 +207,9 @@ const exportedMethods = {
       sum += r.rating;
     }
     let newAvg = sum / (game.reviews.length);
+    if(game.reviews.length === 0){ //makes sure rating isn't NaN
+      newAvg = 0;
+    }
 
     // Update the movie document's overall rating.
     const updatedGame = {
@@ -312,7 +315,7 @@ const exportedMethods = {
     const gamesCollection = await games();
     
     // Get game associated with the review.
-    const game = gamesCollection.findOne({
+    const game = await gamesCollection.findOne({
       "reviews._id": new ObjectId(reviewId)
     });
 
@@ -338,8 +341,9 @@ const exportedMethods = {
       };
     }
 
+    let gameId = deleteReviewInfo._id.toString();
     // Update the game's average rating.
-    return this.updateAverageRating(deleteReviewInfo._id);
+    return this.updateAverageRating(gameId);
     
   },
 

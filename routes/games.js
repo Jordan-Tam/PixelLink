@@ -378,10 +378,11 @@ router
                     title: "403 Error"
                 });
             }
-            const updatedGame = await games.deleteReview(gameId, reviewId); //assuming dat function named deleteReview
+            await games.removeReview(reviewId); //remove review
 
             return res.redirect(`/games/${gameId}`);
         } catch (error) {
+            console.log(error);
             return res.status(error.status || 500).render("error", {
                 status: error.status || 500,
                 error_message: error.error,
