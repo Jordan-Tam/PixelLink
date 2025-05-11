@@ -56,14 +56,15 @@ router.route('/')
             return res.render('game-list', {
                 games: gamesList,
                 title: "Games List",
-                stylesheet: "/public/css/game-list.css"
+                stylesheet: "/public/css/game-list.css",
             });
         } catch (error) {
-            return res.status(error.status).render("error", {
-                status: error.status,
-                error_message: `${error.function}: ${error.error}`,
-                title: `${error.status} Error`,
-                stylesheet: "/public/css/error.css"
+            return res.render("add-game", {
+                title: "Create a Game",
+                stylesheet: "/public/css/add-game.css",
+                script: "/public/js/add-game.js",
+                gameFormError: "hidden",
+                gameFormError_message: error.gameFormError
             });
         }
     })
@@ -84,8 +85,8 @@ router.route('/new')
             }
             return res.render("add-game", {
                 title: "Create a Game",
-                stylesheet: "/public/css/add-game.css"
-                //can add script later
+                stylesheet: "/public/css/add-game.css",
+                script: "/public/js/add-game.js"
             });
         } catch (error) {
             return res.status(error.status).render("error", {
@@ -414,7 +415,6 @@ router
             await games.updateReview(reviewId, title, content, rating); //update the review
             return res.redirect(`/games/${gameId}`);
         } catch (error) {
-            console.log(error); //TEST
             return res.status(error.status || 500).render("error", {
                 status: error.status || 500,
                 error_message: error.error,

@@ -3,19 +3,30 @@
     <h1>Add a new Game to the Pixellink database!</h1>
 </header>
 <main>
+    <p id="gameFormError" {{gameFormError_hidden}}>{{gameFormError_message}}</p>
     <form action="/games/" method="POST" id="createGameForm">
-        <label for="gameTitle">Game Title:</label>
-        <input type="text" id="gameTitle" name="gameTitle">
+        <label for="name">Game Title:</label>
+        <input type="text" id="name" name="name">
         <label for="dateReleased">Date Released:</label>
         <input type="text" id="dateReleased" name="dateReleased" placeholder="mm/dd/yyyy">
-        <label for="gameForm">Form:</label>
-        <div>
-            <label for="field">Field Name:</label>
-            <input type="text" id="field" name="form[0][field]">
-            <label for="field_type">Field Type:</label>
-            <input type="text" id="field_type" name="form[0][type]">
-            <label for="field_options">Options:</label>
-            <input type="text" id="field_options" name="form[0][options]">
+        <label for="form">Form:</label>
+        <div id="fieldInput">
+            <div class="fieldInput">
+                <label for="field_0">Field Name:</label>
+                <input type="text" id="field_0" name="form[0][field]"><br>
+                <label for="field_type_0">Field Type:</label>
+                <select id="field_type_0" name="form[0][type]"><br>
+                    <option value="text">text</option>
+                    <option value="select">select</option>
+                    <option value="number">number</option>
+                </select>
+                <label for="field_options_0">Options:</label>
+                <input type="text" id="field_options_0" name="form[0][options]"><br>
+                <label for="domain_min_0">Domain Min:</label>
+                <input type="number" id="domain_min_0" name="form[0][domain][0]"><br>
+                <label for="domain_max_0">Domain Max:</label>
+                <input type="number" id="domain_max_0" name="form[0][domain][1]"><br>
+            </div>
         </div>
         <input type="button" id="addField" name="addField" value="Add Field"> <!-- this button will create another filed object for the admin to fill out -->
         <input type="submit" value="Create Game/Submit">
