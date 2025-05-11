@@ -55,7 +55,9 @@
     <div>
         <h3> Following: <a href="/users/{{user._id}}/friends" > {{user.friends.length}}</a> </h3>
         <h3> Followers: <a href="/users/{{user._id}}/followers" > {{user.followers.length}}</a> </h3>
-        <a href="/users">Find more users!</a>
+        {{#if is_own_profile}}
+            <a href="/users">Find more users!</a>
+        {{/if}}
     </div>
 
     <div>
@@ -84,10 +86,14 @@
             </li>
              {{/each}}
         </ul>
-        <a href="/games/">Find more games!</a>
+        {{#if is_own_profile}}
+            <a href="/games/">Find more games!</a>
+        {{/if}}
         {{else}}
         No games.
-        <a href="/games/">Find your favorite games!</a>
+        {{#if is_own_profile}}
+            <a href="/games/">Find your favorite games!</a>
+        {{/if}}
         {{/if}}
     </div>
 
@@ -100,18 +106,18 @@
                     <p class="usernameParagraph">{{this.username}}</p>
                     <p class="dateTimeParagraph">{{this.date}} • {{this.time}}</p>
                     <p class="contentParagraph">{{this.content}}</p>
+                    {{#if ../is_own_profile}}
+                    <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value = "delete comment">
+                    </form>
+                    <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
+                        <input type="hidden" name="_method" value="PATCH">
+                        <input type="text" class="editComment" name="editComment" value="{{this.content}}">
+                        <input type="submit" value = "edit comment">
+                    </form>
+                    {{/if}}
                 </div>
-                {{#if ../is_own_profile}}
-                <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="submit" value = "delete comment">
-                </form>
-                <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
-                    <input type="hidden" name="_method" value="PATCH">
-                    <input type="text" name="comment" value="edit comment">
-                    <input type="submit" value = "edit comment">
-                </form>
-                {{/if}}
             {{/each}}
         {{else}}
             <p>No comments.</p>

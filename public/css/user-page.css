@@ -36,6 +36,7 @@ a:active {
     margin-bottom: 10px;
     padding-left: 10px;
     padding-right: 10px;
+    padding-bottom: 10px;
     width: 500px;
 }
 
@@ -51,4 +52,8 @@ a:active {
 
 #changeUsernameError, #changePasswordError, #commentError {
     color: red;
+}
+
+.editComment {
+    width: 350px;
 }

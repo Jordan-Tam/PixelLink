@@ -146,7 +146,8 @@ router
             update: false,
             game: game,
             title: `Add ${game.name} to profile`,
-            script: "/public/js/gameForm.js"
+            stylesheet: "/public/css/game-form.css",
+            script: "/public/js/gameForm.js",
         });
 
       } else {
@@ -156,6 +157,7 @@ router
             update: true,
             game: game,
             title: `Edit ${game.name}`,
+            stylesheet: "/public/css/game-form.css",
             script: "/public/js/gameForm.js"
         });
 

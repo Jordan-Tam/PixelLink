@@ -1,7 +1,10 @@
 <header>
     <!-- logo img -->
-    <h1>Game Form</h1><br>
-    <p>Fill out the form below to display {{game.name}} on your profile.</p>
+    <a href="/games/" class="goBack">⇦ Go to Games List</a>
+    <br>
+    <a href="/games/{{game._id}}/" class="goBack">⇦ Go to {{game.name}}'s profile</a>
+    <h1>Game Form</h1>
+    <p>Fill out the form below to add {{game.name}} to your profile.</p>
 </header>
 <main>
     <!-- for each field object in form array, display with form tag -->
@@ -35,5 +38,4 @@
     {{else}}
         <p>No fields to fill out in {{game.name}}'s Add to Profile form!</p>
     {{/if}}
-    <a href="/games/">Back to games list</a>
 </main>

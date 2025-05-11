@@ -33,6 +33,10 @@ a:hover {
     font-weight: bold;
 }
 
+.goBack:hover {
+    color: rgb(172, 172, 255);
+}
+
 .game-div {
     display: flex;
     flex-direction: row;
