@@ -30,6 +30,26 @@ a:active {
     margin-bottom: 0.4rem;
 }
 
+.gameDiv {
+    border: 1px solid black;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    width: 500px;
+}
+
+.gameTitle {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 1.3rem;
+}
+
+.gameFieldName {
+    font-weight: bold;
+}
+
 .commentDiv {
     border: 1px solid black;
     margin-top: 10px;

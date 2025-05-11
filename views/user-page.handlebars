@@ -63,6 +63,25 @@
     <div>
         <h3> Games: </h3>
         {{#if user.games}}
+
+            {{#each user.games}}
+                <div class="gameDiv">
+                    <h4><a href="/games/{{this.gameId}}" class="gameTitle">{{this.gameName}}</a></h4>
+                    {{#each this.userGameInfo}}
+                        {{#if this.value.length}}
+                            <p><span class="gameFieldName">{{this.field_name}}:</span> {{this.value}}</p>
+                        {{/if}}
+                    {{/each}}
+                    <a href="/games/{{this.gameId}}/form">Edit Game Information</a>
+                    {{#if ../is_own_profile}}
+                    <form action="/games/{{this.gameId}}/form" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="Remove Game">
+                    </form>
+                    {{/if}}
+                </div>
+            {{/each}}
+
         <ul>
             {{#each user.games}}
             <li> 
