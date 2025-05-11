@@ -111,7 +111,8 @@ router.route('/:id')
                 stylesheet: "/public/css/game-page.css",
                 game: game,
                 script: "/public/js/game-page.js",
-                is_admin: user.admin
+                is_admin: user.admin,
+                user: user
             });
         } catch (error) {
             return res.status(error.status).render("error", {
