@@ -15,7 +15,7 @@ a:active {
     color: rgb(0, 0, 0);
 }
 
-#goBack {
+.goBack {
     font-size: 1.5rem;
     font-weight: bold;
 }

@@ -1,5 +1,8 @@
 <header>
-    <h1>{{username}}'s friends list</h1>
+    <a href="/users/" class="goBack">⇦ Go to User Browser</a>
+    <br>
+    <a href="/users/{{id}}" class="goBack">⇦ Go to {{username}}'s profile </a>
+    <h1>{{username}}'s following list</h1>
 </header>
 <main>
    <h4> Total: {{friends.length}} </h4>
@@ -16,7 +19,4 @@
        <hr />
    </ul>
    {{/if}}
-
-
-   <a href="/users/{{id}}"> Back to {{username}}'s profile </a>
 </main>

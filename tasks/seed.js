@@ -535,7 +535,7 @@ const chess_comment3 = await comments.createComment(
   "game",
   chess._id.toString(),
   batman._id.toString(),
-  "Superman's favorite thing to do is save people. His second favorite thing to do is lie to them."
+  "Superman is a liar."
 );
 
 const clashOfClans_comment1 = await comments.createComment(
@@ -664,6 +664,48 @@ const minecraft_comment1 = await comments.createComment(
   "Chicken Jockey!!"
 );
 
+const minecraft_comment2 = await comments.createComment(
+  "game",
+  minecraft._id.toString(),
+  JamesMom._id.toString(),
+  "Chicken Jockey!!"
+);
+
+const minecraft_comment3 = await comments.createComment(
+  "game",
+  minecraft._id.toString(),
+  william._id.toString(),
+  "Chicken Jockey!!"
+);
+
+const minecraft_comment4 = await comments.createComment(
+  "game",
+  minecraft._id.toString(),
+  JamesMom._id.toString(),
+  "Chicken Jockey!!"
+);
+
+const minecraft_comment5 = await comments.createComment(
+  "game",
+  minecraft._id.toString(),
+  stevens._id.toString(),
+  "Stevens Institute of Technology"
+);
+
+const superSmashBros_comment1 = await comments.createComment(
+  "game",
+  superSmashBros._id.toString(),
+  william._id.toString(),
+  "I remember playing this game when I was a young lad."
+);
+
+const superSmashBros_comment2 = await comments.createComment(
+  "game",
+  superSmashBros._id.toString(),
+  user5._id.toString(),
+  "Later entries were definitely better, but this is still a fun one to revisit."
+);
+
 //////////////////////////////////////////////////////////////
 // User Comments
 //////////////////////////////////////////////////////////////
@@ -708,6 +750,27 @@ const gamer7_comment3 = await comments.createComment(
   gamer7._id.toString(),
   gamer7._id.toString(),
   "What's your steamID?"
+);
+
+const Jordan_comment1 = await comments.createComment(
+  "user",
+  Jordan._id.toString(),
+  Josh6._id.toString(),
+  "Jordan, did we have math homework today?"
+);
+
+const Jordan_comment2 = await comments.createComment(
+  "user",
+  Jordan._id.toString(),
+  James12345._id.toString(),
+  "Jordan, is the English essay due tomorrow or three weeks from now?"
+);
+
+const Jordan_comment3 = await comments.createComment(
+  "user",
+  Jordan._id.toString(),
+  Jordan._id.toString(),
+  "Please stop using my profile to send me personal messages."
 );
 
 // We can add more later, this just got kinda repetitive for me lol.
@@ -755,8 +818,8 @@ const chess_review2 = await games.addReview(
 const chess_review3 = await games.addReview(
   chess._id,
   user5._id,
-  "Wait what is this",
-  "i wanted to open google where am i",
+  "Chess is a challening and thought-provoking adventure",
+  "It may take you several years to master the intricate mechanics of this board game, but the journey will be worth it. Take it from me, a man stuck at 500 elo. You will feel so satisfied when you first reach 500.",
   4
 );
 
@@ -772,7 +835,7 @@ const minecraft_review2 = await games.addReview(
   minecraft._id,
   gamer7._id,
   "Did anyone get into this game because of the Minecraft movie?",
-  "This game is nothing like the movie. My avatar looks nothing like Jack Black",
+  "This game is nothing like the movie. My avatar looks nothing like Jack Black.",
   2
 );
 
@@ -780,7 +843,7 @@ const minecraft_review3 = await games.addReview(
   minecraft._id,
   batman._id,
   "Much better than Chess",
-  "Not that I suck at chess, but I found this game significantly more fun to play.",
+  "Not that I suck at chess, but I found this game significantly more fun to play than chess.",
   5
 );
 
@@ -794,27 +857,19 @@ const minecraft_review4 = await games.addReview(
 
 const minecraft_review5 = await games.addReview(
   minecraft._id,
-  william._id,
-  "Not as good as Clash of Clans",
-  "I think Clash of Clans is a better game. I am certain that my son Josh feels the same way.",
-  2
-);
-
-const minecraft_review6 = await games.addReview(
-  minecraft._id,
   Josh6._id,
   "THIS IS A GREAT GAME!!!",
-  "I LOVE IT I LOVE IT I LOVE IT I LOVE IT",
+  "You can do whatever you want in this game. It's amazing. I can build a house. I can mine diamonds. I can fight monsters. I can go to sleep. It's amazing. I can eat food. I can fly in the air. It's amazing. You can do whatever you want in this game.",
   5
 );
 
 const marvelRivals_review1 = await games.addReview(
   marvelRivals._id,
-  stevens._id,
+  gamer7._id,
   "Act like an angel and dress like crazy",
   "Da da da da",
   5
-)
+);
 
 //////////////////////////////////////////////////////////////
 // Add Games to User Profiles
@@ -933,6 +988,18 @@ await users.addGame(batman._id, clashOfClans._id, [
 //let removeUserGame = await users.removeGame(user1._id, balatro._id);
 
 //console.log(await users.getUserById(user1._id));
+
+await users.addFriend(batman._id, Jordan._id);
+
+await users.addFriend(superman._id, Jordan._id);
+
+await users.addFriend(Jordan._id, JamesMom._id);
+
+await users.addFriend(Jordan._id, James12345._id);
+
+await users.addFriend(Jordan._id, william._id);
+
+await users.addFriend(Jordan._id, Josh6._id);
 
 
 console.log("Done seeding database.");

@@ -1,0 +1,16 @@
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(172, 172, 255);
+}
+
+a:active {
+    color: rgb(0, 0, 0);
+}

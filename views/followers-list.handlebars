@@ -1,22 +1,18 @@
 <header>
+    <a href="/users/" class="goBack">⇦ Go to User Browser</a>
+    <br>
+    <a href="/users/{{user._id}}" class="goBack">⇦ Go to {{user.username}}'s profile</a>
     <h1>{{user.username}}'s followers</h1>
 </header>
 <main>
-   <h4> Total: {{followers.length}} </h4>
-   {{#if followers.length}}
-   <ul>
-       {{#each followers}}
-       <hr />
-       <li>
-           <a href="/users/{{this._id}}"> {{this.username}} </a>
-       </li>
-
-
-       {{/each}}
-       <hr />
-   </ul>
-   {{/if}}
-
-
-   <a href="/users/{{user._id}}"> Back to {{user.username}}'s profile </a>
+    <h4> Total: {{followers.length}} </h4>
+    {{#if followers.length}}
+        <ul>
+        {{#each followers}}
+            <li>
+                <a href="/users/{{this._id}}">{{this.username}}</a>
+            </li>
+        {{/each}}
+        </ul>
+    {{/if}}
 </main>

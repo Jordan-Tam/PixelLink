@@ -17,6 +17,7 @@ li {
 
 a {
     color: blue;
+    text-decoration: none;
 }
 
 a.name:hover {
@@ -27,7 +28,7 @@ a:hover {
     color: green;
 }
 
-#goBack {
+.goBack {
     font-size: 1.5rem;
     font-weight: bold;
 }
