@@ -1100,6 +1100,7 @@ await users.addFriend(Jordan._id, william._id);
 
 await users.addFriend(Jordan._id, Josh6._id);
 
+//console.log(await games.getRecommendations(Jordan._id))
 
 console.log("Done seeding database.");
 
