@@ -427,7 +427,7 @@ const exportedMethods = {
     for (const u of userCollection) {
       for (const game of users_games) {
         if (u.games.some(g => g.name === game.name)) {
-          user_array.push(otherUser._id.toString());
+          user_array.push(u._id.toString());
           break;
         }
       }
@@ -450,20 +450,30 @@ const exportedMethods = {
 
     //for every user that had at least one similar game, it will 
     //increment the counter for every game they play in gameFreq
-    for (const userId of user_array) {
+    for (let userId of user_array) {
       const u = await userData.getUserById(userId);
-
-      for (const game of u.games) {
-        if (!users_games.some(g => g.name === game.name)) {
-          gameFreq[game.name] = (gameFreq[game.name] || 0) + 1;
+    
+      for (let game of u.games) {
+        let in_usr_games = false;
+    
+        for (let g of users_games) {
+          if (g.name === game.gameName) {
+            in_usr_games = true;
+            break;
+          }
+        }
+    
+        if (!in_usr_games) {
+          gameFreq[game.gameName] += 1;
         }
       }
     }
+    
 
     //Sorts the recommendations from game frequency (descendign order) & only includes game names
     const sortedRecommendations = Object.entries(gameFreq)
-      .sort((a, b) => b[1] - a[1]) 
-      .map(({name, _}) => name); 
+    .sort((a, b) => b[1] - a[1]) 
+    .map(([gameName, _]) => gameName);  
 
     //array of games to recommend
     const recommendations = [];
