@@ -531,13 +531,6 @@ const chess_comment2 = await comments.createComment(
   "Batman is awful at chess."
 );
 
-const chess_comment3 = await comments.createComment(
-  "game",
-  chess._id.toString(),
-  batman._id.toString(),
-  "Superman is a liar."
-);
-
 const clashOfClans_comment1 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
@@ -728,7 +721,7 @@ const James12345_comment1 = await comments.createComment(
   "user",
   James12345._id.toString(),
   Jordan._id.toString(),
-  "I like your profile picture."
+  "Hi friend."
 );
 
 const gamer7_comment1 = await comments.createComment(
@@ -783,6 +776,22 @@ const Jordan_comment3 = await comments.createComment(
 // Game Reviews
 //////////////////////////////////////////////////////////////
 
+const amongUs_review1 = await games.addReview(
+  amongUs._id,
+  user5._id,
+  "Friendships were lost",
+  "I keep getting imposter even though I hate being imposter but I can't stop winning as imposter so my friends stopped inviting me to our get-togethers so they could get a chance to be imposter.",
+  4
+);
+
+const amongUs_review2 = await games.addReview(
+  amongUs._id,
+  william._id,
+  "Friendships were made",
+  "I keep getting crewmate, which is awesome because I don't enjoy lying to people. And when I do get imposter, I immediately rat myself out because I simply cannot bear to lie to my friends. This made them appreciate me even more and now I'm best man for all six of my friends.",
+  5
+);
+
 const balatro_review1 = await games.addReview(
   balatro._id,
   JamesMom._id,
@@ -823,6 +832,14 @@ const chess_review3 = await games.addReview(
   4
 );
 
+const clashofClans_review1 = await games.addReview(
+  clashOfClans._id,
+  gamer7._id,
+  "Upgrade times are insufferable",
+  "Upgrade times are insufferable. Thank god they got rid of the timers for everything else because I hardly spend any time playing this game now.",
+  3
+);
+
 const minecraft_review1 = await games.addReview(
   minecraft._id,
   user5._id,
@@ -841,22 +858,6 @@ const minecraft_review2 = await games.addReview(
 
 const minecraft_review3 = await games.addReview(
   minecraft._id,
-  batman._id,
-  "Much better than Chess",
-  "Not that I suck at chess, but I found this game significantly more fun to play than chess.",
-  5
-);
-
-const minecraft_review4 = await games.addReview(
-  minecraft._id,
-  superman._id,
-  "Batman is lying",
-  "He is awful at chess.",
-  5
-);
-
-const minecraft_review5 = await games.addReview(
-  minecraft._id,
   Josh6._id,
   "THIS IS A GREAT GAME!!!",
   "You can do whatever you want in this game. It's amazing. I can build a house. I can mine diamonds. I can fight monsters. I can go to sleep. It's amazing. I can eat food. I can fly in the air. It's amazing. You can do whatever you want in this game.",
@@ -868,6 +869,30 @@ const marvelRivals_review1 = await games.addReview(
   gamer7._id,
   "Act like an angel and dress like crazy",
   "Da da da da",
+  5
+);
+
+const superSmashBros_review1 = await games.addReview(
+  superSmashBros._id,
+  Jordan._id,
+  "Bad",
+  "Mr. Game and Watch isn't in this game. It is awful. Do not recommend.",
+  2
+);
+
+const superSmashBros_review2 = await games.addReview(
+  superSmashBros._id,
+  JamesMom._id,
+  "Nostalgia",
+  "When I was younger, my siblings and I would settle our disagreements with a game of Super Smash Bros. Ahh, memories.",
+  4
+);
+
+const superSmashBros_review3 = await games.addReview(
+  superSmashBros._id,
+  JohnDoe._id,
+  "Pikachu!!!",
+  "Kirby is so cute in this game. I like the plumber characters too lol.",
   5
 );
 
@@ -931,6 +956,65 @@ await users.addGame(JohnDoe._id, balatro._id, [
   { field_name: "How many jokers do you have unlocked?", value: "150" },
 ]);
 
+await users.addGame(Jordan._id, marioKart._id, [
+  { field_name: "Which is your favorite character to race as?", value: "Shy Guy" },
+  { field_name: "What is your preferred vehicle type?", value: "Kart" },
+  { field_name: "Preferred CC", value: "200cc" },
+  { field_name: "Do you like playing in Mirror Mode?", value: "Yes" }
+]);
+
+await users.addGame(gamer7._id, marioKart._id, [
+  { field_name: "Which is your favorite character to race as?", value: "Baby Luigi" },
+  { field_name: "What is your preferred vehicle type?", value: "Bike" },
+  { field_name: "Preferred CC", value: "50cc" },
+  { field_name: "Do you like playing in Mirror Mode?", value: "No" }
+]);
+
+await users.addGame(James12345._id, marioKart._id, [
+  { field_name: "Which is your favorite character to race as?", value: "Wario" },
+  { field_name: "What is your preferred vehicle type?", value: "Bike" },
+  { field_name: "Preferred CC", value: "150cc" },
+  { field_name: "Do you like playing in Mirror Mode?", value: "No" }
+]);
+
+await users.addGame(admin._id, marioKart._id, [
+  { field_name: "Which is your favorite character to race as?", value: "Waluigi" },
+  { field_name: "What is your preferred vehicle type?", value: "Kart" },
+  { field_name: "Preferred CC", value: "150cc" },
+  { field_name: "Do you like playing in Mirror Mode?", value: "No" }
+]);
+
+await users.addGame(gamer7._id, amongUs._id, [
+  { field_name: "What role do you prefer?", value: "Crewmate" },
+  { field_name: "Do you play with mods?", value: "Sometimes" },
+  { field_name: "What platform do you play on?", value: "PC" }
+]);
+
+await users.addGame(gamer7._id, overwatch2._id, [
+  { field_name: "Who is your favorite hero?", value: "Lucio" },
+  { field_name: "What is your preferred role?", value: "Tank" },
+  { field_name: "What platform do you play on?", value: "Switch" }
+]);
+
+await users.addGame(william._id, overwatch2._id, [
+  { field_name: "Who is your favorite hero?", value: "Lucio" },
+  { field_name: "What is your preferred role?", value: "Support" },
+  { field_name: "What platform do you play on?", value: "Xbox" }
+]);
+
+await users.addGame(Josh6._id, overwatch2._id, [
+  { field_name: "Who is your favorite hero?", value: "Brigitte" },
+  { field_name: "What is your preferred role?", value: "Damage" },
+  { field_name: "What platform do you play on?", value: "Playstation" }
+]);
+
+await users.addGame(Josh6._id, minecraft._id, [
+  { field_name: "What is your favorite way to play?", value: "Creative" },
+  /* { field_name: "What is your favorite online server?", value: "" }, */
+  { field_name: "What difficulty do you play on?", value: "Peaceful" },
+  { field_name: "Bedrock or Java?", value: "Java" }
+]);
+
 await users.addGame(admin._id, clashOfClans._id, [
   { field_name: "Username", value: "admin1" },
   { field_name: "Do you participate in Clan Wars?", value: "No" },
@@ -968,7 +1052,7 @@ await users.addGame(JamesMom._id, clashOfClans._id, [
 ]);
 
 await users.addGame(superman._id, clashOfClans._id, [
-  { field_name: "Username", value: "BatmanSucksAtChess" },
+  { field_name: "Username", value: "Batman" },
   { field_name: "Do you participate in Clan Wars?", value: "Yes" },
   { field_name: "Town Hall level", value: "17" },
   { field_name: "Favorite elixir troop", value: "Yeti" },
@@ -977,12 +1061,27 @@ await users.addGame(superman._id, clashOfClans._id, [
 ]);
 
 await users.addGame(batman._id, clashOfClans._id, [
-  { field_name: "Username", value: "IDoNotSuckAtChess" },
+  { field_name: "Username", value: "Superman" },
   { field_name: "Do you participate in Clan Wars?", value: "No" },
   { field_name: "Town Hall level", value: "11" },
   { field_name: "Favorite elixir troop", value: "Electro Dragon" },
   { field_name: "Favorite dark elixir troop", value: "Hog Rider" },
   { field_name: "Favorite Hero", value: "Archer Queen" }
+]);
+
+await users.addGame(batman._id, superSmashBros._id, [
+  { field_name: "Favorite Character", value: "Kirby" },
+  { field_name: "Favorite Stage", value: "Dream Land" }
+]);
+
+await users.addGame(superman._id, superSmashBros._id, [
+  { field_name: "Favorite Character", value: "Captain Falcon" },
+  { field_name: "Favorite Stage", value: "Hyrule Castle" }
+]);
+
+await users.addGame(JohnDoe._id, superSmashBros._id, [
+  { field_name: "Favorite Character", value: "Pikachu" },
+  { field_name: "Favorite Stage", value: "Dream Land" }
 ]);
 
 //let removeUserGame = await users.removeGame(user1._id, balatro._id);
