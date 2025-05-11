@@ -84,6 +84,10 @@
               </ul>
             </li>
           {{/each}}
+          <form action = "users/{{this._id}}/friends" method="POST">
+              <input type="hidden" name="friendId" value="{{this._id}}">
+              <input type="submit" value="Follow {{this.username}}">
+          </form>
         </ul>
       </div>
     {{/each}}
