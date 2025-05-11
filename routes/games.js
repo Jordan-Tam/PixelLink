@@ -16,6 +16,8 @@ router.route('/')
             // Get user document of the logged-in user.
             const user = await users.getUserById(req.session.user._id);
 
+            const recs = await games.getRecommendations(user._id);
+
             // Add a property to all games that are already in the logged-in user's profile.
             for (let i = 0; i < gamesList.length; i++) {
                 for (let userGame of user.games) {
@@ -26,11 +28,31 @@ router.route('/')
                 }
             }
 
+            const count = recs.length;
+
+            let n = 0;
+
+            console.log(recs);
+            
+            while (n !== count){
+                for (let i = 0; i < gamesList.length; i++) {
+                    if(gamesList[i].name === recs[n]){
+                        if(i !== n){
+                            let temp = gamesList[i];
+                            gamesList[i] = gamesList[n];
+                            gamesList[n] = temp;
+                        } 
+                        n++;
+                    }
+                }
+            }
+
             return res.render('game-list', {
                 games: gamesList,
                 title: "Games List",
                 stylesheet: "/public/css/game-list.css",
-                user: req.session.user
+                user: req.session.user,
+                recs: count
             });
         } catch (error) {
             return res.status(error.status || 500).render("error", {
