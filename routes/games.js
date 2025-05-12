@@ -130,13 +130,21 @@ router.route('/:id')
 
             const user = await users.getUserById(req.session.user._id);
 
+            let already_reviewed = false;
+            for (let review of game.reviews) {
+                if (review.userId === req.session.user._id) {
+                    already_reviewed = true;
+                }
+            }
+
             return res.render('game-page', {
                 title: game.name,
                 stylesheet: "/public/css/game-page.css",
                 game: game,
                 script: "/public/js/game-page.js",
                 is_admin: user.admin,
-                user: user
+                user: user,
+                not_reviewed: !already_reviewed
             });
         } catch (error) {
             return res.status(error.status).render("error", {
@@ -479,20 +487,29 @@ router
     })
     .delete(async (req, res) => {
         try {
+
+            // Input validation
             const gameId = checkId(req.params.gameId, "DELETE /:gameId/reviews/:reviewId", "Game");
             const reviewId = checkId(req.params.reviewId, "DELETE /:gameId/reviews/:reviewId", "Review");
-            if(!req.session.user || !req.session.user.admin){ //get user, check if logged in
+
+            // Get the review.
+            const review = await games.getReviewById(req.params.reviewId);
+
+            // Check if the review was made by the logged-in user.
+            if (review.userId.toString() === req.session.user._id.toString()) {
+                await games.removeReview(reviewId);
+                console.log("delete-1");
+                return res.redirect(`/games/${gameId}`);
+            } else {
                 return res.status(403).render("error", {
                     status: 403,
-                    error_message: "Permission Denied. Must be logged in as an admin to delete a review.",
+                    error_message: "This action is forbidden.",
                     stylesheet: "/public/css/error.css",
                     title: "403 Error"
-                });
+                })
             }
-            await games.removeReview(reviewId); //remove review
-
-            return res.redirect(`/games/${gameId}`);
         } catch (error) {
+            console.log("delete-2");
             return res.status(error.status || 500).render("error", {
                 status: error.status || 500,
                 error_message: error.error,

@@ -4,16 +4,19 @@
 </header>
 <main>
 
+    <!-- ADMIN ONLY: Button to delete game from database. -->
     <form action="/games/{{game._id}}" method="POST">
         <input type="submit" id="deleteGame" name="deleteGame" value="Delete Game From Database">
         <input type="hidden" name="_method" value="DELETE">
     </form> 
 
+    <!-- Release Date -->
     <div class="dateReleased-div">
         <h3><span>Release Date:</span></h3>
         <p>{{game.dateReleased}}</p>
     </div>
 
+    <!-- Game Description -->
     <div class="description-div">
         <h3>Description:</h3>
         {{#if game.description}}
@@ -23,16 +26,19 @@
         {{/if}}
     </div>
 
+    <!-- Number of Reviews -->
     <div>
         <h3>Number of Reviews:</h3>
         <p>{{game.reviews.length}}</p>
     </div>
 
+    <!-- Average Rating -->
     <div class="rating-div">
         <h3>Average Rating:</h3>
         <p>{{game.averageRating}}</p>
     </div>
 
+    <!-- Reviews -->
     <div>
         <h3>Reviews:</h3>
         {{#if game.reviews.length}}
@@ -43,12 +49,20 @@
                     <p class="reviewContent">{{this.content}}</p>
                     <p class="reviewRating">Rating: {{this.rating}}</p>
                 </div>
+
+                <!-- If the user is an admin -->
                 {{#if ../is_admin}}
+
+                <!-- Delete Review button -->
                  <form action="/games/{{../game._id}}/reviews/{{this._id}}" method="POST"> 
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="submit" value="delete {{this.username}}'s review">
-                </form> 
+                </form>
+
+                <!-- Edit Review button -->
                 <button id="editReviewButton">Edit {{this.username}}'s Review</button>
+
+                <!-- Edit Review form (appears after pressing Edit Review button) -->
                 <form action="/games/{{../game._id}}/reviews/{{this._id}}" method="POST" id="updateReviewForm" hidden> 
                     <input type="hidden" name="_method" value="PATCH">
                     <label for="title">Title:</label>
@@ -67,8 +81,12 @@
                         </select>
                     </label>
                     <input type="submit" value="update {{this.username}}'s review">
-                </form> 
+                </form>
+
+                <!-- Otherwise, if the user is not an admin -->
                 {{else}}
+
+                    <!-- If the review comes from the signed-in user... -->
                     {{#if (eq this.username ../user.username)}}
                     <form action="/games/{{../game._id}}/reviews/{{this._id}}" method="POST"> 
                         <input type="hidden" name="_method" value="DELETE">
@@ -100,6 +118,7 @@
         {{else}}
             <p>No reviews.</p>
         {{/if}}
+        {{#if not_reviewed}}
         <h3>Add a Review:</h3>
         <p id="reviewError" {{reviewError_hidden}}>{{reviewError_message}}</p>
         <form id="reviewForm" action="/games/{{game._id}}/reviews" method="POST">
@@ -120,7 +139,8 @@
             </label>
             <br><br>
             <input type="submit" id="reviewSubmit" name="reviewSubmit" value="add review!">
-        </form> 
+        </form>
+        {{/if}}
     </div>
 
     <div>

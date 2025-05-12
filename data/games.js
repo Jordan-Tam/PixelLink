@@ -411,6 +411,46 @@ const exportedMethods = {
 
   },
 
+  async getReviewById(reviewId) {
+
+    // Input validation
+    reviewId = checkId(reviewId, "getReviewById", "Review");
+
+    console.log(1);
+
+    // Get games collection.
+    const gamesCollection = await games();
+
+    console.log(2);
+
+    // Get game associated with the review.
+    const game = await gamesCollection.findOne({
+      "reviews._id": new ObjectId(reviewId)
+    });
+
+    console.log(3);
+
+    if (!game) {
+      throw {
+        status: 404,
+        function: "getReviewById",
+        error: "Review not found."
+      };
+    }
+
+    console.log(4);
+
+    // Find the review associated with reviewId.
+    for (let i = 0; i < game.reviews.length; i++) {
+      if (game.reviews[i]._id.toString() === reviewId) {
+        return game.reviews[i];
+      }
+    }
+
+    console.log(5);
+
+  },
+
 
   //Just an inital version: will modify 
   /**
