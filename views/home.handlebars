@@ -12,7 +12,13 @@
   </div>
   <div class="homepage-options-div" id="browse-games-div">
     <img src="/public/images/games.svg" alt="Games Icon" height="50" id="browse-games-svg">
-    <a href="/games/">Browse Games</a>
+    <a href="/games/">
+      {{#if user.admin}}
+      Edit Games
+      {{else}}
+      Browse Games
+      {{/if}}
+    </a>
   </div>
   <div class="homepage-options-div" id="signout-div">
     <img src="/public/images/signout.svg" alt="Signout Icon" height="50" id="signout-svg">

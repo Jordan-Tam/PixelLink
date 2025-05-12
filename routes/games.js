@@ -147,7 +147,39 @@ router.route('/:id')
             });
         }
     })
-    .post() //addGame for the admin, renders add-gae view
+    .delete(async (req, res) => {
+
+        // Prevent non-admins from deleting games.
+        if (!req.session.user.admin) {
+            return res.status(403).render("error", {
+                title: "403 Forbidden",
+                stylesheet: "/public/css/error.css",
+                status: 403,
+                error_message: "This action is forbidden."
+            });
+        }
+
+        try {
+
+            req.params.id = checkString(req.params.id, 'Game id','GET game/:id');
+            
+            await games.removeGame(req.params.id);
+
+            return res.redirect("/games");
+
+        } catch (e) {
+
+            return res.status(e.status).render("error", {
+                title: `${e.status} Error`,
+                stylesheet: "/public/css/error.css",
+                status: e.status,
+                error_message: e.error
+            });
+
+        }
+
+    });
+    //.post() //addGame for the admin, renders add-gae view
     
 router
   .route("/:id/form")

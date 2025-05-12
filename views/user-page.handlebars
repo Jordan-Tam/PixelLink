@@ -97,11 +97,11 @@
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="submit" value = "delete comment">
                         </form>
-                        <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
+                        {{!-- <form action="{{../user._id}}/comment/{{this._id}}" method="POST">
                             <input type="hidden" name="_method" value="PATCH">
                             <input type="text" class="editComment" name="editComment" value="{{this.content}}">
                             <input type="submit" value = "edit comment">
-                        </form>
+                        </form> --}}
                     {{else}}
                         {{#if ../is_own_profile}}
                             <form action="{{../user._id}}/comment/{{this._id}}" method="POST">

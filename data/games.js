@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { games } from "../config/mongoCollections.js";
-import userData from "./users.js";
+import userDataFunctions from "./users.js";
 import {
   checkString,
   checkDateReleased,
@@ -145,10 +145,17 @@ const exportedMethods = {
     // Input validation.
     id = checkId(id, "removeGame", "Game");
 
+    // Update every user document by removing the game from their profile.
+    let usersList = await userDataFunctions.getAllUsers();
+
+    for (let user of usersList) {
+      await userDataFunctions.removeGame(user._id, id);
+    }
+
     // Get games collection.
     const gamesCollection = await games();
 
-    // Get the game document with the given ID.
+    // Delete the game document.
     const deletionInfo = await gamesCollection.findOneAndDelete({
       _id: new ObjectId(id),
     });
@@ -259,7 +266,7 @@ const exportedMethods = {
 
     // Check if user ID exists.
     // This function will throw an error if no user is found.
-    let user = await userData.getUserById(userId);
+    let user = await userDataFunctions.getUserById(userId);
 
     // Get game.
     let game = await gamesCollection.findOne({
@@ -417,13 +424,13 @@ const exportedMethods = {
     userId = checkId(userId, "getRecommendations", "users");
 
     //user and game collections
-    const user = await userData.getUserById(userId);
+    const user = await userDataFunctions.getUserById(userId);
     const users_games = user.games; 
     if (users_games.length === 0){
       return [];
     }
     console.log(users_games);
-    let userCollection = await userData.getAllUsers();
+    let userCollection = await userDataFunctions.getAllUsers();
 
     let user_array = [];
 
@@ -457,7 +464,7 @@ const exportedMethods = {
     //for every user that had at least one similar game, it will 
     //increment the counter for every game they play in gameFreq
     for (let userId of user_array) {
-      const u = await userData.getUserById(userId);
+      const u = await userDataFunctions.getUserById(userId);
     
       for (let game of u.games) {
         let in_usr_games = false;
