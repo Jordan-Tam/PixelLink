@@ -9,3 +9,7 @@ header a {
 #gameFormError {
     color: red;
 }
+
+#success{
+    color:limegreen
+}

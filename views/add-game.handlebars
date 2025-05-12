@@ -4,6 +4,7 @@
 </header>
 <main>
     <p id="gameFormError" {{gameFormError_hidden}}>{{gameFormError_message}}</p>
+    <p id = "success" hidden>The game has been successfully added!</p>
     <form action="/games/" method="POST" id="createGameForm">
         <label for="name">Game Title:</label>
         <input type="text" id="name" name="name">

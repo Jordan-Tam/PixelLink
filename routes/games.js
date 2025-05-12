@@ -64,65 +64,59 @@ router.route('/')
             });
         }
     })
-    .post(async (req, res) => {
-        try {
-            let {name, dateReleased, description, form} = req.body;
-            console.log(req.body); //TEST
-            name = checkString(name, "name", "POST game/list");
-            dateReleased = checkDateReleased(dateReleased, "POST game/list");
-            description = checkString(description, "description", "POST game/list");
-            //console.log(req.body); //TEST
-            form = checkForm(form);         // This does not work
-            if(!req.session.user || !req.session.user.admin){
-                //Not logged in users and non-admins cannot add a game
-                return res.status(403).json({error: "Permission Denied"});
-            }
-            const game = await games.createGame(name, description, dateReleased, form);
-            const gamesList = await games.getAllGames();
-            return res.render('game-list', {
-                games: gamesList,
-                title: "Games List",
-                stylesheet: "/public/css/game-list.css",
-            });
-        } catch (error) {
-            return res.render("add-game", {
-                title: "Create a Game",
-                stylesheet: "/public/css/add-game.css",
-                script: "/public/js/add-game.js",
-                gameFormError: "hidden",
-                gameFormError_message: error.gameFormError
-            });
-        }
-    })
 
-router.route('/new')
-    .get(async (req, res) => {
-        try {
-            if(!req.session.user || !req.session.user.admin){
-                //Not logged in users and non-admins cannot see the create game form
-                return res.status(403).render("error", {
-                    status: 403,
-                    error_message: "Permission Denied. Must be an admin.",
-                    title: "403 Error",
-                    stylesheet: "/public/css/error.css",
-                    link: "/games/"
-                  });
-            }
-            return res.render("add-game", {
-                title: "Create a Game",
-                stylesheet: "/public/css/add-game.css",
-                script: "/public/js/add-game.js"
-            });
-        } catch (error) {
-            return res.status(error.status).render("error", {
-                status: error.status,
-                error_message: `${error.function}: ${error.error}`,
-                title: `${error.status} Error`,
-                stylesheet: "/public/css/error.css",
-                link: "/games/"
-            });
-        }
-    });
+router
+  .route("/new")
+  .get(async (req, res) => {
+    try {
+      if (!req.session.user || !req.session.user.admin) {
+        //Not logged in users and non-admins cannot see the create game form
+        return res.status(403).render("error", {
+          status: 403,
+          error_message: "Permission Denied. Must be an admin.",
+          title: "403 Error",
+          stylesheet: "/public/css/error.css",
+          link: "/games/",
+        });
+      }
+      return res.render("add-game", {
+        title: "Create a Game",
+        stylesheet: "/public/css/add-game.css",
+        script: "/public/js/add-game.js",
+      });
+    } catch (error) {
+      return res.status(error.status).render("error", {
+        status: error.status,
+        error_message: `${error.function}: ${error.error}`,
+        title: `${error.status} Error`,
+        stylesheet: "/public/css/error.css",
+        link: "/games/",
+      });
+    }
+  })
+  .post(async (req, res) => {
+    try {
+      let { name, dateReleased, description, form } = req.body;
+      name = checkString(name, "name", "POST game/list");
+      dateReleased = checkDateReleased(dateReleased, "POST game/new");
+      description = checkString(description, "description", "POST game/new");
+      form = checkForm(form);
+      if (!req.session.user || !req.session.user.admin) {
+        //Not logged in users and non-admins cannot add a game
+        return res.status(403).json({ error: "Permission Denied" });
+      }
+      const game = await games.createGame(
+        name,
+        description,
+        dateReleased,
+        form
+      );
+      return res.json("The game has been created!")
+    } catch (error) {
+      return res.json(error.error)
+    }
+  });
+
 
 router.route('/:id')
     .get(async (req, res) => {

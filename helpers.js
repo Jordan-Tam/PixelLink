@@ -719,30 +719,29 @@ const checkRating = (rating, funcName) => {
 
 }
 
-const sanitizeBody = (body) => {
 
-  if(!body){    // Make sure the body is provided
-    throw {
-      status: 400,
-      function: "sanitizeBody",
-      error: "req.body must be provided."
+const sanitize = (value) => {
+  if(!value){
+    return value;
+  }
+
+  if(Array.isArray(value)){
+    for(let i = 0; i < value.length; i++){
+      value[i] = sanitize(value[i])
     }
   }
 
-  if(typeof body !== "object"){   // Make sure the body is an object
-    throw {
-      status: 400,
-      function: "sanitizeBody",
-      error: "req.body must be an object."
+  else if(typeof value === "object"){
+    for(let key in value){
+      value[key] = sanitize(value[key]);
     }
   }
 
-
-  for(let key in body){    // Loop through each key
-    body[key] = xss(body[key]); // Run xss on each value
+  else{
+    value = xss(value);
   }
 
-  return body;
+  return value;
 
 }
 
@@ -840,7 +839,7 @@ export {
   checkId,
   checkUserGameInfo,
   checkRating,
-  sanitizeBody,
+  sanitize,
   stringToNumber,
   compareForms
 };

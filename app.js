@@ -2,7 +2,7 @@ import express from "express";
 import exphbs from "express-handlebars";
 import configRoutesFunction from "./routes/index.js";
 import session from "express-session";
-import { sanitizeBody } from "./helpers.js";
+import { sanitize } from "./helpers.js";
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   // If the user posts to the server with a property called _method, rewrite the request's method to be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets rewritten in this middleware to a PUT route.
@@ -60,7 +60,7 @@ app.use(async (req, res, next) => {
 //* Middleware 2: If the request is a POST request, sanitize the req.body
 app.use(async (req, res, next) => {
   if (req.method === "POST" && req.body) {
-    req.body = sanitizeBody(req.body);
+    req.body = sanitize(req.body);
   }
 
   next();

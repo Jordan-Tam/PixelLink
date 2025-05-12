@@ -7,13 +7,14 @@ let dateReleased = document.getElementById("dateReleased");
 let fieldList = document.getElementById("fieldInput");
 let addField = document.getElementById("addField");
 let removeField = document.getElementById("removeField");
+let success = document.getElementById("success");
 
 let fieldNum = 1;
 
 if(createGameForm !== null){
-    createGameForm.addEventListener("submit", (event) => {
+    createGameForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-        console.log("hello");
+        success.hidden = true;
         gameFormError.hidden = true; //hide error paragraph
 
         let title_input = gameTitle.value.trim(); //validate title
@@ -32,14 +33,13 @@ if(createGameForm !== null){
             return;
         }
 
-        let description_input = description.value.trim(); //validate title
+        let description_input = description.value.trim(); //validate description
         if (!description_input || description_input.length === 0) {
           event.preventDefault();
           gameFormError.innerHTML = "Must provide a game description.";
           gameFormError.hidden = false;
           return;
         }
-
         let fieldDivs = createGameForm.querySelectorAll(".fieldInput");
         for (let i = 0; i < fieldDivs.length; i++) {  //loop through all the fields
             let nameInput = fieldDivs[i].querySelector(`input[name="form[${i}][field]"]`);
@@ -90,7 +90,6 @@ if(createGameForm !== null){
                     return;
                 }
             }
-            
         }
         console.log("passed validation"); //TEST
 
@@ -122,78 +121,34 @@ if(createGameForm !== null){
         }
         console.log("Field Info:", fieldInfo);
 
-        let newForm = document.createElement("form");
-        newForm.hidden = true; //hide form
-        newForm.setAttribute("method", createGameForm.method);
-        newForm.setAttribute("action", createGameForm.action);
+        let newGame = {
+          name: title_input,
+          dateReleased: date_input,
+          description: description_input,
+          form: fieldInfo,
+        };
 
-        for (let i=0; i < fieldInfo.length;i++){
-            let elem = fieldInfo[i];
-            if(elem.type !== "hidden"){
-                if (elem.type === "select") {
-                    let selectElem = document.createElement("select");
-                    selectElem.id = `field_${i}`;
-                    selectElem.name = `form[${i}][field]`;
+        let response = await fetch("", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newGame),
+          });
+          let data = await response.json();
+          if (!response.ok) {
+            // Something went wrong
+            gameFormError.innerHTML = "Error: " + data;
+            gameFormError.hidden = false;
+            return;
+          }
+          else{
+            gameFormError.hidden = true;
+            success.hidden = false
+            createGameForm.reset();
+          }
 
-                    elem.options.forEach(option => {
-                        let optionElem = document.createElement("option");
-                        optionElem.value = option;
-                        optionElem.textContent = option;
-                        selectElem.appendChild(optionElem);
-                    });
 
-                    newForm.appendChild(selectElem);
-
-                } else {
-                    let inputElem = document.createElement("input");
-                    inputElem.id = `field_${i}`;
-                    inputElem.name = `form[${i}][field]`;
-
-                    if (elem.type === "number") {
-                        inputElem.type = "number";
-                        // optionally: set min/max here using elem.domain[0], elem.domain[1]
-                    } else {
-                        inputElem.type = "text";
-                    }
-
-                    newForm.appendChild(inputElem);
-                }
-            }
-        }
-
-        let methodInput = createGameForm.querySelector('input[name="_method"]');
-        if (methodInput) {
-            let methodClone = document.createElement("input");
-            methodClone.type = "hidden";
-            methodClone.name = "_method";
-            methodClone.value = methodInput.value;
-            newForm.appendChild(methodClone);
-        }
-
-        //attaching to DOM
-        let title_input_elem = document.createElement("input");
-        title_input_elem.type = "text";
-        title_input_elem.id = "name";
-        title_input_elem.name = "name";
-        title_input_elem.value = title_input;
-        newForm.appendChild(title_input_elem);
-        let date_input_elem = document.createElement("input");
-        date_input_elem.type = "text";
-        date_input_elem.id = "dateReleased";
-        date_input_elem.name = "dateReleased";
-        date_input_elem.value = date_input;
-        newForm.appendChild(date_input_elem);
-        let description_input_elem = document.createElement("input");
-        description_input_elem.type = "text";
-        description_input_elem.id = "description";
-        description_input_elem.name = "description";
-        description_input_elem.value = description_input;
-        newForm.appendChild(description_input_elem);
-
-        document.body.appendChild(newForm); //attach form
-        //console.log(newForm); //TEST
-        //console.log(document.body);
-        newForm.submit();
     });
     //set up click listener
     addField.addEventListener("click", (event) => {
