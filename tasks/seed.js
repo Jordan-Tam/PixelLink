@@ -504,28 +504,36 @@ const amongUs_comment1 = await comments.createComment(
   "game",
   amongUs._id.toString(),
   user5._id.toString(),
-  "I'm so sus!"
+  "I'm so sus!",
+  "1/21/2024",
+  "1:03 PM"
 );
 
 const balatro_comment1 = await comments.createComment(
   "game",
   balatro._id.toString(),
   owenTreanor._id.toString(),
-  "I love this game."
+  "I love this game.",
+  "5/10/2025",
+  "2:03 AM"
 );
 
 const balatro_comment2 = await comments.createComment(
   "game",
   balatro._id.toString(),
   user5._id.toString(),
-  "Blueprint is the GOAT"
+  "Blueprint is the GOAT",
+  "5/11/2025",
+  "3:04 AM"
 );
 
 const chess_comment1 = await comments.createComment(
   "game",
   chess._id.toString(),
   owenTreanor._id.toString(),
-  "I am the best."
+  "I am the best.",
+  "7/18/2024",
+  "6:14 PM"
 );
 
 const chess_comment2 = await comments.createComment(
@@ -539,119 +547,153 @@ const clashOfClans_comment1 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   william._id.toString(),
-  "I need a clan to join."
+  "I need a clan to join.",
+  "2/2/2025",
+  "12:03 PM"
 );
 
 const clashOfClans_comment2 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   Josh6._id.toString(),
-  "You can join mine."
+  "You can join mine.",
+  "2/2/2025",
+  "12:04 PM"
 );
 
 const clashOfClans_comment3 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   william._id.toString(),
-  "Thanks. What's the ID?"
+  "Thanks. What's the ID?",
+  "2/2/2025",
+  "12:05 PM"
 );
 
 const clashOfClans_comment4 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   Josh6._id.toString(),
-  "I don't feel like putting it here. I'll DM it to you instead."
+  "I don't feel like putting it here. I'll DM it to you instead.",
+  "2/2/2025",
+  "12:06 PM"
 );
 
 const clashOfClans_comment5 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   william._id.toString(),
-  "Thanks. DM where though?"
+  "Thanks. DM where though?",
+  "2/2/2025",
+  "12:07 PM"
 );
 
 const clashOfClans_comment6 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   Josh6._id.toString(),
-  "I don't feel like putting it here. I'll visit your house instead."
+  "I don't feel like putting it here. I'll visit your house instead.",
+  "2/2/2025",
+  "12:08 PM"
 );
 
 const clashOfClans_comment7 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   william._id.toString(),
-  "Thanks. How do you know where I live though?"
+  "Thanks. How do you know where I live though?",
+  "2/2/2025",
+  "12:09 PM"
 );
 
 const clashOfClans_comment8 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   Josh6._id.toString(),
-  "I don't. Can you give me your home address?"
+  "I don't. Can you give me your home address?",
+  "2/2/2025",
+  "12:10 PM"
 );
 
 const clashOfClans_comment9 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   william._id.toString(),
-  "I don't feel like putting it here. I'll DM it to you instead."
+  "I don't feel like putting it here. I'll DM it to you instead.",
+  "2/2/2025",
+  "12:11 PM"
 );
 
 const clashOfClans_comment10 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   Josh6._id.toString(),
-  "Thanks. DM where though?"
+  "Thanks. DM where though?",
+  "2/2/2025",
+  "12:12 PM"
 );
 
 const clashOfClans_comment11 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   william._id.toString(),
-  "I don't feel like putting it here. I'll visit your house instead."
+  "I don't feel like putting it here. I'll visit your house instead.",
+  "2/2/2025",
+  "12:13 PM"
 );
 
 const clashOfClans_comment12 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   Josh6._id.toString(),
-  "Thanks. How do you know where I live though?"
+  "Thanks. How do you know where I live though?",
+  "2/2/2025",
+  "12:14 PM"
 );
 
 const clashOfClans_comment13 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   william._id.toString(),
-  "I'm at your front porch. Open the door."
+  "I'm at your front porch. Open the door.",
+  "2/2/2025",
+  "12:15 PM"
 );
 
 const clashOfClans_comment14 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   Josh6._id.toString(),
-  "??????"
+  "??????",
+  "2/2/2025",
+  "12:16 PM"
 );
 
 const clashOfClans_comment15 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   Josh6._id.toString(),
-  "ok it turns out my dad was just pranking me. i had no idea he was on this site."
+  "ok it turns out my dad was just pranking me. i had no idea he was on this site.",
+  "2/2/2025",
+  "12:21 PM"
 );
 
 const clashOfClans_comment16 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   James12345._id.toString(),
-  "I need a clan to join."
+  "I need a clan to join.",
+  "2/2/2025",
+  "1:45 PM"
 );
 
 const clashOfClans_comment17 = await comments.createComment(
   "game",
   clashOfClans._id.toString(),
   JamesMom._id.toString(),
-  "James, I hope you've been applying for jobs."
+  "James, I hope you've been applying for jobs.",
+  "2/2/2025",
+  "1:46 PM"
 );
 
 const minecraft_comment1 = await comments.createComment(
