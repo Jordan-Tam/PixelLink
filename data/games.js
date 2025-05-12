@@ -244,7 +244,7 @@ const exportedMethods = {
       }
     }
 
-    return newGame;
+    return updatedGame;
   },
 
 
