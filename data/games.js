@@ -6,7 +6,8 @@ import {
   checkDateReleased,
   checkForm,
   checkId,
-  checkRating
+  checkRating,
+  compareForms
 } from "../helpers.js";
 
 
@@ -32,7 +33,7 @@ const exportedMethods = {
     // Create the new game object.
     let newGame = {
       name: name,
-      description, description,
+      description: description,
       dateReleased: dateReleased,
       numPlayers: 0,
       form: form,
@@ -174,15 +175,76 @@ const exportedMethods = {
 
 
   /**
-   * TO BE IMPLEMENTED
    * @param {*} id 
    */
-  async updateGame(id) {
-    // Waiting to see how updating a game will work, since updating the questions
-    // might cause some big issues in the user collection
-    // would need to iterate thru profiles and remove the corresponding gmae object from the games list
+  async updateGame(gameId, name, description, dateReleased, form) {
+    // Input validation.
+    gameId = checkId(gameId, "updateGame", "Game Id");
+    name = checkString(name, "name", "createGame");
+    description = checkString(description, "description", "createGame");
+    dateReleased = checkDateReleased(dateReleased, "createGame");
+    form = checkForm(form);
+
+    // Get the old game object
+    let oldGame = await this.getGameById(gameId);
+
+    // Create the new game object.
+    let updatedGame = {
+      name: name,
+      description: description,
+      dateReleased: dateReleased,
+      numPlayers: oldGame.numPlayers,
+      form: form,
+      averageRating: oldGame.averageRating,
+      reviews: oldGame.reviews,
+      comments: oldGame.comments,
+    };
+
+    // Get the Games collection.
+    const gamesCollection = await games();
+
+    // Update the game object in the database.
+    const updateInfo = await gamesCollection.findOneAndReplace(
+      { _id: new ObjectId(gameId) },
+      updatedGame,
+      { returnDocument: "after" }
+    );
+
+    // Check if the insertion was successful.
+    if (!updateInfo) {
+      throw {
+        status: 500,
+        function: "updateGame",
+        error: "Could not update game.",
+      };
+    }
+
+    // Get the old game's id and store it in the updated game object.
+    updatedGame["_id"] = oldGame["_id"].toString();
 
 
+    let allUsers = await userDataFunctions.getAllUsers();
+
+    let modifiedQuestions = compareForms(oldGame.form, updatedGame.form);
+    
+    if(modifiedQuestions.length){   // If there are modified questions, we must remove them from each userGameInfo
+      for (let user of allUsers) {  // Iterate through each user
+        for (let game of user.games) {  // Iterate through each user's games
+          if (game.gameId.toString() === updatedGame._id) { // If the game matches up with the updated one
+            let oldUserGameInfo = game.userGameInfo;
+            let newUserGameInfo = [];
+            for (let q of oldUserGameInfo) {  // Iterate through the old info 
+              if (!modifiedQuestions.includes(q.field_name)) {  // If the user had info on a modified question, don't add it to the new info array
+                newUserGameInfo.push(q);
+              }
+            }
+            await userDataFunctions.updateGame(user._id, gameId, newUserGameInfo);  // Update with the new info
+          }
+        }
+      }
+    }
+
+    return newGame;
   },
 
 

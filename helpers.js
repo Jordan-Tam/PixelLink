@@ -772,6 +772,59 @@ const stringToNumber = (str, funcName) => {
   return number; 
 } 
 
+
+// This function compares an old game form with a new one to see if
+// any users need to have their userGameInfo changed.
+// Returns the field of each object that has changed
+
+// Iterate through the forms
+// If the field is not in the new form -> mark it
+// If it is -> check to see if the type is the same, if so -> mark it
+// If not and it is a text type -> do not mark
+// If it is a number type, check if the domain is different, if so -> mark it
+// If it is a select type, check if the options are the same, if not -> mark it
+const compareForms = (oldForm, newForm) => {
+  let compared = false;
+  let retval = []
+  for(let oldKey in oldForm){
+    compared = false;   // Variable to see if we have seen a match for two fields
+    let oldQ = oldForm[oldKey];
+      for(let newKey in newForm){
+        let newQ = newForm[newKey];
+        if (oldQ.field === newQ.field) {    // If the fields are the same, start the comparison
+          compared = true;
+          if (oldQ.type !== newQ.type) {    // If the type changed, mark it
+            retval.push(oldQ.field);
+            continue;
+          }
+          if(oldQ.type === "number"){
+            if(oldQ.domain[0] !== newQ.domain[0] || oldQ.domain[1] !== newQ.domain[1]){
+              retval.push(oldQ.field);    // If it is a number and the domain changed, mark it
+            }
+            continue;
+          }
+          else if(oldQ.type === "select"){
+            if(oldQ.options.length !== newQ.options.length){  // If it is a select and the number of options are different, mark it
+              retval.push(oldQ.field);
+              continue;
+            }
+            for(let elem of oldQ.options){ 
+              if(!newQ.options.includes(elem)){ // And if there is a new option, mark it
+                retval.push(oldQ.field);
+                continue;
+              }
+            }
+          }
+
+        }
+      }
+      if(!compared){  // This means we did not find a matching field for the old form, so it was removed
+        retval.push(oldQ.field);
+      }
+    }
+    return retval;
+}
+
  
  
 
@@ -788,5 +841,6 @@ export {
   checkUserGameInfo,
   checkRating,
   sanitizeBody,
-  stringToNumber
+  stringToNumber,
+  compareForms
 };
