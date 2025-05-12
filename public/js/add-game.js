@@ -2,10 +2,12 @@ const TYPES = ["text", "select", ]
 // Create Game Form
 let createGameForm = document.getElementById("createGameForm");
 let gameTitle = document.getElementById("name");
+let description = document.getElementById("description");
 let gameFormError = document.getElementById("gameFormError");
 let dateReleased = document.getElementById("dateReleased");
 let fieldList = document.getElementById("fieldInput");
 let addField = document.getElementById("addField");
+let removeField = document.getElementById("removeField");
 
 let fieldNum = 1;
 
@@ -27,6 +29,14 @@ if(createGameForm !== null){
             gameFormError.innerHTML = "Must provide a release date in mm/dd/yyyy format.";
             gameFormError.hidden = false;
             return;
+        }
+
+        let description_input = description.value.trim(); //validate title
+        if (!description_input || description_input.length === 0) {
+          event.preventDefault();
+          gameFormError.innerHTML = "Must provide a game description.";
+          gameFormError.hidden = false;
+          return;
         }
 
         let fieldDivs = createGameForm.querySelectorAll(".fieldInput");
@@ -89,6 +99,7 @@ if(createGameForm !== null){
 
         const newField = document.createElement("div"); //create new field
         newField.className = "fieldInput";//could also add class attribute
+        newField.id = "q" + (fieldNum).toString();
         newField.innerHTML = `
         <label for="field_${fieldNum}"">Field Name:</label>
         <input type="text" id="field_${fieldNum}" name="form[${fieldNum}][field]"><br>
@@ -107,6 +118,20 @@ if(createGameForm !== null){
 
         fieldList.appendChild(newField); //add to list
         fieldNum++; //increment
+    });
+
+    removeField.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      if(fieldNum > 0){
+        const bottomQ = document.getElementById(
+          "q" + (fieldNum - 1).toString()
+        );
+        bottomQ.remove();
+
+        fieldNum--;
+      }
+
     });
         
 }

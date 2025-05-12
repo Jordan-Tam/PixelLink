@@ -31,7 +31,6 @@ app.use(
   })
 );
 
-// I have not tested these, since the routes aren't up yet.
 
 //* Middleware 1: Console log information related to each server request.
 app.use(async (req, res, next) => {

@@ -66,15 +66,16 @@ router.route('/')
     })
     .post(async (req, res) => {
         try {
-            const {name, dateReleased, form} = req.body;
+            let {name, dateReleased, description, form} = req.body;
             name = checkString(name, "name", "POST game/list");
             dateReleased = checkDateReleased(dateReleased, "POST game/list");
-            form = checkForm(form);
+            description = checkString(description, "description", "POST game/list");
+            form = checkForm(form);         // This does not work
             if(!req.session.user || !req.session.user.admin){
                 //Not logged in users and non-admins cannot add a game
                 return res.status(403).json({error: "Permission Denied"});
             }
-            const game = await games.createGame(name, dateReleased, form);
+            const game = await games.createGame(name, description, dateReleased, form);
             const gamesList = await games.getAllGames();
             return res.render('game-list', {
                 games: gamesList,
