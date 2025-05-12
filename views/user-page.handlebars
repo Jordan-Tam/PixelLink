@@ -40,13 +40,13 @@
         {{#if notFriended}}
         <form action = "{{user._id}}/friends" method="POST">
             <input type="hidden" name="friendId" value="{{user._id}}">
-            <input type="submit" value="Add {{user.username}}">
+            <input type="submit" value="Follow {{user.username}}">
         </form>
         {{else}}
          <form action = "{{user._id}}/friends" method="POST">
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="friendId" value="{{user._id}}">
-            <input type="submit" value="Remove {{user.username}}">
+            <input type="submit" value="Unfollow {{user.username}}">
         </form>
         {{/if}}
     </div>
