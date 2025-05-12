@@ -193,20 +193,50 @@ router.route('/:id')
 router
   .route("/:id/form")
   .get(async (req, res) => {
+
     try {
       const id = checkString(req.params.id, "Game id", "GET game/:id/form");
 
+      // Get info about the signed-in user.
       const user = await users.getUserById(req.session.user._id); 
+      
+      // Get info about the game associated with ":id".
       const game = await games.getGameById(id);
-      const userGames = user.games;
-      const gameNames = [];
 
-      for(let i = 0; i < userGames.length; i++){
-        gameNames.push(userGames[i].gameName);
-      } 
-      //If the game is in the users data already then it will load the form with PATCH method
-      //Todo: get the users answers on the screen
-      if (!gameNames.includes(game.name)){
+      // Create a list of strings of all the games that the user plays.
+      const userGames = user.games;
+      let already_in_users_profile = false;
+      let gameIndex = -1;
+      for (let i = 0; i < userGames.length; i++) {
+        if (userGames[i].gameName === game.name) {
+            already_in_users_profile = true;
+            gameIndex = i;
+            break;
+        }
+      }
+
+      console.log(already_in_users_profile);
+
+    if (already_in_users_profile) {
+        for (let i = 0; i < game.form.length; i++) {
+            for (let j = 0; j < userGames[gameIndex].userGameInfo.length; j++) {
+                console.log(game.form[i].field);
+                console.log(userGames[gameIndex].userGameInfo[j].field_name);
+                console.log(game.form[i].field === userGames[gameIndex].userGameInfo[j].field_name);
+                if (game.form[i].field === userGames[gameIndex].userGameInfo[j].field_name) {
+                    game.form[i].userValue = userGames[gameIndex].userGameInfo[j].value;
+                    break;
+                }
+            }
+        }
+    }
+
+    console.log(game);
+    console.log(game.form);
+
+
+      // If the user has already added this game, the form will be loaded with the PATCH method and the fields will be automatically populated with the existing values.
+      if (!already_in_users_profile){
         return res.render("game-form", {
             update: false,
             game: game,

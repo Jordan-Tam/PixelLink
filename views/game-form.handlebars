@@ -8,33 +8,86 @@
 </header>
 <main>
     <!-- for each field object in form array, display with form tag -->
+
+    <!-- If the game form has fields to fill out... -->
     {{#if game.form.length}}
+
+        <!-- Create the form. -->
         <form action="/games/{{game._id}}/form" method="POST" name = "gameForm" id = "gameForm">
+            
+            <!-- If the user is updating their info, adda hidden PATCH value to the form. -->
             {{#if update}}
                 <p> update </p>
                <input type="hidden" name='_method' value="PATCH" />
             {{/if}}
+
+            <!-- For each field in the form... -->
             {{#each game.form}}
+
+                <!-- Use the field's name as the label to its respective input. -->
                 <label for="form_input{{@index}}" id="label{{@index}}">
                     {{this.field}}
+
+                    <!-- If the form's options list property has a length greater than 0, this is a "select" type, so we need to render a dropdown menu. -->
                     {{#if this.options.length}}
-                        <!-- Drop down -->
+
+                        <!-- Create the dropdown menu. -->
                         <select name="form_input{{@index}}" id="form_input{{@index}}">
+
+                            <!-- Create an empty option to allow the user to skip this question. -->
                             <option value = "" id = "empty{{@index}}"></option>
+
+                            <!-- Render the rest of the dropdown menu's options. -->
                             {{#each this.options}}
-                                <option value="{{this}}" id = "value{{@index}}">{{this}}</option>
+                                <option
+                                    value="{{this}}"
+                                    id = "value{{@index}}"
+                                    {{#if (eq this ../this.userValue)}}
+                                        selected
+                                    {{/if}}
+                                >
+                                    {{this}}
+                                </option>
                             {{/each}}
+
                         </select>
+                    
+                    <!-- If the form's domain list property has a length greater than 0, this is a "number" type, so we need to render a number input. -->
                     {{else if this.domain.length}}
-                        <input type="number" name="form_input{{@index}}" id="form_input{{@index}}"/>
+
+                        <input
+                            type="number"
+                            name="form_input{{@index}}"
+                            id="form_input{{@index}}"
+                            {{#if this.userValue}}
+                                value="{{this.userValue}}"
+                            {{/if}}
+                        />
+                    
+                    <!-- Otherwise, this is a "text" input, so we render a text input. -->
                     {{else}}
-                        <input type="text" name="form_input{{@index}}" id="form_input{{@index}}"/>
+
+                        <input
+                            type="text"
+                            name="form_input{{@index}}"
+                            id="form_input{{@index}}"
+                            {{#if this.userValue}}
+                                value="{{this.userValue}}"
+                            {{/if}}
+                        />
+
                     {{/if}}
                 </label><br>
+
             {{/each}}
+
+            <!-- Button to submit the form. -->
             <input type="submit" value="Submit Form"/>
+
              <!-- PATCH is NOT working, with or without the if statement -->
         </form>
+
+    <!-- If the game form has NO fields to fill out... -->
     {{else}}
         <p>No fields to fill out in {{game.name}}'s Add to Profile form!</p>
     {{/if}}
