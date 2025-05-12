@@ -92,9 +92,9 @@
                     {{#if (eq this.username ../user.username)}}
                     <form action="/games/{{../game._id}}/reviews/{{this._id}}" method="POST"> 
                         <input type="hidden" name="_method" value="DELETE">
-                        <input type="submit" value="delete review">
+                        <input type="submit" value="delete your review">
                     </form> 
-                    <button id="editReviewButton">Edit {{this.username}}'s Review</button>
+                    <button id="editReviewButton">Edit your review</button>
                     <form action="/games/{{../game._id}}/reviews/{{this._id}}" method="POST" id="updateReviewForm" hidden> 
                         <input type="hidden" name="_method" value="PATCH">
                         <label for="title">Title:</label>

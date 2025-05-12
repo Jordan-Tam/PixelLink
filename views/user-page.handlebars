@@ -61,7 +61,7 @@
     </div>
 
     <div>
-        <h3> Games: </h3>
+        <h3> Games: {{user.games.length}}</h3>
         {{#if user.games}}
             {{#each user.games}}
                 <div class="gameDiv">
@@ -80,12 +80,15 @@
                     {{/if}}
                 </div>
             {{/each}}
+        {{else}}
+            <p> No games added to profile yet... </p>
         {{/if}}
+        <a href="/games">Games List</a>
     </div>
 
     <br>
     <div>
-        <h3> Comments: </h3>
+        <h3> Comments: {{user.comments.length}}</h3>
         {{#if user.comments.length}}
             {{#each user.comments}}
                 <div class="commentDiv">
