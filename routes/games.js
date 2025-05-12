@@ -94,7 +94,6 @@ router.route('/')
             });
         }
     })
-    .delete()
 
 router.route('/new')
     .get(async (req, res) => {
