@@ -600,10 +600,10 @@ router
         try{
             const gameId = checkId(req.params.gameId, "DELETE /:gameId/reviews/:reviewId", "Game");
             const commentId = checkId(req.params.commentId, "DELETE /:gameId/reviews/:commentId", "Comment");
-            if(!req.session.user || !req.session.user.admin){ //get user, check if logged in
+            if(!req.session.user){ //get user, check if logged in
                 return res.status(403).render("error", {
                     status: 403,
-                    error_message: "Permission Denied. Must be logged in as an admin to delete a review.",
+                    error_message: "Permission Denied. Must be logged in.",
                     stylesheet: "/public/css/error.css",
                     title: "403 Error"
                 });
