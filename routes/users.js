@@ -95,7 +95,8 @@ router.route('/:id')
         } catch (e) {
             return res.status(e.status).render("error", {
                 status: e.status,
-                error_message: e.error
+                error_message: e.error,
+                stylesheet: "/public/css/error.css"
             });
         }
 
@@ -106,7 +107,8 @@ router.route('/:id')
         } catch (e) {
             return res.status(e.status).render("error", {
                 status: e.status,
-                error_message: e.error
+                error_message: e.error,
+                stylesheet: "/public/css/error.css"
             });
         }
 
@@ -160,7 +162,8 @@ router.route('/:id')
 
             return res.status(e.status).render('error', {
                 status: e.status,
-                error_message: e.error
+                error_message: e.error,
+                stylesheet: "/public/css/error.css"
             });
         }
 
@@ -203,7 +206,8 @@ router.route('/:id')
         } catch (e) {
             return res.status(e.status).render('error', {
                 status: e.status,
-                error_message: e.error
+                error_message: e.error,
+                stylesheet: "/public/css/error.css"
             });
         }
 
@@ -211,7 +215,8 @@ router.route('/:id')
         if (req.session.user._id !== req.params.id) {
             return res.status(403).render('error', {
                 status: 403,
-                error_message: "Forbidden"
+                error_message: "Forbidden",
+                stylesheet: "/public/css/error.css"
             });
         }
 
@@ -332,8 +337,11 @@ router.route('/:id/friends')
                 friends: friendsArr,
                 username: user.username,
             });
-        } catch (error) {
-            return res.status(500).json({error});
+        } catch (e) {
+            return res.status(e.status).render("error", {
+                status: e.status,
+                error_message: `${e.function}: ${e.error}`
+            });
         }
     })
     .post(async (req, res) => {
@@ -358,7 +366,10 @@ router.route('/:id/friends')
             //Changed this to take you to your friends list since it only adds the friend on your side.
             return res.redirect(`/users/${id}`);
         } catch (e) {
-            return res.status(500).json({error: e.error});
+            return res.status(400).render("error", {
+                status: e.status,
+                error_message: `${e.function}: ${e.error}`
+            });
         }
     })
 
@@ -371,7 +382,10 @@ router.route('/:id/friends')
             //Check if the user is removing themself as a friend - throws error if so
             if(!req.session.user || req.session.user._id === id){ 
                 //render the 403 error
-                return res.status(403).json({error: "Permission Denied"});
+                return res.status(403).render("error", {
+                    status: 403,
+                    error_message: "Permission Denied"
+                });
             }
 
             //remove friend from users friends list
