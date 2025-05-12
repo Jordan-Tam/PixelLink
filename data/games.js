@@ -419,6 +419,10 @@ const exportedMethods = {
     //user and game collections
     const user = await userData.getUserById(userId);
     const users_games = user.games; 
+    if (users_games.length === 0){
+      return [];
+    }
+    console.log(users_games);
     let userCollection = await userData.getAllUsers();
 
     let user_array = [];
@@ -436,6 +440,8 @@ const exportedMethods = {
     //remove dupes
     user_array = [...new Set(user_array)];
 
+    console.log(user_array);
+
     //key: game title, value: number of occurences
     const gameFreq = {};
 
@@ -443,7 +449,7 @@ const exportedMethods = {
 
     //If the game is not in the users game collection it will be initalized into gameFreq
     for (const game of gameCollection) {
-      if (!users_games.some(g => g.name === game.name)) {
+      if (!users_games.some(g => g.gameName === game.name)) {
         gameFreq[game.name] = 0;
       }
     }
@@ -469,7 +475,7 @@ const exportedMethods = {
       }
     }
     
-
+    console.log(gameFreq);
     //Sorts the recommendations from game frequency (descendign order) & only includes game names
     const sortedRecommendations = Object.entries(gameFreq)
     .sort((a, b) => b[1] - a[1]) 
