@@ -52,7 +52,8 @@ router.route('/')
                 title: "Games List",
                 stylesheet: "/public/css/game-list.css",
                 user: req.session.user,
-                recs: count
+                recs: count,
+                notZero: recs.length !== 0
             });
         } catch (error) {
             return res.status(error.status || 500).render("error", {
