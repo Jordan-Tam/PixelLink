@@ -5,10 +5,12 @@
 <main>
 
     <!-- ADMIN ONLY: Button to delete game from database. -->
-    <form action="/games/{{game._id}}" method="POST">
-        <input type="submit" id="deleteGame" name="deleteGame" value="Delete Game From Database">
-        <input type="hidden" name="_method" value="DELETE">
-    </form> 
+    {{#if user.admin}}
+        <form action="/games/{{game._id}}" method="POST">
+            <input type="submit" id="deleteGame" name="deleteGame" value="Delete Game From Database">
+            <input type="hidden" name="_method" value="DELETE">
+        </form>
+    {{/if}}
 
     <!-- Release Date -->
     <div class="dateReleased-div">

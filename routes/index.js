@@ -87,8 +87,8 @@ const constructorMethod = (app) => {
             password = checkPassword(password, "POST /register");
             let admin = false;
             let newUser = await users.createUser(username, password, admin);
-            req.session.user = newUser;
-            return res.redirect("/home");
+            //req.session.user = newUser;
+            return res.redirect("/login"); // Make the user login after successful registration.
 
         } catch (e) {
             return res.status(e.status).render('registration', {
