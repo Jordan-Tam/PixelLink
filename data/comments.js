@@ -17,7 +17,9 @@ const exportedMethods = {
         type,
         parentId,
         userId,
-        content
+        content,
+        dateString = "",
+        timeString = ""
     ) {
 
         // Input validation.
@@ -29,16 +31,21 @@ const exportedMethods = {
         // Get user document associated with "userId".
         const user = await usersDataFunctions.getUserById(userId);
 
-        // Get the current date.
-        const d = new Date();
-        const dateString = `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+        if (!dateString) {
+            // Get the current date.
+            const d = new Date();
+            dateString = `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+        }
 
-        // Get the current time.
-        const timeString = `${d.toLocaleString('en-US', {
-            hour: "numeric",
-            minute: "numeric",
-            hour12: true
-        })}`;
+        if (!timeString) {
+            // Get the current time.
+            const d = new Date();
+            timeString = `${d.toLocaleString('en-US', {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true
+            })}`;
+        }
 
         // Create the new Comment object.
         let newComment = {
