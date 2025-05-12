@@ -62,3 +62,8 @@ a:hover {
 span {
     font-weight: bold;
 }
+
+#recs{
+    color: blue;
+    font-family: Arial;
+}
