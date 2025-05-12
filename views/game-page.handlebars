@@ -50,43 +50,34 @@
                     <p class="reviewTitle">{{this.title}}</p>
                     <p class="reviewContent">{{this.content}}</p>
                     <p class="reviewRating">Rating: {{this.rating}}</p>
-                </div>
-
-                <!-- If the user is an admin -->
-                {{#if ../is_admin}}
-
-                <!-- Delete Review button -->
-                 <form action="/games/{{../game._id}}/reviews/{{this._id}}" method="POST"> 
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="submit" value="delete {{this.username}}'s review">
-                </form>
-
-                <!-- Edit Review button -->
-                <button id="editReviewButton">Edit {{this.username}}'s Review</button>
-
-                <!-- Edit Review form (appears after pressing Edit Review button) -->
-                <form action="/games/{{../game._id}}/reviews/{{this._id}}" method="POST" id="updateReviewForm" hidden> 
-                    <input type="hidden" name="_method" value="PATCH">
-                    <label for="title">Title:</label>
-                    <input type="text" id="title" name="title" value="{{this.title}}" required>
-                    <br><br>
-                    <label for="content">Content:</label>
-                    <input type="text" id="content" name="content" value="{{this.content}}" required>
-                    <br><br>
-                    <label for="rating">Rating:
-                        <select id="rating" name="rating" required>
-                            <option value="1" {{#if (eq this.rating 1)}}selected{{/if}}>1</option>
-                            <option value="2" {{#if (eq this.rating 2)}}selected{{/if}}>2</option>
-                            <option value="3" {{#if (eq this.rating 3)}}selected{{/if}}>3</option>
-                            <option value="4" {{#if (eq this.rating 4)}}selected{{/if}}>4</option>
-                            <option value="5" {{#if (eq this.rating 5)}}selected{{/if}}>5</option>
-                        </select>
-                    </label>
-                    <input type="submit" value="update {{this.username}}'s review">
-                </form>
-
-                <!-- Otherwise, if the user is not an admin -->
-                {{else}}
+                    {{#if ../is_admin}}
+                    <form action="/games/{{../game._id}}/reviews/{{this._id}}" method="POST"> 
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="delete {{this.username}}'s review">
+                    </form>
+                    {{#if (eq this.username ../user.username)}}
+                    <button id="editReviewButton">Edit your review</button>
+                    <form action="/games/{{../game._id}}/reviews/{{this._id}}" method="POST" id="updateReviewForm" hidden> 
+                        <input type="hidden" name="_method" value="PATCH">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" name="title" value="{{this.title}}" required>
+                        <br><br>
+                        <label for="content">Content:</label>
+                        <input type="text" id="content" name="content" value="{{this.content}}" required>
+                        <br><br>
+                        <label for="rating">Rating:
+                            <select id="rating" name="rating" required>
+                                <option value="1" {{#if (eq this.rating 1)}}selected{{/if}}>1</option>
+                                <option value="2" {{#if (eq this.rating 2)}}selected{{/if}}>2</option>
+                                <option value="3" {{#if (eq this.rating 3)}}selected{{/if}}>3</option>
+                                <option value="4" {{#if (eq this.rating 4)}}selected{{/if}}>4</option>
+                                <option value="5" {{#if (eq this.rating 5)}}selected{{/if}}>5</option>
+                            </select>
+                        </label>
+                        <input type="submit" value="update review">
+                    </form> 
+                    {{/if}}
+                    {{else}}
 
                     <!-- If the review comes from the signed-in user... -->
                     {{#if (eq this.username ../user.username)}}
@@ -115,7 +106,8 @@
                         <input type="submit" value="update review">
                     </form> 
                     {{/if}}
-                {{/if}}
+                    {{/if}}
+                </div>
             {{/each}}
         {{else}}
             <p>No reviews.</p>
@@ -143,6 +135,8 @@
             <input type="submit" id="reviewSubmit" name="reviewSubmit" value="add review!">
         </form>
         {{/if}}
+                <!-- Otherwise, if the user is not an admin -->
+                
     </div>
 
     <div>
@@ -153,12 +147,12 @@
                     <p class="usernameParagraph">{{this.username}}</p>
                     <p class="dateTimeParagraph">{{this.date}} • {{this.time}}</p>
                     <p class="contentParagraph">{{this.content}}</p>
+                    {{#if ../is_admin}}
+                    <form action="/games/{{../game._id}}/comment/{{this._id}}" method="POST"> 
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="delete {{this.username}}'s comment">
+                    </form> 
                 </div>
-                {{#if ../is_admin}}
-                 <form action="/games/{{../game._id}}/comment/{{this._id}}" method="POST"> 
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="submit" value="delete {{this.username}}'s comment">
-                </form> 
                 {{/if}}
             {{/each}}
         {{else}}
