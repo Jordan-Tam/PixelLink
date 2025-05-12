@@ -67,9 +67,11 @@ router.route('/')
     .post(async (req, res) => {
         try {
             let {name, dateReleased, description, form} = req.body;
+            console.log(req.body); //TEST
             name = checkString(name, "name", "POST game/list");
             dateReleased = checkDateReleased(dateReleased, "POST game/list");
             description = checkString(description, "description", "POST game/list");
+            //console.log(req.body); //TEST
             form = checkForm(form);         // This does not work
             if(!req.session.user || !req.session.user.admin){
                 //Not logged in users and non-admins cannot add a game

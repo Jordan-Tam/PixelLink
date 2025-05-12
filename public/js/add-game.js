@@ -1,4 +1,3 @@
-const TYPES = ["text", "select", ]
 // Create Game Form
 let createGameForm = document.getElementById("createGameForm");
 let gameTitle = document.getElementById("name");
@@ -13,6 +12,8 @@ let fieldNum = 1;
 
 if(createGameForm !== null){
     createGameForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        console.log("hello");
         gameFormError.hidden = true; //hide error paragraph
 
         let title_input = gameTitle.value.trim(); //validate title
@@ -91,6 +92,108 @@ if(createGameForm !== null){
             }
             
         }
+        console.log("passed validation"); //TEST
+
+        let fieldInfo = [];
+        console.log(fieldDivs);//TEST
+        for (let i = 0; i < fieldDivs.length; i++) {
+            let nameInput = fieldDivs[i].querySelector(`input[name="form[${i}][field]"]`);
+            let typeInput = fieldDivs[i].querySelector(`select[name="form[${i}][type]"]`);
+            let optionsInput = fieldDivs[i].querySelector(`input[name="form[${i}][options]"]`);
+            let domainMinInput = fieldDivs[i].querySelector(`input[name="form[${i}][domain][0]"]`);
+            let domainMaxInput = fieldDivs[i].querySelector(`input[name="form[${i}][domain][1]"]`);
+
+            let options = [];
+            let domain = [];
+
+            if(typeInput.value == "select"){
+                options = optionsInput.value.split(","); //??
+            }
+            if(typeInput.value == "number"){
+                domain = [domainMinInput.value.toString(), domainMaxInput.value.toString()];
+            }
+
+            fieldInfo.push({
+                field: nameInput.value,
+                type: typeInput.value,
+                options: options,
+                domain: domain
+            });
+        }
+        console.log("Field Info:", fieldInfo);
+
+        let newForm = document.createElement("form");
+        newForm.hidden = true; //hide form
+        newForm.setAttribute("method", createGameForm.method);
+        newForm.setAttribute("action", createGameForm.action);
+
+        for (let i=0; i < fieldInfo.length;i++){
+            let elem = fieldInfo[i];
+            if(elem.type !== "hidden"){
+                if (elem.type === "select") {
+                    let selectElem = document.createElement("select");
+                    selectElem.id = `field_${i}`;
+                    selectElem.name = `form[${i}][field]`;
+
+                    elem.options.forEach(option => {
+                        let optionElem = document.createElement("option");
+                        optionElem.value = option;
+                        optionElem.textContent = option;
+                        selectElem.appendChild(optionElem);
+                    });
+
+                    newForm.appendChild(selectElem);
+
+                } else {
+                    let inputElem = document.createElement("input");
+                    inputElem.id = `field_${i}`;
+                    inputElem.name = `form[${i}][field]`;
+
+                    if (elem.type === "number") {
+                        inputElem.type = "number";
+                        // optionally: set min/max here using elem.domain[0], elem.domain[1]
+                    } else {
+                        inputElem.type = "text";
+                    }
+
+                    newForm.appendChild(inputElem);
+                }
+            }
+        }
+
+        let methodInput = createGameForm.querySelector('input[name="_method"]');
+        if (methodInput) {
+            let methodClone = document.createElement("input");
+            methodClone.type = "hidden";
+            methodClone.name = "_method";
+            methodClone.value = methodInput.value;
+            newForm.appendChild(methodClone);
+        }
+
+        //attaching to DOM
+        let title_input_elem = document.createElement("input");
+        title_input_elem.type = "text";
+        title_input_elem.id = "name";
+        title_input_elem.name = "name";
+        title_input_elem.value = title_input;
+        newForm.appendChild(title_input_elem);
+        let date_input_elem = document.createElement("input");
+        date_input_elem.type = "text";
+        date_input_elem.id = "dateReleased";
+        date_input_elem.name = "dateReleased";
+        date_input_elem.value = date_input;
+        newForm.appendChild(date_input_elem);
+        let description_input_elem = document.createElement("input");
+        description_input_elem.type = "text";
+        description_input_elem.id = "description";
+        description_input_elem.name = "description";
+        description_input_elem.value = description_input;
+        newForm.appendChild(description_input_elem);
+
+        document.body.appendChild(newForm); //attach form
+        //console.log(newForm); //TEST
+        //console.log(document.body);
+        newForm.submit();
     });
     //set up click listener
     addField.addEventListener("click", (event) => {
