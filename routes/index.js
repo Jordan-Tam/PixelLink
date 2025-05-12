@@ -81,7 +81,7 @@ const constructorMethod = (app) => {
         }
     });
     app.post("/register", async (req, res) => {
-        let {username, password} = req.body;
+        let {username, password, confirmPassword} = req.body;
         try {
             username = checkUsername(username, "POST /register");
             password = checkPassword(password, "POST /register");
@@ -97,7 +97,8 @@ const constructorMethod = (app) => {
                 script: "/public/js/registration.js",
                 error_message: e.error,
                 username: username,
-                password: password
+                password: password,
+                confirmPassword: confirmPassword
             });
         }
     });

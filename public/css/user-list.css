@@ -28,9 +28,13 @@ a:active {
     margin-top: 10px;
     margin-bottom: 10px;
     padding-left: 10px;
-    width: 550px;
+    width: 700px;
 }
 
 #error {
     color: red;
+}
+
+span {
+    font-weight: bold;
 }
