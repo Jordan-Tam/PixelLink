@@ -9,7 +9,7 @@
     <br>
     <label for="gameSelect">Search by game:</label>
     <select name="gameSelect" id="gameSelect">
-      <option label="none"></option>
+      <option label=" "></option>
       {{#each games}}
         <option id={{this._id}}>{{this.name}}</option>
       {{/each}}
@@ -22,7 +22,7 @@
             <label for="gameInput{{@../index}}-{{@index}}" class = "fieldLabel">{{this.field}}</label>
               {{#if this.options.length}}
                 <select name="gameInput{{@../index}}-{{@index}}" id="gameInput{{@../index}}-{{@index}}" class = "select">
-                  <option label="none" id="gameInput{{@../index}}-{{@index}}-empty"></option>
+                  <option label=" " id="gameInput{{@../index}}-{{@index}}-empty"></option>
                   {{#each this.options}}
                     <option
                       id="gameInput{{@../../index}}-{{@../index}}-{{@index}}"
