@@ -115,7 +115,11 @@ const constructorMethod = (app) => {
     // Signout
     app.get("/signout", (req, res) =>{
         req.session.destroy();
-        res.sendFile(path.resolve("static/signout.html"));
+        res.render("signout", {
+            title: "Signed Out",
+            stylesheet: "/public/css/signout.css"
+        });
+        //res.sendFile(path.resolve("static/signout.html"));
     })
 
     // About page

@@ -1,6 +1,7 @@
 <header>
     <h1>{{status}} Error</h1>
     <p>{{error_message}}</p>
+    <a href="/home">Return to Home</a> <!-- If user isn't signed in, this will redirect to login -->
     {{#if link}} <!-- optional link to go back to original page -->
         <a href="{{link}}">Go Back</a>
     {{/if}}
