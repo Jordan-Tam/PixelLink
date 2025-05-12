@@ -1,5 +1,5 @@
 let gameForm = document.getElementById("gameForm");
-
+let error = document.getElementById("error");
 
 if (gameForm) {
   gameForm.addEventListener("submit", (event) => {
@@ -16,8 +16,18 @@ if (gameForm) {
       if (!value) {
         continue;
       }
-      value = value.value;
-      userGameInfo.push({ field_name: field_name, value: value });
+      enteredValue = value.value;
+      if(value.type === "number"){    // If this is a number question, we need to confirm that the number is within the domain
+        let domain = value.className.split("-");
+        if(parseInt(domain[0]) > parseInt(enteredValue) || parseInt(domain[1]) < parseInt(enteredValue)){   // If the number is outside of the domain
+          error.textContent = "Error: You have a number value outside of the accepted domain.";
+          error.hidden = false;
+          return;
+        }
+        error.hidden = true;
+
+      } 
+      userGameInfo.push({ field_name: field_name, value: enteredValue });
       i++;
     }
 

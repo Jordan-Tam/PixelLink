@@ -54,11 +54,12 @@
                     
                     <!-- If the form's domain list property has a length greater than 0, this is a "number" type, so we need to render a number input. -->
                     {{else if this.domain.length}}
-
+                        <span>(Domain: {{this.domain.[0]}}-{{this.domain.[1]}})</span>
                         <input
                             type="number"
                             name="form_input{{@index}}"
                             id="form_input{{@index}}"
+                            class="{{this.domain.[0]}}-{{this.domain.[1]}}"
                             {{#if this.userValue}}
                                 value="{{this.userValue}}"
                             {{/if}}
@@ -91,4 +92,7 @@
     {{else}}
         <p>No fields to fill out in {{game.name}}'s Add to Profile form!</p>
     {{/if}}
+
+    <p id = "error" hidden></p>
+
 </main>
