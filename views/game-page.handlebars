@@ -152,8 +152,15 @@
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="submit" value="delete {{this.username}}'s comment">
                     </form> 
+                    {{else}}
+                    {{#if (eq this.username ../user.username)}}
+                    <form action="/games/{{../game._id}}/comment/{{this._id}}" method="POST"> 
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="delete your comment">
+                    </form> 
+                    {{/if}}
+                    {{/if}}
                 </div>
-                {{/if}}
             {{/each}}
         {{else}}
             <p>No comments.</p>
