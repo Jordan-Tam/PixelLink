@@ -198,7 +198,6 @@ router
       //If the game is in the users data already then it will load the form with PATCH method
       //Todo: get the users answers on the screen
       if (!gameNames.includes(game.name)){
-        console.log('2')
         return res.render("game-form", {
             update: false,
             game: game,
@@ -510,7 +509,7 @@ router
         // Validate the "id" path variable.
         try {
 
-            req.params.id = checkId(req.params.id, "POST /:id", "Game");
+            req.params.id = checkId(req.params.id, "POST /:id", "game");
         
         } catch (e) {
 
@@ -523,11 +522,11 @@ router
         }
 
         // Add the comment.
+        let game;
         try {
-            const game = await games.getGameById(req.params.id);
+            game = await games.getGameById(req.params.id);
             await comments.createComment("game", req.params.id, req.session.user._id, req.body.comment);
         } catch (e) {
-            
             return res.status(e.status).render('game-page', {
                 game: game,
                 title: `${req.session.user.username}'s Profile`,

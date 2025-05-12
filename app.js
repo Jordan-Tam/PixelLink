@@ -125,15 +125,22 @@ app.use("/games", async (req, res, next) => {
 
 //* Middleware 8: If a non-admin tries to access post or delete "/games/", redirect them to 403 error(with link back to games list page)
 app.use("/games", async(req, res, next) => {
-  if (req.method === "POST" || req.method === "DELETE"){
-    if((!req.path.includes("/form")) && (!req.session.user || !req.session.user.admin)){
-      return res.status(403).render("error", {
-        status: 403,
-        title: "403 Error",
-        error_message: "Permission Denied. Must be an admin.",
-        stylesheet: "/public/css/error.css",
-        link: "/games/"
-      });
+  if (req.method === "POST" || req.method === "DELETE") {
+
+    let is_form = req.path.includes("/form");
+    let is_comment = req.path.includes("/comment");
+    let is_reviews = req.path.includes("/reviews");
+    
+    if ((!(is_form || is_comment || is_reviews))) {
+      if (!req.session.user.admin) {
+        return res.status(403).render("error", {
+          status: 403,
+          title: "403 Error",
+          error_message: "Permission Denied. Must be an admin.",
+          stylesheet: "/public/css/error.css",
+          link: "/games/"
+        });
+      }
     }
   }
   next();

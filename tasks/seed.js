@@ -832,12 +832,44 @@ const chess_review3 = await games.addReview(
   4
 );
 
+const chess_review4 = await games.addReview(
+  chess._id,
+  Jordan._id,
+  "Obsessed",
+  "I keep playing even when I don't have time for it.",
+  5
+);
+
 const clashofClans_review1 = await games.addReview(
   clashOfClans._id,
   gamer7._id,
   "Upgrade times are insufferable",
   "Upgrade times are insufferable. Thank god they got rid of the timers for everything else because I hardly spend any time playing this game now.",
   3
+);
+
+const clashOfClans_review2 = await games.addReview(
+  clashOfClans._id,
+  Jordan._id,
+  "Electro dragon spam",
+  "I love spamming electro dragons. It's the only way I know how to play.",
+  5
+);
+
+const clashOfClans_review3 = await games.addReview(
+  clashOfClans._id,
+  william._id,
+  "I love the cannon",
+  "I don't want to merge my cannons when I get to Town Hall 16. Supercell, please don't make me get rid of them.",
+  4
+);
+
+const marioKart_review1 = await games.addReview(
+  marioKart._id,
+  Jordan._id,
+  "Illumination Studios",
+  "They referenced this game in the mario movie. The reference being that mario was in it.",
+  5
 );
 
 const minecraft_review1 = await games.addReview(
