@@ -364,9 +364,9 @@ const exportedMethods = {
                 }
             }
 
-            // Updates the comment from the user's comments.
+            // Updates the comment from the game's comments.
             const updateInfo = await gamesCollection.findOneAndUpdate(
-                {_id: new ObjectId(user._id)},
+                {_id: new ObjectId(game._id)},
                 {$set: {comments: gameComments}},
                 {returnDocument: 'after'}
             );

@@ -435,7 +435,7 @@ const exportedMethods = {
     if (!game) {
       throw {
         status: 404,
-        function: "removeReview",
+        function: "updateReview",
         error: "Review not found."
       };
     }

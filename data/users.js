@@ -297,37 +297,6 @@ const exportedMethods = {
         return updateInfo;
 
     },
-    
-
-    /**
-     * Deletes the User document associated with the given ID from the Users collection.
-     * @param {string} id 
-     * @returns {boolean} true
-     */
-    async removeUser (id) {
-
-        // Input validation.
-        id = checkId(id, "removeUser", "User")
-
-        // Get Users collection.
-        const userCollection = await users();
-
-        // Delete user from the database.
-        const deletionInfo = await userCollection.findOneAndDelete({
-            _id: new ObjectId(id)
-        });
-
-        if (!deletionInfo) {
-            throw {
-                status: 500,
-                function: "removeUser",
-                error: `Could not delete user with ID of ${id}`
-            };
-        }
-
-        return true;
-    
-    },
 
 
     /**

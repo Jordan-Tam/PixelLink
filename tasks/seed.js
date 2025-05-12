@@ -21,6 +21,10 @@ let owenTreanor = await users.createUser("owen-treanor", "D0nkeyK0ng!", false);
 
 let gamer7 = await users.createUser("gamer7", "iAMAGAMER%1", false);
 
+let gamer8 = await users.updateUsername(gamer7._id, "gamer8")
+
+gamer8 = await users.updatePassword(gamer8._id, "iAMAGAMER%2");
+
 let Josh6 = await users.createUser("Josh6", "ABCabc123!", false);
 
 let user5 = await users.createUser("user5", "!!3PPOOQQqq", false);
@@ -699,6 +703,10 @@ const superSmashBros_comment2 = await comments.createComment(
   "Later entries were definitely better, but this is still a fun one to revisit."
 );
 
+await comments.removeComment(minecraft_comment2._id, "game");
+
+await comments.updateComment(minecraft_comment4._id, "game", "HEROBRINE!!!")
+
 //////////////////////////////////////////////////////////////
 // User Comments
 //////////////////////////////////////////////////////////////
@@ -766,7 +774,10 @@ const Jordan_comment3 = await comments.createComment(
   "Please stop using my profile to send me personal messages."
 );
 
-// We can add more later, this just got kinda repetitive for me lol.
+await comments.removeComment(Jordan_comment3._id, "user");
+
+await comments.updateComment(gamer7_comment3._id, "user", "Hi Jordan!");
+
 
 // console.log(await comments.getCommentById(commentG2._id.toString(), "game"));
 
@@ -928,6 +939,13 @@ const superSmashBros_review3 = await games.addReview(
   5
 );
 
+const superSmashBrosUpdated = await games.getGameById(superSmashBros._id);
+
+await games.removeReview(superSmashBrosUpdated.reviews[2]._id.toString());
+
+await games.updateReview(superSmashBrosUpdated.reviews[0]._id.toString(), "So Fun!!", "I really love this game!", 5);
+
+
 //////////////////////////////////////////////////////////////
 // Add Games to User Profiles
 //////////////////////////////////////////////////////////////
@@ -1016,10 +1034,24 @@ await users.addGame(admin._id, marioKart._id, [
   { field_name: "Do you like playing in Mirror Mode?", value: "No" }
 ]);
 
+await users.addGame(stevens._id, marioKart._id, [
+  {
+    field_name: "Which is your favorite character to race as?",
+    value: "Funky Kong",
+  },
+  { field_name: "What is your preferred vehicle type?", value: "Bike" },
+]);
+
 await users.addGame(gamer7._id, amongUs._id, [
   { field_name: "What role do you prefer?", value: "Crewmate" },
   { field_name: "Do you play with mods?", value: "Sometimes" },
   { field_name: "What platform do you play on?", value: "PC" }
+]);
+
+await users.addGame(stevens._id, amongUs._id, [
+  { field_name: "What role do you prefer?", value: "Impostor" },
+  { field_name: "Do you play with mods?", value: "No" },
+  { field_name: "What platform do you play on?", value: "Xbox" },
 ]);
 
 await users.addGame(gamer7._id, overwatch2._id, [
@@ -1034,11 +1066,25 @@ await users.addGame(william._id, overwatch2._id, [
   { field_name: "What platform do you play on?", value: "Xbox" }
 ]);
 
+await users.addGame(JamesMom._id, overwatch2._id, [
+  { field_name: "Who is your favorite hero?", value: "Junkrat" },
+  { field_name: "What is your preferred role?", value: "Damage" },
+  { field_name: "What platform do you play on?", value: "PC" },
+]);
+
 await users.addGame(Josh6._id, overwatch2._id, [
   { field_name: "Who is your favorite hero?", value: "Brigitte" },
   { field_name: "What is your preferred role?", value: "Damage" },
   { field_name: "What platform do you play on?", value: "Playstation" }
 ]);
+
+await users.addGame(James12345._id, overwatch2._id, [
+  { field_name: "Who is your favorite hero?", value: "Tracer" },
+  { field_name: "What is your preferred role?", value: "Damage" },
+  { field_name: "What platform do you play on?", value: "Playstation" },
+]);
+
+
 
 await users.addGame(Josh6._id, minecraft._id, [
   { field_name: "What is your favorite way to play?", value: "Creative" },
@@ -1132,7 +1178,88 @@ await users.addFriend(Jordan._id, william._id);
 
 await users.addFriend(Jordan._id, Josh6._id);
 
-//console.log(await games.getRecommendations(Jordan._id))
+await users.addFriend(Jordan._id, superman._id);
+
+await users.addFriend(owenTreanor._id, admin._id);
+
+await users.addFriend(admin._id, JamesMom._id);
+
+await users.addFriend(owenTreanor._id, JamesMom._id);
+
+await users.addFriend(owenTreanor._id, James12345._id);
+
+await users.addFriend(stevens._id, superman._id);
+
+await users.addFriend(stevens._id, william._id);
+
+await users.addFriend(gamer8._id, Josh6._id);
+
+await users.addFriend(user5._id, JohnDoe._id);
+
+await users.addFriend(admin._id, Josh6._id);
+
+await users.addFriend(admin._id, JohnDoe._id);
+
+await users.addFriend(admin._id, stevens._id);
+
+await users.addFriend(admin._id, gamer8._id);
+
+await users.addFriend(James12345._id, JohnDoe._id);
+
+await users.addFriend(James12345._id, stevens._id);
+
+await users.addFriend(JamesMom._id, gamer8._id);
+
+await users.addFriend(JamesMom._id, user5._id);
+
+await users.addFriend(JamesMom._id, Josh6._id);
+
+await users.addFriend(batman._id, JohnDoe._id);
+
+await users.addFriend(batman._id, user5._id);
+
+await users.addFriend(batman._id, william._id);
+
+await users.addFriend(superman._id, JamesMom._id);
+
+await users.addFriend(superman._id, user5._id);
+
+await users.addFriend(superman._id, gamer8._id);
+
+await users.addFriend(owenTreanor._id, user5._id);
+
+await users.addFriend(owenTreanor._id, Josh6._id);
+
+await users.addFriend(stevens._id, user5._id);
+
+await users.addFriend(stevens._id, Josh6._id);
+
+await users.addFriend(william._id, gamer8._id);
+
+await users.addFriend(admin._id, James12345._id);
+
+await users.addFriend(JohnDoe._id, stevens._id);
+
+await users.addFriend(gamer8._id, user5._id);
+
+await users.addFriend(Josh6._id, superman._id);
+
+await users.addFriend(user5._id, william._id);
+
+await users.addFriend(James12345._id, batman._id);
+
+await users.addFriend(JamesMom._id, JohnDoe._id);
+
+await users.addFriend(superman._id, JohnDoe._id);
+
+await users.addFriend(batman._id, James12345._id);
+
+await users.addFriend(stevens._id, gamer8._id);
+
+await users.addFriend(william._id, Josh6._id);
+
+await users.removeFriend(william._id, Josh6._id);
+
 
 const updatedBalatroForm = [
   {
@@ -1174,7 +1301,19 @@ const updatedBalatro = await games.updateGame(
   updatedBalatroForm
 );
 
+await users.addGame(owenTreanor._id, balatro._id, [
+  { field_name: "What is your favorite hand?", value: "Pair" },
+  { field_name: "What is your most used joker?", value: "Abstract Joker" },
+  { field_name: "How many jokers do you have unlocked?", value: "130" },
+]);
 
+await users.updateGame(JohnDoe._id, balatro._id, [
+  { field_name: "What is your favorite hand?", value: "Two Pair" },
+  { field_name: "What is your most used joker?", value: "Blueprint" },
+  { field_name: "How many jokers do you have unlocked?", value: "110" },
+]);
+
+await users.removeGame(Josh6._id, overwatch2._id);
 
 
 
