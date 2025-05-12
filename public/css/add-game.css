@@ -5,3 +5,7 @@
 header a {
     text-decoration: underline dashed;
 }
+
+#gameFormError {
+    color: red;
+}
