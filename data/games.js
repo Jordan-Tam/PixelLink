@@ -531,7 +531,7 @@ const exportedMethods = {
     if (users_games.length === 0){
       return [];
     }
-    console.log(users_games);
+
     let userCollection = await userDataFunctions.getAllUsers();
 
     let user_array = [];
@@ -587,8 +587,10 @@ const exportedMethods = {
     console.log(gameFreq);
     //Sorts the recommendations from game frequency (descendign order) & only includes game names
     const sortedRecommendations = Object.entries(gameFreq)
-    .sort((a, b) => b[1] - a[1]) 
-    .map(([gameName, _]) => gameName);  
+    .filter(([_, freq]) => !Number.isNaN(freq) && freq !== 0)
+    .sort((a, b) => b[1] - a[1])
+    .map(([gameName, _]) => gameName);
+
 
     //array of games to recommend
     const recommendations = [];
@@ -597,7 +599,7 @@ const exportedMethods = {
     if (sortedRecommendations.length >= 5){
       
       for(let i = 0; i < 5; i++){
-        recommendations.push(sortedRecommendations[i]);
+          recommendations.push(sortedRecommendations[i]);
       }
 
     } else {
