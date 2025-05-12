@@ -319,10 +319,10 @@ router.route('/:id')
     })
 
 
-router.route('/:id/friends')
+router.route('/:id/following')
     .get(async (req, res) => {
         try {
-            const id = checkString(req.params.id, 'User id','GET user/:id/friends');
+            const id = checkString(req.params.id, 'User id','GET user/:id/following');
             const user = await users.getUserById(id);
             let friends = user.friends; //list of user's friends' ids
             let friendsArr = [];
@@ -331,7 +331,7 @@ router.route('/:id/friends')
                 friendsArr.push(friend); //array of users(friends)
             }
             return res.render('friends-list', {
-                title: `${user.username}'s Friends List`,
+                title: `${user.username}'s Following List`,
                 stylesheet: "/public/css/friends-list.css",
                 id: user._id,
                 friends: friendsArr,
@@ -346,7 +346,7 @@ router.route('/:id/friends')
     })
     .post(async (req, res) => {
         try {
-            const id = checkId(req.params.id, "POST user/:id/friends", "User");
+            const id = checkId(req.params.id, "POST user/:id/following", "User");
             if(!req.session.user || req.session.user._id === id){ //checks if user is trying to friend themselves (should never happen)
                 //render the 403 error
                 return res.status(403).json({error: "Permission Denied"});
@@ -377,7 +377,7 @@ router.route('/:id/friends')
         try {
 
             //Input validation
-            const id = checkString(req.params.id, 'User id','GET user/:id/friends');
+            const id = checkString(req.params.id, 'User id','GET user/:id/following');
 
             //Check if the user is removing themself as a friend - throws error if so
             if(!req.session.user || req.session.user._id === id){ 

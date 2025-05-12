@@ -38,12 +38,12 @@
     {{else}}
     <div>
         {{#if notFriended}}
-        <form action = "{{user._id}}/friends" method="POST">
+        <form action = "{{user._id}}/following" method="POST">
             <input type="hidden" name="friendId" value="{{user._id}}">
             <input type="submit" value="Follow {{user.username}}">
         </form>
         {{else}}
-         <form action = "{{user._id}}/friends" method="POST">
+         <form action = "{{user._id}}/following" method="POST">
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="friendId" value="{{user._id}}">
             <input type="submit" value="Unfollow {{user.username}}">
@@ -53,7 +53,7 @@
     {{/if}}
 
     <div>
-        <h3> Following: <a href="/users/{{user._id}}/friends" > {{user.friends.length}}</a> </h3>
+        <h3> Following: <a href="/users/{{user._id}}/following" > {{user.friends.length}}</a> </h3>
         <h3> Followers: <a href="/users/{{user._id}}/followers" > {{user.followers.length}}</a> </h3>
         {{#if is_own_profile}}
             <a href="/users">Find more users!</a>
