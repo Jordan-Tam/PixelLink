@@ -8,6 +8,20 @@ let username = document.getElementById("username");
 let changeUsernameSubmit = document.getElementById("changeUsernameSubmit");
 let changeUsernameError = document.getElementById("changeUsernameError");
 
+// Change Password Form
+let changePasswordForm = document.getElementById("changePasswordForm");
+let password = document.getElementById("password");
+let confirmPassword = document.getElementById("confirmPassword");
+let changePasswordSubmit = document.getElementById("changePasswordSubmit");
+let changePasswordError = document.getElementById("changePasswordError");
+
+// Comment Form
+let commentForm = document.getElementById("commentForm");
+let comment = document.getElementById("comment");
+let commentSubmit = document.getElementById("commentSubmit");
+let commentError = document.getElementById("commentError");
+
+
 if (changeUsernameForm !== null) {
     changeUsernameForm.addEventListener("submit", (event) => {
 
@@ -22,6 +36,8 @@ if (changeUsernameForm !== null) {
             event.preventDefault();
             changeUsernameError.innerHTML = "Username must be between 3-15 characters long and only include letters, numbers, periods, underscores, and minus signs.";
             changeUsernameError.hidden = false;
+            changePasswordError.hidden = true;
+            commentError.hidden = true;
             return;
         }
 
@@ -29,6 +45,8 @@ if (changeUsernameForm !== null) {
             event.preventDefault();
             changeUsernameError.innerHTML = "Username cannot start or end with a period";
             changeUsernameError.hidden = false;
+            changePasswordError.hidden = true;
+            commentError.hidden = true;
             return;
         }
 
@@ -37,6 +55,8 @@ if (changeUsernameForm !== null) {
                 event.preventDefault();
                 changeUsernameError.innerHTML = `Invalid Character in username (${char})`;
                 changeUsernameError.hidden = false;
+                changePasswordError.hidden = true;
+                commentError.hidden = true;
                 return;
             }
         }
@@ -44,12 +64,6 @@ if (changeUsernameForm !== null) {
     });
 }
 
-// Change Password Form
-let changePasswordForm = document.getElementById("changePasswordForm");
-let password = document.getElementById("password");
-let confirmPassword = document.getElementById("confirmPassword");
-let changePasswordSubmit = document.getElementById("changePasswordSubmit");
-let changePasswordError = document.getElementById("changePasswordError");
 
 if (changePasswordForm !== null) {
     changePasswordForm.addEventListener("submit", (event) => {
@@ -64,6 +78,8 @@ if (changePasswordForm !== null) {
             event.preventDefault();
             changePasswordError.innerHTML = "Password and Confirm Password fields do not match.";
             changePasswordError.hidden = false;
+            changeUsernameError.hidden = true;
+            commentError.hidden = true;
             return;
         }
 
@@ -71,6 +87,8 @@ if (changePasswordForm !== null) {
             event.preventDefault();
             changePasswordError.innerHTML = "Password must be 8+ characters...";
             changePasswordError.hidden = false;
+            changeUsernameError.hidden = true;
+            commentError.hidden = true;
             return;
         }
 
@@ -93,6 +111,8 @@ if (changePasswordForm !== null) {
                     event.preventDefault();
                     changePasswordError.innerHTML = "Password cannot have spaces.";
                     changePasswordError.hidden = false;
+                    changeUsernameError.hidden = true;
+                    commentError.hidden = true;
                     return;
                 }
                 characters.special++;
@@ -103,17 +123,14 @@ if (changePasswordForm !== null) {
             event.preventDefault();
             changePasswordError.innerHTML = "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.";
             changePasswordError.hidden = false;
+            changeUsernameError.hidden = true;
+            commentError.hidden = true;
             return;
         }
 
     });
 }
 
-// Comment Form
-let commentForm = document.getElementById("commentForm");
-let comment = document.getElementById("comment");
-let commentSubmit = document.getElementById("commentSubmit");
-let commentError = document.getElementById("commentError");
 
 if (commentForm !== null) {
     commentForm.addEventListener("submit", (event) => {
@@ -130,6 +147,8 @@ if (commentForm !== null) {
             event.preventDefault();
             commentError.innerHTML = "You can't submit an empty comment!";
             commentError.hidden = false;
+            changeUsernameError.hidden = true;
+            changePasswordError.hidden = true;
         }
 
     });
