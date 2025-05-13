@@ -57,9 +57,9 @@ app.use(async (req, res, next) => {
 });
 
 
-//* Middleware 2: If the request is a POST request, sanitize the req.body
+//* Middleware 2: Sanitize the req.body if there is one
 app.use(async (req, res, next) => {
-  if (req.method === "POST" && req.body) {
+  if (req.body) {
     req.body = sanitize(req.body);
   }
 
