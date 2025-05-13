@@ -776,7 +776,7 @@ const James12345_comment1 = await comments.createComment(
 
 const gamer7_comment1 = await comments.createComment(
   "user",
-  gamer7._id.toString(),
+  Josh6._id.toString(),
   gamer7._id.toString(),
   "You are ugly."
 );
@@ -785,12 +785,12 @@ const gamer7_comment2 = await comments.createComment(
   "user",
   gamer7._id.toString(),
   gamer7._id.toString(),
-  "Hello"
+  "No I am not!"
 );
 
 const gamer7_comment3 = await comments.createComment(
   "user",
-  gamer7._id.toString(),
+  owenTreanor._id.toString(),
   gamer7._id.toString(),
   "What's your steamID?"
 );

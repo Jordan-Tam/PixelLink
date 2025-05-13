@@ -156,6 +156,16 @@ app.use("/signout", async (req, res, next) => {
   next();
 });
 
+//* Middleware 10: Update POST request to PATCH request when updating a game
+app.use(async (req, res, next) => {
+  if(req.method === "POST" && req.body.patch === "PATCH"){
+    req.method = "PATCH"
+    delete req.body.patch
+  }
+
+  next();
+});
+
 app.engine("handlebars", exphbs.engine({
    defaultLayout: "main",
    helpers: {eq: (a, b) => a === b} //equality helper

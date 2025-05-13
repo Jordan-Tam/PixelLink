@@ -8,8 +8,10 @@ let fieldList = document.getElementById("fieldInput");
 let addField = document.getElementById("addField");
 let removeField = document.getElementById("removeField");
 let success = document.getElementById("success");
+let patch = document.getElementById("patch");
 
-let fieldNum = 1;
+// When editing, the number of fields is not necessarily defaulted to 1 anymore
+let fieldNum = document.getElementsByClassName("fieldInput").length;
 
 if(createGameForm !== null){
     createGameForm.addEventListener("submit", async (event) => {
@@ -128,6 +130,10 @@ if(createGameForm !== null){
           form: fieldInfo,
         };
 
+        if(patch){
+            newGame.patch = "PATCH";
+        }
+
         let response = await fetch("", {
             method: "POST",
             headers: {
@@ -145,7 +151,9 @@ if(createGameForm !== null){
           else{
             gameFormError.hidden = true;
             success.hidden = false
-            createGameForm.reset();
+            if(!patch){
+                createGameForm.reset();
+            }
           }
 
 

@@ -99,56 +99,63 @@ router
       name = checkString(name, "name", "POST game/list");
       dateReleased = checkDateReleased(dateReleased, "POST game/new");
       description = checkString(description, "description", "POST game/new");
-      form = checkForm(form);
-      if (!req.session.user || !req.session.user.admin) {
-        //Not logged in users and non-admins cannot add a game
-        //return res.status(403).json({ error: "Permission Denied" });
-        return res.status(403).render("error", {
-            title: "Error",
-            stylesheet: "/public/css/error.css",
-            status: 403,
-            error_message: "Permission Denied"
-        });
-      }
+      form = checkForm(form, "PATCH game/:id");
       const game = await games.createGame(
         name,
         description,
         dateReleased,
         form
       );
-      return res.json("The game has been created!") //TODO
+      return res.json("The game has been created!")
     } catch (error) {
-        return res.status(error.status).render("error", {
-            title: "Error",
-            stylesheet: "/public/css/error.css",
-            status: error.status,
-            error_message: error.error
-        });
-      //return res.json(error.error) //TODO
+        return res.json(error.error)
     }
   });
 
-router.route('/:id/edit')
+router
+  .route("/:id/edit")
   .get(async (req, res) => {
     try {
-        const gameId = checkId(req.params.id,'PATCH game/:id', 'Game');
-        const game = await games.getGameById(gameId);
-        return res.render("add-game", {
+      const gameId = checkId(req.params.id, "PATCH game/:id", "Game");
+      const game = await games.getGameById(gameId);
+      return res.render("add-game", {
         title: `Edit ${game.name}`,
         stylesheet: "/public/css/add-game.css",
         script: "/public/js/add-game.js",
         game: game,
-        editing: true
+        editing: true,
       });
     } catch (error) {
-        return res.status(error.status).render("error", {
-                status: error.status,
-                error_message: `${error.function}: ${error.error}`,
-                title: `${error.status} Error`,
-                stylesheet: "/public/css/error.css"
-            });
+      return res.status(error.status).render("error", {
+        status: error.status,
+        error_message: `${error.function}: ${error.error}`,
+        title: `${error.status} Error`,
+        stylesheet: "/public/css/error.css",
+      });
     }
   })
+  .patch(async (req, res) => {
+    try {
+      const gameId = checkId(req.params.id, "PATCH game/:id", "Game");
+      let { name, dateReleased, description, form } = req.body;
+      name = checkString(name, "name", "PATCH game/:id");
+      description = checkString(
+        description,
+        "description",
+        "PATCH game/:id"
+      );
+      dateReleased = checkDateReleased(
+        dateReleased,
+        "dateReleased",
+        "PATCH game/:id"
+      );
+      form = checkForm(form, "PATCH game/:id");
+
+      await games.updateGame(gameId, name, description, dateReleased, form);
+      return res.json("The game was successfully updated")
+    } catch (error) {
+      return res.json(error.error)
+  }})
 
 router.route('/:id')
     .get(async (req, res) => {
@@ -180,34 +187,6 @@ router.route('/:id')
                 error_message: `${error.function}: ${error.error}`,
                 title: `${error.status} Error`,
                 stylesheet: "/public/css/error.css"
-            });
-        }
-    })
-    .patch(async (req, res) => {
-        // Prevent non-admins from deleting games.
-        if (!req.session.user.admin) {
-            return res.status(403).render("error", {
-                title: "403 Forbidden",
-                stylesheet: "/public/css/error.css",
-                status: 403,
-                error_message: "This action is forbidden."
-            });
-        }
-        try {
-            const gameId = checkId(req.params.id,'PATCH game/:id', 'Game');
-            const name = checkString(req.body.name, 'name', 'PATCH game/:id');
-            const description = checkString(req.body.description, 'description', 'PATCH game/:id');
-            const dateReleased = checkDateReleased(req.body.dateReleased, 'dateReleased', 'PATCH game/:id');
-            const form = checkForm(form);
-
-            await games.updateGame(gameId, name, description, dateReleased, form);
-            return res.redirect(`/games/${id}`);
-        } catch (error) {
-             return res.status(error.status).render("error", {
-                title: `${error.status} Error`,
-                stylesheet: "/public/css/error.css",
-                status: error.status,
-                error_message: error.error
             });
         }
     })

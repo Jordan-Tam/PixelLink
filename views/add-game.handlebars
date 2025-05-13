@@ -64,7 +64,7 @@
         <input type="button" id="addField" name="addField" value="Add Field"> <!-- this button will create another filed object for the admin to fill out -->
         <input type="button" id="removeField" name="removeField" value="Remove Field">
         {{#if editing}}
-            <input type="hidden" name="_method" value="PATCH">
+            <input type="hidden" name="_method" value="PATCH" id="patch">
         {{/if}}
         <input type="submit" value="{{#if editing}}Update Game{{else}}Create Game/Submit{{/if}}">
     </form>
