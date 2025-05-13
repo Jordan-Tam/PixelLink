@@ -4,17 +4,18 @@
     <br>
     <a href="/games/{{game._id}}/" class="goBack">⇦ Go to {{game.name}}'s profile</a>
     <h1>Game Form</h1>
-    {{#if update}}
-        <p>Fill out the form below to edit {{game.name}} on your profile.</p>
-    {{else}}
-        <p>Fill out the form below to add {{game.name}} to your profile.</p>
-    {{/if}}
 </header>
 <main>
     <!-- for each field object in form array, display with form tag -->
 
     <!-- If the game form has fields to fill out... -->
     {{#if game.form.length}}
+
+        {{#if update}}
+            <p>Fill out the form below to edit {{game.name}} on your profile.</p>
+        {{else}}
+            <p>Fill out the form below to add {{game.name}} to your profile.</p>
+        {{/if}}
 
         <!-- Create the form. -->
         <form action="/games/{{game._id}}/form" method="POST" name = "gameForm" id = "gameForm">
