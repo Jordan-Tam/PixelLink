@@ -161,6 +161,34 @@ router.route('/:id')
             });
         }
     })
+    .patch(async (req, res) => {
+        // Prevent non-admins from deleting games.
+        if (!req.session.user.admin) {
+            return res.status(403).render("error", {
+                title: "403 Forbidden",
+                stylesheet: "/public/css/error.css",
+                status: 403,
+                error_message: "This action is forbidden."
+            });
+        }
+        try {
+            const gameId = checkId(req.params.id,'PATCH game/:id', 'Game');
+            const name = checkString(req.body.name, 'name', 'PATCH game/:id');
+            const description = checkString(req.body.description, 'description', 'PATCH game/:id');
+            const dateReleased = checkDateReleased(req.body.dateReleased, 'dateReleased', 'PATCH game/:id');
+            const form = checkForm(form);
+
+            await games.updateGame(gameId, name, description, dateReleased, form);
+            return res.redirect(`/games/${id}`);
+        } catch (error) {
+             return res.status(error.status).render("error", {
+                title: `${error.status} Error`,
+                stylesheet: "/public/css/error.css",
+                status: error.status,
+                error_message: error.error
+            });
+        }
+    })
     .delete(async (req, res) => {
 
         // Prevent non-admins from deleting games.
