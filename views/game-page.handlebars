@@ -35,7 +35,7 @@
             {{#if game_added}}
               <form action="/games/{{game._id}}/form" method="POST">
               <input type="hidden" name="_method" value="DELETE">
-              <input type="submit" value="Remove Game" id="removeGame">
+              <input type="submit" value="Remove Game" class="removeGame">
               </form>
             {{/if}}
           </div>

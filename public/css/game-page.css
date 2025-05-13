@@ -62,7 +62,7 @@ a:active {
     gap: 5px;
 }
 
-#removeGame {
+.removeGame {
     border: none;
     outline: none;
     background: none;
@@ -72,6 +72,6 @@ a:active {
     font-size: medium;
 }
 
-#removeGame:hover {
+.removeGame:hover {
     color: rgb(172, 172, 255);  
 }
