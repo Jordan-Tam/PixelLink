@@ -469,8 +469,7 @@ const exportedMethods = {
       };
     }
 
-    // Return the updated game.
-    //return updateReviewInfo;
+    let gameId = updateReviewInfo._id.toString();
 
     // Update the game's average rating and return the updated game object.
     return this.updateAverageRating(gameId);
