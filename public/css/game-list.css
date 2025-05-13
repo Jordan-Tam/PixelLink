@@ -76,3 +76,7 @@ span {
     padding: 0;
     font-size: medium;
 }
+
+#removeGame:hover {
+    color: green;   
+}

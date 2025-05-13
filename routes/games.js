@@ -103,7 +103,13 @@ router
       form = checkForm(form);
       if (!req.session.user || !req.session.user.admin) {
         //Not logged in users and non-admins cannot add a game
-        return res.status(403).json({ error: "Permission Denied" });
+        //return res.status(403).json({ error: "Permission Denied" });
+        return res.status(403).render("error", {
+            title: "Error",
+            stylesheet: "/public/css/error.css",
+            status: 403,
+            error_message: "Permission Denied"
+        });
       }
       const game = await games.createGame(
         name,
@@ -111,9 +117,15 @@ router
         dateReleased,
         form
       );
-      return res.json("The game has been created!")
+      return res.json("The game has been created!") //TODO
     } catch (error) {
-      return res.json(error.error)
+        return res.status(error.status).render("error", {
+            title: "Error",
+            stylesheet: "/public/css/error.css",
+            status: error.status,
+            error_message: error.error
+        });
+      //return res.json(error.error) //TODO
     }
   });
 
@@ -306,12 +318,23 @@ router
         req.params.id = checkId(req.params.id, "DELETE /game/:gameId/form", "game");
 
         if(!req.session.user){ 
-            return res.status(403).json({error: "Permission Denied"});
+            //return res.status(403).json({error: "Permission Denied"}); //TODO
+            return res.status(403).render("error", {
+                title: "Error",
+                stylesheet: "/public/css/error.css",
+                status: 403,
+                error_message: "Permission Denied"
+            });
         }
 
 
     } catch (e) {
-        return res.status(500).json({error: e.error});
+        return res.status(e.status).render("error", {
+            status: e.status,
+            error_message: e.error,
+            title: "Error",
+            stylesheet: "/public/css/error.css"
+        });
     }
 
     try {
@@ -333,7 +356,13 @@ router
         }
 
         if (!gameSearch){
-            return res.status(404).json({error: "Game Not Found"});
+            return res.status(404).render("error", {
+                title: "Error",
+                stylesheet: "/public/css/error.css",
+                status: 404,
+                error: "Game Not Found"
+            });
+            //return res.status(404).json({error: "Game Not Found"}); // TODO
         }
 
         //Will throw error if something goes wrong
@@ -364,7 +393,13 @@ router
     try {
         req.params.gameId = checkId(req.params.id, "PATCH /game/:gameId", "game");
     } catch (e) {
-        return res.status(500).json({error: e.error});
+        //return res.status(500).json({error: e.error}); //TODO
+        return res.status(e.status).render("error", {
+            title: "Error",
+            stylesheet: "/public/css/error.css",
+            status: e.status,
+            error_message: e.error
+        });
     }
 
     try  {

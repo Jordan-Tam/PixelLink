@@ -570,7 +570,7 @@ const exportedMethods = {
         const gamesCollection = await games();
 
         // Check if user ID exists.
-        await this.getUserById(userId);
+        let user = await this.getUserById(userId);
 
         // Check if game ID exists.
         let game = await gamesCollection.findOne({
@@ -583,6 +583,17 @@ const exportedMethods = {
                 function: "addGame",
                 error: "No game with that ID."
             };
+        }
+
+        // Check if the user already has this game on their profile.
+        for (let g of user.games) {
+            if (g.gameName === game.name) {
+                throw {
+                    status: 400,
+                    function: "addGame",
+                    error: "Game already added."
+                };
+            }
         }
 
         // Now that we know that the game exists, we can do input validation for the userGameInfo parameter.
