@@ -125,6 +125,16 @@ router
   .route("/:id/edit")
   .get(async (req, res) => {
     try {
+        if (!req.session.user || !req.session.user.admin) {
+          //Not logged in users and non-admins cannot see the create game form
+          return res.status(403).render("error", {
+            status: 403,
+            error_message: "Permission Denied. Must be an admin.",
+            title: "403 Error",
+            stylesheet: "/public/css/error.css",
+            link: "/games/",
+          });
+        }
       const gameId = checkId(req.params.id, "GET game/:id", "Game");
       const game = await games.getGameById(gameId);
       return res.render("add-game", {
