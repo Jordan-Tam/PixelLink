@@ -4,7 +4,11 @@
     <br>
     <a href="/games/{{game._id}}/" class="goBack">⇦ Go to {{game.name}}'s profile</a>
     <h1>Game Form</h1>
-    <p>Fill out the form below to add {{game.name}} to your profile.</p>
+    {{#if update}}
+        <p>Fill out the form below to edit {{game.name}} on your profile.</p>
+    {{else}}
+        <p>Fill out the form below to add {{game.name}} to your profile.</p>
+    {{/if}}
 </header>
 <main>
     <!-- for each field object in form array, display with form tag -->
@@ -17,7 +21,6 @@
             
             <!-- If the user is updating their info, adda hidden PATCH value to the form. -->
             {{#if update}}
-                <p> update </p>
                <input type="hidden" name='_method' value="PATCH" />
             {{/if}}
 
