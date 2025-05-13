@@ -180,6 +180,17 @@ router.route('/:id')
                     already_reviewed = true;
                 }
             }
+            let game_added = false;
+            const usergames = user.games
+            for (let i in usergames){
+                //console.log(usergame)
+                if (id === usergames[i].gameId.toString()){
+                    //console.log(usergame)
+                    game_added = true;
+                }
+            }
+
+            //console.log(game_added);
 
             return res.render('game-page', {
                 title: game.name,
@@ -188,7 +199,8 @@ router.route('/:id')
                 script: "/public/js/game-page.js",
                 is_admin: user.admin,
                 user: user,
-                not_reviewed: !already_reviewed
+                not_reviewed: !already_reviewed,
+                game_added
             });
         } catch (error) {
             return res.status(error.status).render("error", {

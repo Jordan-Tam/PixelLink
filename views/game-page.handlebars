@@ -20,7 +20,26 @@
             </form> -->
         </div>
     {{/if}}
-
+    <div class="addRemoveGame">
+        {{#if user.admin}}
+        <br><br>
+        {{/if}}
+        <div class="add-to-profile-div">
+            <a href="/games/{{game._id}}/form">
+              {{#if game_added}}
+              Edit Profile
+              {{else}}
+              Add to Profile
+              {{/if}}
+            </a>
+            {{#if game_added}}
+              <form action="/games/{{game._id}}/form" method="POST">
+              <input type="hidden" name="_method" value="DELETE">
+              <input type="submit" value="Remove Game" id="removeGame">
+              </form>
+            {{/if}}
+          </div>
+    </div>
     <!-- Release Date -->
     <div class="dateReleased-div">
         <h3><span>Release Date:</span></h3>
