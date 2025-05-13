@@ -83,7 +83,9 @@
         {{else}}
             <p> No games added to profile yet... </p>
         {{/if}}
-        <a href="/games">Games List</a>
+        {{#if is_own_profile}}
+        <a href="/games">Add more games!</a>
+        {{/if}}
     </div>
 
     <br>
