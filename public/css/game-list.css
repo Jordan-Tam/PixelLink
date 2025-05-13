@@ -51,6 +51,10 @@ a:hover {
     width: 725px;
 }
 
+.recommendations-div {
+    background-color: rgb(179, 243, 179);
+}
+
 .game-title-div {
     width: 300px;
 }
