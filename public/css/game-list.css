@@ -71,7 +71,7 @@ span {
     color: blue;
 }
 
-#removeGame {
+.removeGame {
     border: none;
     outline: none;
     background: none;
@@ -81,6 +81,6 @@ span {
     font-size: medium;
 }
 
-#removeGame:hover {
+.removeGame:hover {
     color: green;   
 }
