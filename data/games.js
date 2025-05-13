@@ -411,7 +411,8 @@ const exportedMethods = {
     }
 
     let gameId = deleteReviewInfo._id.toString();
-    // Update the game's average rating.
+    
+    // Update the game's average rating and return the updated game object.
     return this.updateAverageRating(gameId);
     
   },
@@ -469,7 +470,10 @@ const exportedMethods = {
     }
 
     // Return the updated game.
-    return updateReviewInfo;
+    //return updateReviewInfo;
+
+    // Update the game's average rating and return the updated game object.
+    return this.updateAverageRating(gameId);
 
   },
 

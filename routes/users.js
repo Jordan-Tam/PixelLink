@@ -33,7 +33,12 @@ router.route('/')
                 script: "/public/js/user-list.js"
             })
         } catch (error) {
-            res.status(500).json({error});
+            return res.status(500).render("error", {
+                title: "Error",
+                stylesheet: "/public/css/error.css",
+                status: 500,
+                error_message: "Could not get users."
+            });
         }
     })
     .post(async (req, res) => {
@@ -81,7 +86,7 @@ router.route('/')
                 );
             }
             return res.json(result);
-        }catch(e){
+        } catch(e) {
             return res.json(e.error);
         }
     });
@@ -96,6 +101,7 @@ router.route('/:id')
             return res.status(e.status).render("error", {
                 status: e.status,
                 error_message: e.error,
+                title: "Error",
                 stylesheet: "/public/css/error.css"
             });
         }
@@ -108,6 +114,7 @@ router.route('/:id')
             return res.status(e.status).render("error", {
                 status: e.status,
                 error_message: e.error,
+                title: "Error",
                 stylesheet: "/public/css/error.css"
             });
         }
@@ -163,6 +170,7 @@ router.route('/:id')
             return res.status(e.status).render('error', {
                 status: e.status,
                 error_message: e.error,
+                title: "Error",
                 stylesheet: "/public/css/error.css"
             });
         }
@@ -207,6 +215,7 @@ router.route('/:id')
             return res.status(e.status).render('error', {
                 status: e.status,
                 error_message: e.error,
+                title: "Error",
                 stylesheet: "/public/css/error.css"
             });
         }
@@ -216,6 +225,7 @@ router.route('/:id')
             return res.status(403).render('error', {
                 status: 403,
                 error_message: "Forbidden",
+                title: "Error",
                 stylesheet: "/public/css/error.css"
             });
         }
@@ -340,7 +350,9 @@ router.route('/:id/following')
         } catch (e) {
             return res.status(e.status).render("error", {
                 status: e.status,
-                error_message: `${e.function}: ${e.error}`
+                error_message: `${e.function}: ${e.error}`,
+                title: "Error",
+                stylesheet: "/public/css/error.css"
             });
         }
     })
@@ -349,7 +361,13 @@ router.route('/:id/following')
             const id = checkId(req.params.id, "POST user/:id/following", "User");
             if(!req.session.user || req.session.user._id === id){ //checks if user is trying to friend themselves (should never happen)
                 //render the 403 error
-                return res.status(403).json({error: "Permission Denied"});
+                //return res.status(403).json({error: "Permission Denied"});
+                return res.status(403).render("error", {
+                    title: "Error",
+                    stylesheet: "/public/css/error.css",
+                    status: 403,
+                    error_message: "Permission Denied"
+                });
             }
             
             await users.addFriend(req.session.user._id, id); //add friend
@@ -367,6 +385,8 @@ router.route('/:id/following')
             return res.redirect(`/users/${id}`);
         } catch (e) {
             return res.status(400).render("error", {
+                title: "Error",
+                stylesheet: "/public/css/error.css",
                 status: e.status,
                 error_message: `${e.function}: ${e.error}`
             });
@@ -383,6 +403,8 @@ router.route('/:id/following')
             if(!req.session.user || req.session.user._id === id){ 
                 //render the 403 error
                 return res.status(403).render("error", {
+                    title: "Error",
+                    stylesheet: "/public/css/error.css",
                     status: 403,
                     error_message: "Permission Denied"
                 });
@@ -400,6 +422,8 @@ router.route('/:id/following')
 
         } catch (error) {
             return res.status(error.status).render("error", {
+                title: "Error",
+                stylesheet: "/public/css/error.css",
                 status: error.status,
                 error_message: `${error.function}: ${error.error}`
             });
@@ -417,6 +441,8 @@ router.route('/:id/followers')
         } catch (e) {
 
             return res.status(e.status).render('error', {
+                title: "Error",
+                stylesheet: "/public/css/error.css",
                 status: e.status,
                 error_message: e.error
             });
@@ -446,6 +472,8 @@ router.route('/:id/followers')
         } catch (e) {
 
             return res.status(e.status).render("error", {
+                title: "Error",
+                stylesheet: "/public/css/error.css",
                 status: e.status,
                 error_message: e.error
             });
@@ -463,7 +491,13 @@ router.route('/:id/comment/:commentId')
             req.params.commentId = checkId(req.params.commentId, "DELETE /:id/comment/:commentId", "Comment");
 
         } catch (e) {
-            return res.status(500).json({error: e.error});
+            //return res.status(500).json({error: e.error});
+            return res.status(e.status).render("error", {
+                title: "Error",
+                stylesheet: "/public/css/error.css",
+                status: e.status,
+                error_message: e.error  
+            });
         }
 
         try {
