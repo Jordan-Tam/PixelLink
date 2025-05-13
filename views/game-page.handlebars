@@ -41,30 +41,35 @@
           </div>
     </div>
     <!-- Release Date -->
-    <div class="dateReleased-div">
-        <h3><span>Release Date:</span></h3>
+    <div class="dateReleased-div infoDiv">
+        <h3>Release Date:</h3>
         <p>{{game.dateReleased}}</p>
     </div>
 
     <!-- Game Description -->
-    <div class="description-div">
+    <div class="description-div infoDiv">
         <h3>Description:</h3>
         {{#if game.description}}
         <p>{{game.description}}</p>
         {{else}}
         <p>No description.</p>
         {{/if}}
-         <p> Number of Players: {{game.numPlayers}} </p>
+    </div>
+
+    <!-- Number of Players -->
+    <div class="infoDiv">
+        <h3>Number of Players:</h3>
+        <p>{{game.numPlayers}}</p>
     </div>
 
     <!-- Number of Reviews -->
-    <div>
+    <div class="infoDiv">
         <h3>Number of Reviews:</h3>
         <p>{{game.reviews.length}}</p>
     </div>
 
     <!-- Average Rating -->
-    <div class="rating-div">
+    <div class="rating-div infoDiv">
         <h3>Average Rating:</h3>
         <p>{{game.averageRating}}</p>
     </div>

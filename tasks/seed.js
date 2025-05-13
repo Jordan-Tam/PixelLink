@@ -94,7 +94,7 @@ const chessForm = [
 ];
 const chess = await games.createGame(
   "Chess",
-  "Chess is a board game for two players. It is an abstract strategy game which involves no hidden information and no elements of chance. It is played on a square board containing 64 squares arranged in an 8x8 grid. The players, referred to as 'White' and 'Black', each control sixteen pieces: one king, one queen, two rooks, two bishops, two knights, and eight pawns; each type of piece has a different pattern of movement. An enemy piece may be captured (removed from the board) by moving one's own piece onto the square it occupies; the object of the game is to 'checkmate' (threaten with inescapable capture) the enemy king. There are also several ways a game can end in a draw.",
+  "Chess is a two-player strategy board game. Each player takes turns moving pieces. A player wins if they successfully checkmate the opponent's king, or a stalemate can occur if not enough pieces are left on the board to perform a checkmate or a player is unable to move any of their pieces when it is their turn.",
   "N/A",
   chessForm);
 
@@ -133,7 +133,7 @@ const balatroForm = [
 ];
 const balatro = await games.createGame(
   "Balatro",
-  "Balatro is a 2024 poker-themed roguelike deck-building game developed by LocalThunk and published by Playstack. It was released on Microsoft Windows, Nintendo Switch, PlayStation 4, PlayStation 5, Xbox One, and Xbox Series X/S on February 20, 2024, with a port to macOS on March 1. Ports for Android and iOS were released on September 26, 2024. In the game, the player plays poker hands from a starting 52-card deck to score points and defeat blinds in a limited number of turns. Subsequent blinds become more difficult to beat, but the player can acquire joker and other cards, purchased from a shop with randomized offerings between blinds, that provide unique effects that impact play and scoring or the means to change the composition of their deck to give themselves an advantage.",
+  "Balatro is a deck building game developed by LocalThunk and published by Playstack. It has been well-received by critics and has received numerous awards and nominations. EDIT THIS!!!!!!",
   "02/20/2024",
   balatroForm);
 
@@ -165,7 +165,7 @@ const marioKartForm = [
 ];
 const marioKart = await games.createGame(
   "Mario Kart 8 Deluxe",
-  "Mario Kart 8 Deluxe is a 2017 kart racing game developed and published by Nintendo for the Nintendo Switch. It retains the gameplay of previous Mario Kart games, with players controlling a Mario character in races around tracks. Tracks are themed around locales from the Super Mario series populated with power-ups that help players gain advantages in races. Different difficulties are selectable prior to a race; harder difficulties make gameplay faster. In the new anti-gravity sequences, players drive on walls and ceilings. Mario Kart 8 Deluxe contains a variety of single-player and local and online multiplayer game modes, including Grand Prix racing and arena-based battle modes.",
+  "Mario Kart 8 Deluxe is a racing game and a spin-off of the Super Mario franchise developed by Nintendo. Players race as iconic Mario characters on tracks themed after familiar locations in the franchise. Up to 12 players can race at the same time. Play Grand Prix, Time Trials, or the revamped Battle Mode. Only available on the Nintendo Switch.",
   "04/28/2017",
   marioKartForm
 );
@@ -197,7 +197,7 @@ const amongUsForm = [
   },
 ];
 const amongUs = await games.createGame("Among Us",
-  "Among Us is a 2018 online multiplayer social deduction game developed and published by American game studio Innersloth. The game allows for cross-platform play; it was released on iOS and Android devices in June 2018 and on Windows later that year in November. It was ported to the Nintendo Switch in December 2020 and on the PlayStation 4, PlayStation 5, Xbox One and Xbox Series X/S in December 2021. A virtual reality adaptation, Among Us VR, was released on November 10, 2022.",
+  "Among Us is a social deduction game. Players are either a crewmate or an imposter. The imposters' goal is to sabotage the spaceship or kill all the crewmates, while the crewmates' goal is to complete all their tasks or deduce who the imposters are.",
   "06/15/2018",
   amongUsForm);
 
@@ -264,7 +264,7 @@ const overwatch2Form = [
 ];
 const overwatch2 = await games.createGame(
   "Overwatch 2",
-  "Overwatch 2 is a 2023 first-person shooter video game produced by Blizzard Entertainment. As a sequel and replacement to the 2016 hero shooter Overwatch, the game included new gamemodes and a reduction in team size from six to five. The game is free-to-play on Nintendo Switch, PlayStation 4, PlayStation 5, Windows, Xbox One, and Xbox Series X/S and features full cross-platform play. Overwatch 2 was announced in 2019, released in early access in October 2022, and officially released in August 2023. The game was planned to feature more story-based cooperative modes, but these were scrapped in 2023 to focus on its player versus player (PvP) elements. Overwatch 2 received generally favorable reviews from critics.",
+  "Overwatch 2 is a first-person shooter video game produced by Blizzard Entertainment It is a sequel to their 2016 video game Overwatch.",
   "08/10/2023",
   overwatch2Form
 );
@@ -297,7 +297,7 @@ const minecraftForm = [
 ];
 const minecraft = await games.createGame(
   "Minecraft",
-  "Minecraft is a 2011 sandbox game developed and published by the Swedish video game developer Mojang Studios. Originally created by Markus 'Notch' Persson using the Java programming language, the first public alpha build was released on 17 May 2009. The game was continuously developed from then on, receiving a full release on 18 November 2011. Afterwards, Persson left Mojang and gave Jens 'Jeb' Bergensten control over development. In the years since its release, it has been ported to several platforms, including smartphones, tablets, and various video game consoles. In 2014, Mojang and the Minecraft intellectual property were purchased by Microsoft for US$2.5 billion.",
+  "Minecraft is a sandbox game developed by Mojang. It is currently the best-selling video game of all time, with total sales around 350,000,000.",
   "05/17/2009",
   minecraftForm
 );
@@ -362,7 +362,7 @@ const marvelRivalsForm = [
 ];
 const marvelRivals = await games.createGame(
   "Marvel Rivals",
-  "Marvel Rivals is a third-person hero shooter video game developed and published by NetEase Games in collaboration with Marvel Games. The game was released for PlayStation 5, Windows, and Xbox Series X/S on December 6, 2024. The game is free-to-play with a current lineup of 38 characters from Marvel Comics, and features cross-play across all supported platforms. As of February 2025, the game has reached over 40 million players.",
+  "Marvel Rivals is a shooter video game developed by NetEase Games. It features 38 playable characters based on characters from Marvel Comics.",
   "12/06/2024",
   marvelRivalsForm
 );
@@ -446,7 +446,7 @@ const clashOfClans_form = [
 
 const clashOfClans = await games.createGame(
   "Clash of Clans",
-  "Clash of Clans is a 2012 free-to-play mobile strategy video game developed and published by Supercell. The game was released for iOS platforms on 2 August 2012, and on Google Play for Android on 7 October 2013.",
+  "Clash of Clans is a mobile game developed by Supercell, a Finnish company. In the game, you attack other bases to steal loot, which you can use to upgrade defenses and other buildings in your own base.",
   "08/02/2012",
   clashOfClans_form
 );
@@ -491,7 +491,7 @@ const superSmashBros_form = [
 
 const superSmashBros = await games.createGame(
   "Super Smash Bros.",
-  "Super Smash Bros. is a 1999 crossover fighting game developed by HAL Laboratory and published by Nintendo for the Nintendo 64. It is the first game in the Super Smash Bros. series and was released in Japan on January 21, 1999; in North America on April 26, 1999; and in Europe on November 19, 1999.",
+  "Super Smash Bros is a fighting game published by Nintendo. It is the first game in the Smash Bros series, a franchise that would have 4 more sequels.",
   "04/26/1999",
   superSmashBros_form
 );
@@ -1343,7 +1343,8 @@ const updatedBalatroForm = [
 ];
 const updatedBalatro = await games.updateGame(
   balatro._id,
-  "Balatro is a 2024 poker-themed roguelike deck-building game developed by LocalThunk and published by Playstack. It was released on Microsoft Windows, Nintendo Switch, PlayStation 4, PlayStation 5, Xbox One, and Xbox Series X/S on February 20, 2024, with a port to macOS on March 1. Ports for Android and iOS were released on September 26, 2024. In the game, the player plays poker hands from a starting 52-card deck to score points and defeat blinds in a limited number of turns. Subsequent blinds become more difficult to beat, but the player can acquire joker and other cards, purchased from a shop with randomized offerings between blinds, that provide unique effects that impact play and scoring or the means to change the composition of their deck to give themselves an advantage.",
+  "Balatro",
+  "Balatro is a deck building game developed by LocalThunk and published by Playstack. It has been well-received by critics and has received numerous awards and nominations.",
   "02/20/2024",
   updatedBalatroForm
 );
