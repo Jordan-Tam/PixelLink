@@ -1343,7 +1343,6 @@ const updatedBalatroForm = [
 ];
 const updatedBalatro = await games.updateGame(
   balatro._id,
-  "Balatro",
   "Balatro is a deck building game developed by LocalThunk and published by Playstack. It has been well-received by critics and has received numerous awards and nominations.",
   "02/20/2024",
   updatedBalatroForm
