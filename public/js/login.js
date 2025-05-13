@@ -18,7 +18,7 @@ if (loginForm) {
             event.preventDefault();
             error.innerHTML = "Username must be between 3-15 characters long and only include letters, numbers, periods, underscores, and minus signs.";
             error.hidden = false;
-            loginForm.reset();
+            //loginForm.reset();
             return;
         }
 
@@ -26,7 +26,7 @@ if (loginForm) {
             event.preventDefault();
             error.innerHTML = "Username cannot start or end with a period.";
             error.hidden = false;
-            loginForm.reset();
+            //loginForm.reset();
             return;
         }
 
@@ -35,7 +35,7 @@ if (loginForm) {
                 event.preventDefault();
                 error.innerHTML = "Username must be between 3-15 characters long and only include letters, numbers, periods, underscores, and minus signs.";
                 error.hidden = false;
-                loginForm.reset();
+                //loginForm.reset();
                 return;
             }
         }
@@ -44,7 +44,7 @@ if (loginForm) {
             event.preventDefault();
             error.innerHTML = "Password must be 8+ characters."
             error.hidden = false;
-            loginForm.reset();
+            //loginForm.reset();
             return;
         }
 
@@ -57,7 +57,7 @@ if (loginForm) {
                 event.preventDefault();
                 error.innerHTML = "Spaces not allowed in password";
                 error.hidden = false;
-                loginForm.reset();
+                //loginForm.reset();
                 return;
             }
             else characters['special']++;                  
@@ -66,7 +66,7 @@ if (loginForm) {
             event.preventDefault();
             error.innerHTML = "Password must contain 1+ uppercase, 1+ lowercase, 1+ number, and 1+ special character";
             error.hidden = false;
-            loginForm.reset();
+            //loginForm.reset();
             return;
         }
 
