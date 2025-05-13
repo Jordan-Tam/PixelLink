@@ -177,12 +177,11 @@ const exportedMethods = {
   /**
    * @param {*} id 
    */
-  async updateGame(gameId, name, description, dateReleased, form) {
+  async updateGame(gameId, description, dateReleased, form) {
     // Input validation.
     gameId = checkId(gameId, "updateGame", "Game Id");
-    name = checkString(name, "name", "createGame");
-    description = checkString(description, "description", "createGame");
-    dateReleased = checkDateReleased(dateReleased, "createGame");
+    description = checkString(description, "description", "updateGame");
+    dateReleased = checkDateReleased(dateReleased, "updateGame");
     form = checkForm(form);
 
     // Get the old game object
@@ -190,7 +189,7 @@ const exportedMethods = {
 
     // Create the new game object.
     let updatedGame = {
-      name: name,
+      name: oldGame.name,
       description: description,
       dateReleased: dateReleased,
       numPlayers: oldGame.numPlayers,

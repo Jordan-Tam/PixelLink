@@ -19,13 +19,16 @@ if(createGameForm !== null){
         success.hidden = true;
         gameFormError.hidden = true; //hide error paragraph
 
-        let title_input = gameTitle.value.trim(); //validate title
-        if (!title_input || title_input.length === 0) {
-            event.preventDefault();
-            gameFormError.innerHTML = "Must provide a game title.";
-            gameFormError.hidden = false;
-            return;
+        if(!patch){
+            let title_input = gameTitle.value.trim(); //validate title
+            if (!title_input || title_input.length === 0) {
+              event.preventDefault();
+              gameFormError.innerHTML = "Must provide a game title.";
+              gameFormError.hidden = false;
+              return;
+            }
         }
+
 
         let date_input = dateReleased.value.trim(); //validate date
         if (!date_input || date_input.length === 0 || (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date_input) && date_input.toUpperCase() !== "N/A")) {
@@ -124,7 +127,6 @@ if(createGameForm !== null){
         console.log("Field Info:", fieldInfo);
 
         let newGame = {
-          name: title_input,
           dateReleased: date_input,
           description: description_input,
           form: fieldInfo,
@@ -132,6 +134,9 @@ if(createGameForm !== null){
 
         if(patch){
             newGame.patch = "PATCH";
+        }
+        else{
+            newGame.name = title_input;
         }
 
         let response = await fetch("", {
@@ -142,7 +147,7 @@ if(createGameForm !== null){
             body: JSON.stringify(newGame),
           });
           let data = await response.json();
-          if (!response.ok) {
+          if (!response.ok || data !== true) {
             // Something went wrong
             gameFormError.innerHTML = "Error: " + data;
             gameFormError.hidden = false;

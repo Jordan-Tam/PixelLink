@@ -11,8 +11,10 @@
     <p id="gameFormError" {{gameFormError_hidden}}>{{gameFormError_message}}</p>
     <p id = "success" hidden>{{#if editing}}The game has been successfully updated!{{else}}The game has been successfully added!{{/if}}</p>
     <form action="{{#if editing}}/games/{{game._id}}{{else}}/games/{{/if}}" method="POST" id="createGameForm">
-        <label for="name">Game Title:</label>
-        <input type="text" id="name" name="name" value="{{#if editing}}{{game.name}}{{/if}}">
+        {{#unless editing}}
+            <label for="name">Game Title:</label>
+            <input type="text" id="name" name="name" value="{{#if editing}}{{game.name}}{{/if}}">
+        {{/unless}}
         <label for="dateReleased">Date Released:</label>
         <input type="text" id="dateReleased" name="dateReleased" placeholder="mm/dd/yyyy" value="{{#if editing}}{{game.dateReleased}}{{/if}}">
         <label for="description">Description</label>
