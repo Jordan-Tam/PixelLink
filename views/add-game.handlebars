@@ -22,7 +22,7 @@
         <label for="dateReleased">Date Released:</label>
         <input type="text" id="dateReleased" name="dateReleased" placeholder="mm/dd/yyyy" value="{{#if editing}}{{game.dateReleased}}{{/if}}">
         <label for="description">Description</label>
-        <input type="text" id="description", name="description" value="{{#if editing}}{{game.description}}{{/if}}">
+        <input type="text" id="description" name="description" value="{{#if editing}}{{game.description}}{{/if}}">
         <p id="formParagraph">Form:</p>
         <div id="fieldInput">
             {{#if editing}}
@@ -31,7 +31,7 @@
                         <label for="field_{{@index}}">Field Name:</label>
                         <input type="text" id="field_{{@index}}" name="form[{{@index}}][field]" value="{{this.field}}"><br>
                         <label for="field_type_{{@index}}">Field Type:</label>
-                        <select id="field_type_{{@index}}" name="form[{{@index}}][type]"><br>
+                        <select id="field_type_{{@index}}" name="form[{{@index}}][type]">
                             <option value="text" {{#if (eq this.type "text")}}selected{{/if}}>text</option>
                             <option value="select" {{#if (eq this.type "select")}}selected{{/if}}>select</option>
                             <option value="number" {{#if (eq this.type "number")}}selected{{/if}}>number</option>
@@ -50,7 +50,7 @@
                     <input type="text" id="field_0" name="form[0][field]"><br>
 
                     <label for="field_type_0">Field Type:</label>
-                    <select id="field_type_0" name="form[0][type]"><br>
+                    <select id="field_type_0" name="form[0][type]">
                         <option value="text">text</option>
                         <option value="select">select</option>
                         <option value="number">number</option>
