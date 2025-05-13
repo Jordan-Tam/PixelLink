@@ -8,6 +8,10 @@
     </h1>
 </header>
 <main>
+    <p>If the field type is 'text', you must leave the 'options', 'domain min', and 'domain max' fields blank.</p>
+    <p>If the field type is 'number', you must specify a minimum and a maximum for the domain. The 'options' field must also be left blank.</p>
+    <p>If the field type is 'select', you must specify a list of values in the 'options' field by separating each value with a comma. The domain fields must also be left blank.</p>
+    <br>
     <p id="gameFormError" {{gameFormError_hidden}}>{{gameFormError_message}}</p>
     <p id = "success" hidden>{{#if editing}}The game has been successfully updated!{{else}}The game has been successfully added!{{/if}}</p>
     <form action="{{#if editing}}/games/{{game._id}}{{else}}/games/{{/if}}" method="POST" id="createGameForm">
@@ -19,7 +23,7 @@
         <input type="text" id="dateReleased" name="dateReleased" placeholder="mm/dd/yyyy" value="{{#if editing}}{{game.dateReleased}}{{/if}}">
         <label for="description">Description</label>
         <input type="text" id="description", name="description" value="{{#if editing}}{{game.description}}{{/if}}">
-        <p>Form:</p>
+        <p id="formParagraph">Form:</p>
         <div id="fieldInput">
             {{#if editing}}
                 {{#each game.form}}
@@ -37,7 +41,7 @@
                         <label for="domain_min_{{@index}}">Domain Min:</label>
                         <input type="number" id="domain_min_{{@index}}" name="form[{{@index}}][domain][0]" value="{{this.domain.[0]}}"><br>
                         <label for="domain_max_{{@index}}">Domain Max:</label>
-                        <input type="number" id="domain_max_{{@index}}" name="form[{{@index}}][domain][1]" value="{{this.domain.[1]}}"><br>
+                        <input type="number" id="domain_max_{{@index}}" name="form[{{@index}}][domain][1]" value="{{this.domain.[1]}}"><br><br>
                     </div>
                 {{/each}}
             {{else}}
@@ -59,7 +63,7 @@
                     <input type="number" id="domain_min_0" name="form[0][domain][0]"><br>
 
                     <label for="domain_max_0">Domain Max:</label>
-                    <input type="number" id="domain_max_0" name="form[0][domain][1]"><br>
+                    <input type="number" id="domain_max_0" name="form[0][domain][1]"><br><br>
                 </div>
             {{/if}}
         </div>
@@ -68,6 +72,6 @@
         {{#if editing}}
             <input type="hidden" name="_method" value="PATCH" id="patch">
         {{/if}}
-        <input type="submit" value="{{#if editing}}Update Game{{else}}Create Game/Submit{{/if}}">
+        <input type="submit" id="submitButton" value="{{#if editing}}Update Game{{else}}Create Game/Submit{{/if}}">
     </form>
 </main>

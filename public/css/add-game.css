@@ -2,9 +2,9 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-header a {
+/* header a {
     text-decoration: underline dashed;
-}
+} */
 
 #gameFormError {
     color: red;
@@ -12,4 +12,48 @@ header a {
 
 #success{
     color:limegreen
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(172, 172, 255);
+}
+
+a:active {
+    color: rgb(0, 0, 0);
+}
+
+#goBack {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#createGameForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+#name {
+    width: 350px;
+}
+
+#dateReleased {
+    width: 100px;
+}
+
+#description {
+    width: 500px;
+}
+
+#formParagraph {
+    font-weight: bold;
+}
+
+#addField, #removeField, #submitButton {
+    width: 200px;
 }

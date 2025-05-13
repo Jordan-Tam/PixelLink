@@ -186,7 +186,7 @@ if(createGameForm !== null){
         <label for="domain_min_${fieldNum}">Domain Min:</label>
         <input type="number" id="domain_min_${fieldNum}" name="form[${fieldNum}][domain][0]"><br>
         <label for="domain_max_${fieldNum}">Domain Max:</label>
-        <input type="number" id="domain_max_${fieldNum}" name="form[${fieldNum}][domain][1]"><br> `;
+        <input type="number" id="domain_max_${fieldNum}" name="form[${fieldNum}][domain][1]"><br><br> `;
 
         fieldList.appendChild(newField); //add to list
         fieldNum++; //increment
