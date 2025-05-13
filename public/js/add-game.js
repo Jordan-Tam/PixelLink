@@ -19,8 +19,9 @@ if(createGameForm !== null){
         success.hidden = true;
         gameFormError.hidden = true; //hide error paragraph
 
+        let title_input = "";
         if(!patch){
-            let title_input = gameTitle.value.trim(); //validate title
+            title_input = gameTitle.value.trim(); //validate title
             if (!title_input || title_input.length === 0) {
               event.preventDefault();
               gameFormError.innerHTML = "Must provide a game title.";
