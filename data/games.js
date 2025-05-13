@@ -549,8 +549,6 @@ const exportedMethods = {
     //remove dupes
     user_array = [...new Set(user_array)];
 
-    console.log(user_array);
-
     //key: game title, value: number of occurences
     const gameFreq = {};
 
@@ -584,7 +582,6 @@ const exportedMethods = {
       }
     }
     
-    console.log(gameFreq);
     //Sorts the recommendations from game frequency (descendign order) & only includes game names
     const sortedRecommendations = Object.entries(gameFreq)
     .filter(([_, freq]) => !Number.isNaN(freq) && freq !== 0)

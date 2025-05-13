@@ -31,8 +31,6 @@ router.route('/')
             const count = recs.length;
 
             let n = 0;
-
-            console.log(recs);
             
             while (n !== count){
                 for (let i = 0; i < gamesList.length; i++) {
@@ -118,7 +116,7 @@ router
         dateReleased,
         form
       );
-      return res.json("The game has been created!") //TODO: already rendering the add-game view
+      return res.json("The game has been created!") //TODO
     } catch (error) {
         return res.status(error.status).render("error", {
             title: "Error",
@@ -245,6 +243,7 @@ router.route('/:id')
         }
 
     });
+    //.post() //addGame for the admin, renders add-gae view
     
 router
   .route("/:id/form")

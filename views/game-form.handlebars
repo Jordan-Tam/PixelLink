@@ -35,13 +35,13 @@
                         <select name="form_input{{@index}}" id="form_input{{@index}}">
 
                             <!-- Create an empty option to allow the user to skip this question. -->
-                            <option value = "" id = "empty{{@index}}"></option>
+                            <option value="" id="empty{{@index}}" label=" "></option>
 
                             <!-- Render the rest of the dropdown menu's options. -->
                             {{#each this.options}}
                                 <option
                                     value="{{this}}"
-                                    id = "value{{@index}}"
+                                    {{!-- id="value{{@index}}" --}}
                                     {{#if (eq this ../this.userValue)}}
                                         selected
                                     {{/if}}
@@ -83,7 +83,7 @@
             {{/each}}
 
             <!-- Button to submit the form. -->
-            <input type="submit" value="Submit Form"/>
+            <input type="submit" value="Submit Form">
 
              <!-- PATCH is NOT working, with or without the if statement -->
         </form>
