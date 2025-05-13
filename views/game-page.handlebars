@@ -56,6 +56,13 @@
         {{/if}}
     </div>
 
+    <div class="gameQuestions">
+        <h3>Game Form Questions:</h3>
+        {{#each game.form}}
+            <p>{{this.field}}</p>
+        {{/each}}
+    </div>
+
     <!-- Number of Players -->
     <div class="infoDiv">
         <h3>Number of Players:</h3>
