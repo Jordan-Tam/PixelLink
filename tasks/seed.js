@@ -1337,7 +1337,6 @@ const updatedBalatroForm = [
 ];
 const updatedBalatro = await games.updateGame(
   balatro._id,
-  "Balatro",
   "Balatro is a 2024 poker-themed roguelike deck-building game developed by LocalThunk and published by Playstack. It was released on Microsoft Windows, Nintendo Switch, PlayStation 4, PlayStation 5, Xbox One, and Xbox Series X/S on February 20, 2024, with a port to macOS on March 1. Ports for Android and iOS were released on September 26, 2024. In the game, the player plays poker hands from a starting 52-card deck to score points and defeat blinds in a limited number of turns. Subsequent blinds become more difficult to beat, but the player can acquire joker and other cards, purchased from a shop with randomized offerings between blinds, that provide unique effects that impact play and scoring or the means to change the composition of their deck to give themselves an advantage.",
   "02/20/2024",
   updatedBalatroForm

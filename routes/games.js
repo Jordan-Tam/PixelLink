@@ -108,14 +108,14 @@ router
       name = checkString(name, "name", "POST game/list");
       dateReleased = checkDateReleased(dateReleased, "POST game/new");
       description = checkString(description, "description", "POST game/new");
-      form = checkForm(form, "PATCH game/:id");
+      form = checkForm(form, "POST game/:id");
       const game = await games.createGame(
         name,
         description,
         dateReleased,
         form
       );
-      return res.json("The game has been created!")
+      return res.json(true)
     } catch (error) {
         return res.json(error.error)
     }
@@ -125,7 +125,7 @@ router
   .route("/:id/edit")
   .get(async (req, res) => {
     try {
-      const gameId = checkId(req.params.id, "PATCH game/:id", "Game");
+      const gameId = checkId(req.params.id, "GET game/:id", "Game");
       const game = await games.getGameById(gameId);
       return res.render("add-game", {
         title: `Edit ${game.name}`,
@@ -146,8 +146,7 @@ router
   .patch(async (req, res) => {
     try {
       const gameId = checkId(req.params.id, "PATCH game/:id", "Game");
-      let { name, dateReleased, description, form } = req.body;
-      name = checkString(name, "name", "PATCH game/:id");
+      let { dateReleased, description, form } = req.body;
       description = checkString(
         description,
         "description",
@@ -160,8 +159,8 @@ router
       );
       form = checkForm(form, "PATCH game/:id");
 
-      await games.updateGame(gameId, name, description, dateReleased, form);
-      return res.json("The game was successfully updated")
+      await games.updateGame(gameId, description, dateReleased, form);
+      return res.json(true)
     } catch (error) {
       return res.json(error.error)
   }})
