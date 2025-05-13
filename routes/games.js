@@ -83,6 +83,7 @@ router
         title: "Create a Game",
         stylesheet: "/public/css/add-game.css",
         script: "/public/js/add-game.js",
+        editing: false
       });
     } catch (error) {
       return res.status(error.status).render("error", {
@@ -129,6 +130,27 @@ router
     }
   });
 
+router.route('/:id/edit')
+  .get(async (req, res) => {
+    try {
+        const gameId = checkId(req.params.id,'PATCH game/:id', 'Game');
+        const game = await games.getGameById(gameId);
+        return res.render("add-game", {
+        title: `Edit ${game.name}`,
+        stylesheet: "/public/css/add-game.css",
+        script: "/public/js/add-game.js",
+        game: game,
+        editing: true
+      });
+    } catch (error) {
+        return res.status(error.status).render("error", {
+                status: error.status,
+                error_message: `${error.function}: ${error.error}`,
+                title: `${error.status} Error`,
+                stylesheet: "/public/css/error.css"
+            });
+    }
+  })
 
 router.route('/:id')
     .get(async (req, res) => {

@@ -1,38 +1,71 @@
 <header>
     <a href="/games/" id="goBack">⇦ Return to games list page</a>
-    <h1>Add a new Game to the PixelLink database!</h1>
+    <h1>
+        {{#if editing}}Edit {{game.name}}
+        {{else}}
+        Add a new Game to the PixelLink database!
+        {{/if}}
+    </h1>
 </header>
 <main>
     <p id="gameFormError" {{gameFormError_hidden}}>{{gameFormError_message}}</p>
-    <p id = "success" hidden>The game has been successfully added!</p>
-    <form action="/games/" method="POST" id="createGameForm">
+    <p id = "success" hidden>{{#if editing}}The game has been successfully updated!{{else}}The game has been successfully added!{{/if}}</p>
+    <form action="{{#if editing}}/games/{{game._id}}{{else}}/games/{{/if}}" method="POST" id="createGameForm">
         <label for="name">Game Title:</label>
-        <input type="text" id="name" name="name">
+        <input type="text" id="name" name="name" value="{{#if editing}}{{game.name}}{{/if}}">
         <label for="dateReleased">Date Released:</label>
-        <input type="text" id="dateReleased" name="dateReleased" placeholder="mm/dd/yyyy">
+        <input type="text" id="dateReleased" name="dateReleased" placeholder="mm/dd/yyyy" value="{{#if editing}}{{game.dateReleased}}{{/if}}">
         <label for="description">Description</label>
-        <input type="text" id="description", name="description">
+        <input type="text" id="description", name="description" value="{{#if editing}}{{game.description}}{{/if}}">
         <p>Form:</p>
         <div id="fieldInput">
-            <div class="fieldInput" id = "q0">
-                <label for="field_0">Field Name:</label>
-                <input type="text" id="field_0" name="form[0][field]"><br>
-                <label for="field_type_0">Field Type:</label>
-                <select id="field_type_0" name="form[0][type]"><br>
-                    <option value="text">text</option>
-                    <option value="select">select</option>
-                    <option value="number">number</option>
-                </select>
-                <label for="field_options_0">Options:</label>
-                <input type="text" id="field_options_0" name="form[0][options]"><br>
-                <label for="domain_min_0">Domain Min:</label>
-                <input type="number" id="domain_min_0" name="form[0][domain][0]"><br>
-                <label for="domain_max_0">Domain Max:</label>
-                <input type="number" id="domain_max_0" name="form[0][domain][1]"><br>
-            </div>
+            {{#if editing}}
+                {{#each game.form}}
+                    <div class="fieldInput" id = "q{{@index}}">
+                        <label for="field_{{@index}}">Field Name:</label>
+                        <input type="text" id="field_{{@index}}" name="form[{{@index}}][field]" value="{{this.field}}"><br>
+                        <label for="field_type_{{@index}}">Field Type:</label>
+                        <select id="field_type_{{@index}}" name="form[{{@index}}][type]"><br>
+                            <option value="text" {{#if (eq this.type "text")}}selected{{/if}}>text</option>
+                            <option value="select" {{#if (eq this.type "select")}}selected{{/if}}>select</option>
+                            <option value="number" {{#if (eq this.type "number")}}selected{{/if}}>number</option>
+                        </select>
+                        <label for="field_options_{{@index}}">Options:</label>
+                        <input type="text" id="field_options_{{@index}}" name="form[{{@index}}][options]" value="{{this.options}}"><br>
+                        <label for="domain_min_{{@index}}">Domain Min:</label>
+                        <input type="number" id="domain_min_{{@index}}" name="form[{{@index}}][domain][0]" value="{{this.domain.[0]}}"><br>
+                        <label for="domain_max_{{@index}}">Domain Max:</label>
+                        <input type="number" id="domain_max_{{@index}}" name="form[{{@index}}][domain][1]" value="{{this.domain.[1]}}"><br>
+                    </div>
+                {{/each}}
+            {{else}}
+                <div class="fieldInput" id="q0">
+                    <label for="field_0">Field Name:</label>
+                    <input type="text" id="field_0" name="form[0][field]"><br>
+
+                    <label for="field_type_0">Field Type:</label>
+                    <select id="field_type_0" name="form[0][type]"><br>
+                        <option value="text">text</option>
+                        <option value="select">select</option>
+                        <option value="number">number</option>
+                    </select>
+
+                    <label for="field_options_0">Options:</label>
+                    <input type="text" id="field_options_0" name="form[0][options]"><br>
+
+                    <label for="domain_min_0">Domain Min:</label>
+                    <input type="number" id="domain_min_0" name="form[0][domain][0]"><br>
+
+                    <label for="domain_max_0">Domain Max:</label>
+                    <input type="number" id="domain_max_0" name="form[0][domain][1]"><br>
+                </div>
+            {{/if}}
         </div>
         <input type="button" id="addField" name="addField" value="Add Field"> <!-- this button will create another filed object for the admin to fill out -->
         <input type="button" id="removeField" name="removeField" value="Remove Field">
-        <input type="submit" value="Create Game/Submit">
+        {{#if editing}}
+            <input type="hidden" name="_method" value="PATCH">
+        {{/if}}
+        <input type="submit" value="{{#if editing}}Update Game{{else}}Create Game/Submit{{/if}}">
     </form>
 </main>

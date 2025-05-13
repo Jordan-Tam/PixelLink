@@ -11,8 +11,9 @@
             <input type="submit" id="deleteGame" name="deleteGame" value="Delete Game From Database">
             <input type="hidden" name="_method" value="DELETE">
             </form>
-            <button id="editGameButton">Edit Game</button>
-            <!-- Render update form on separate page?
+            <a href="/games/{{game._id}}/edit">Edit Game</a>
+            <!--  <button id="editGameButton">Edit Game</button>
+            Render update form on separate page?
             <form action="/games/{{game._id}}" method="POST" id="updateGameForm" hidden>
                 <input type="submit" id="updateGame" name="updateGame" value="Update Game In The Database">
                 <input type="hidden" name="_method" value="PATCH">
