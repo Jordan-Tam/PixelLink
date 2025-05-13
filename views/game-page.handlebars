@@ -34,6 +34,7 @@
         {{else}}
         <p>No description.</p>
         {{/if}}
+         <p> Number of Players: {{game.numPlayers}} </p>
     </div>
 
     <!-- Number of Reviews -->
@@ -151,7 +152,7 @@
     </div>
 
     <div>
-        <h3>Comments:</h3>
+        <h3>Comments: {{game.comments.length}}</h3>
         {{#if game.comments.length}}
             {{#each game.comments}}
                 <div class="commentDiv">
