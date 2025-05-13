@@ -26,6 +26,15 @@ if (registrationForm) {
             return;
         }
 
+        if (username_input.length < 3 || username_input.length > 15) {
+            console.log("Get in here");
+            event.preventDefault();
+            error.innerHTML = "Username must be between 3-15 characters long and only include letters, numbers, periods, underscores, and minus signs.";
+            error.hidden = false;
+            //registrationForm.reset();
+            return;
+        }
+
         if (username_input.charAt(0) === '.' || username_input.charAt(username_input.length - 1) === '.'){
             event.preventDefault();
             error.innerHTML = "Username cannot start or end with a period.";
