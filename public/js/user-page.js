@@ -35,7 +35,7 @@ if (changeUsernameForm !== null) {
         for (let char of username_input) {
             if ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-".indexOf(char) < 0) {
                 event.preventDefault();
-                changeUsernameError.innerHTML = "";
+                changeUsernameError.innerHTML = `Invalid Character in username (${char})`;
                 changeUsernameError.hidden = false;
                 return;
             }
