@@ -28,7 +28,7 @@ if(createGameForm !== null){
         }
 
         let date_input = dateReleased.value.trim(); //validate date
-        if (!date_input || date_input.length === 0 || !/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date_input)) {
+        if (!date_input || date_input.length === 0 || (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date_input) && date_input.toUpperCase() !== "N/A")) {
             event.preventDefault();
             gameFormError.innerHTML = "Must provide a release date in mm/dd/yyyy format.";
             gameFormError.hidden = false;
