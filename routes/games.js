@@ -117,7 +117,7 @@ router
         dateReleased,
         form
       );
-      return res.json("The game has been created!") //TODO
+      return res.json("The game has been created!") //TODO: already rendering the add-game view
     } catch (error) {
         return res.status(error.status).render("error", {
             title: "Error",
@@ -195,7 +195,6 @@ router.route('/:id')
         }
 
     });
-    //.post() //addGame for the admin, renders add-gae view
     
 router
   .route("/:id/form")

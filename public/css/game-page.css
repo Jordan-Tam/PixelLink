@@ -56,3 +56,8 @@ a:active {
 #reviewError, #commentError {
     color: red;
 }
+
+#gameButtons {
+    display: flex;
+    gap: 5px;
+}
