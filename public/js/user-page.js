@@ -27,7 +27,7 @@ if (changeUsernameForm !== null) {
 
         if (username_input.charAt(0) === '.' || username_input.charAt(username_input.length - 1) === '.') {
             event.preventDefault();
-            changeUsernameError.innerHTML = "";
+            changeUsernameError.innerHTML = "Username cannot start or end with a period";
             changeUsernameError.hidden = false;
             return;
         }
