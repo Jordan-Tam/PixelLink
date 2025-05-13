@@ -20,23 +20,23 @@ if (changeUsernameForm !== null) {
         // Username validation.
         if (!username_input || username_input.length === 0) {
             event.preventDefault();
-            error.innerHTML = "Username must be between 3-15 characters long and only include letters, numbers, periods, underscores, and minus signs.";
-            error.hidden = false;
+            changeUsernameError.innerHTML = "Username must be between 3-15 characters long and only include letters, numbers, periods, underscores, and minus signs.";
+            changeUsernameError.hidden = false;
             return;
         }
 
         if (username_input.charAt(0) === '.' || username_input.charAt(username_input.length - 1) === '.') {
             event.preventDefault();
-            error.innerHTML = "";
-            error.hidden = false;
+            changeUsernameError.innerHTML = "";
+            changeUsernameError.hidden = false;
             return;
         }
 
         for (let char of username_input) {
             if ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-".indexOf(char) < 0) {
                 event.preventDefault();
-                error.innerHTML = "";
-                error.hidden = false;
+                changeUsernameError.innerHTML = "";
+                changeUsernameError.hidden = false;
                 return;
             }
         }
@@ -60,22 +60,17 @@ if (changePasswordForm !== null) {
         let password_input = password.value;
         let confirmPassword_input = confirmPassword.value;
 
-        console.log("hi");
-        console.log("Password: " + password_input);
-        console.log("Confirm: " + confirmPassword_input);
-        console.log("bye");
-
         if (password_input !== confirmPassword_input) {
             event.preventDefault();
-            error.innerHTML = "Password and Confirm Password fields do not match.";
-            error.hidden = false;
+            changePasswordError.innerHTML = "Password and Confirm Password fields do not match.";
+            changePasswordError.hidden = false;
             return;
         }
 
         if (password_input.length < 8) {
             event.preventDefault();
-            error.innerHTML = "Password must be 8+ characters...";
-            error.hidden = false;
+            changePasswordError.innerHTML = "Password must be 8+ characters...";
+            changePasswordError.hidden = false;
             return;
         }
 
@@ -96,8 +91,8 @@ if (changePasswordForm !== null) {
             } else {
                 if (" ".indexOf(char) > -1) {
                     event.preventDefault();
-                    error.innerHTML = "Password cannot have spaces.";
-                    error.hidden = false;
+                    changePasswordError.innerHTML = "Password cannot have spaces.";
+                    changePasswordError.hidden = false;
                     return;
                 }
                 characters.special++;
@@ -106,8 +101,8 @@ if (changePasswordForm !== null) {
 
         if (characters['lower'] === 0 || characters['upper'] === 0 || characters['special'] === 0 || characters['number'] === 0) {
             event.preventDefault();
-            error.innerHTML = "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.";
-            error.hidden = false;
+            changePasswordError.innerHTML = "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.";
+            changePasswordError.hidden = false;
             return;
         }
 
