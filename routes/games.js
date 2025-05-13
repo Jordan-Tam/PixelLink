@@ -32,21 +32,30 @@ router.route('/')
 
             let n = 0;
             
+            const recommendedGames = [];
+
+            let gamesListWithoutRecs = gamesList;
+
             while (n !== count){
                 for (let i = 0; i < gamesList.length; i++) {
                     if(gamesList[i].name === recs[n]){
                         if(i !== n){
-                            let temp = gamesList[i];
-                            gamesList[i] = gamesList[n];
-                            gamesList[n] = temp;
+                            recommendedGames.push(gamesList[i]);
+                            gamesListWithoutRecs = gamesListWithoutRecs.filter(game => game.name !== recs[n])
+                            // let temp = gamesList[i];
+                            // gamesList[i] = gamesList[n];
+                            // gamesList[n] = temp;
                         } 
                         n++;
                     }
                 }
-            }
 
+            }
+            //console.log(gamesListWithoutRecs)
+            //console.log(gamesListWithoutRecs);
             return res.render('game-list', {
-                games: gamesList,
+                games: gamesListWithoutRecs,
+                recommendedGames,
                 title: "Games List",
                 stylesheet: "/public/css/game-list.css",
                 user: req.session.user,
