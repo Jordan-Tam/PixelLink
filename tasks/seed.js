@@ -1204,6 +1204,12 @@ await users.addGame(JohnDoe._id, superSmashBros._id, [
   { field_name: "Favorite Stage", value: "Dream Land" }
 ]);
 
+await users.addGame(gamer7._id, marvelRivals._id, [
+  { field_name: "Which role do you usually play?", value: "Vanguard" },
+  { field_name: "Who is your favorite hero to play?", value: "Adam Warlock" },
+  { field_name: "What platform do you play on?", value: "PC" },
+]);
+
 //let removeUserGame = await users.removeGame(user1._id, balatro._id);
 
 //console.log(await users.getUserById(user1._id));

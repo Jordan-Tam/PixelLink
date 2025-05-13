@@ -51,6 +51,10 @@ a:hover {
     width: 725px;
 }
 
+.recommendations-div {
+    background-color: rgb(179, 243, 179);
+}
+
 .game-title-div {
     width: 300px;
 }
@@ -67,7 +71,7 @@ span {
     color: blue;
 }
 
-#removeGame {
+.removeGame {
     border: none;
     outline: none;
     background: none;
@@ -77,6 +81,6 @@ span {
     font-size: medium;
 }
 
-#removeGame:hover {
+.removeGame:hover {
     color: green;   
 }

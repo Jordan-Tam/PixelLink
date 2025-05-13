@@ -1,22 +1,65 @@
 <header>
     <a href="/home" class="goBack">⇦ Go to Home</a>
     <h1>Games List</h1>
-    {{!-- <p>Click on a game to add it to your profile!</p> --}}
 </header>
 <main>
+
+    <!-- If the user is an admin, show them a link to create a new game. -->
     {{#if user.admin}}
       <!-- links to add/delete for admin goes here -->
       <a href="/games/new">Create a Game</a>
     {{/if }}
+
+    {{!-- <!-- If the number of recommendations is not 0, show them this -->
     {{#if notZero}}
-    <p id="recs"> The first {{recs}} games are your {{recs}} most recommended games based on games you play, in order! </p>
+    <p id="recs">The first {{recs}} games are your {{recs}} most recommended games based on games you play, in order!</p>
+    {{/if}} --}}
+
+    <!-- Show recommended games. -->
+    <h2>Recommended Games:</h2>
+    {{#if notZero}}
+      {{#each recommendedGames}}
+        <div class="game-div recommendations-div">
+          <div class="game-title-div">
+            <h3>
+              <a href="/games/{{this._id}}" class="name">{{this.name}}</a>
+            </h3>
+          </div>
+          <div class="game-info-div">
+            <p><span>Number of Players:</span> {{this.numPlayers}}</p>
+            <p><span>Number of Reviews:</span> {{this.reviews.length}}</p>
+            <p><span>Average Rating:</span> {{this.averageRating}}</p>
+            <p><span>Release Date:</span> {{this.dateReleased}}</p>
+          </div>
+          <div class="add-to-profile-div">
+            <a href="/games/{{this._id}}/form">
+              {{#if this.game_added}}
+              Edit Profile
+              {{else}}
+              Add to Profile
+              {{/if}}
+            </a>
+            {{#if this.game_added}}
+              <form action="/games/{{this._id}}/form" method="POST">
+              <input type="hidden" name="_method" value="DELETE">
+              <input type="submit" value="Remove Game" class="removeGame">
+              </form>
+            {{/if}}
+          </div>
+        </div>
+      {{/each}}
+    {{else}}
+      <p>You have no recommendations!</p>
     {{/if}}
+
+    <!-- Show all other games in alphabetical order. -->
+    <h2>All Other Games:</h2>
     {{#each games}}
       <div class="game-div">
         <div class="game-title-div">
-          <h2>
+          <h3>
             <a href="/games/{{this._id}}" class="name">{{this.name}}</a>
-          </h2>
+          </h3>
         </div>
         <div class="game-info-div">
           <p><span>Number of Players:</span> {{this.numPlayers}}</p>
@@ -35,7 +78,7 @@
           {{#if this.game_added}}
             <form action="/games/{{this._id}}/form" method="POST">
             <input type="hidden" name="_method" value="DELETE">
-            <input type="submit" value="Remove Game" id="removeGame">
+            <input type="submit" value="Remove Game" class="removeGame">
             </form>
           {{/if}}
         </div>

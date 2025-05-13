@@ -421,7 +421,7 @@ const checkDateReleased = (dateReleased, funcName) => {
 
   let currentYear = new Date().getFullYear();
 
-  if (!(year >= 1900 && year <= currentYear + 2)) {
+  if (!(year >= 1900 && year <= currentYear)) {
     throw {
       status: 400,
       function: funcName,
@@ -444,6 +444,25 @@ const checkDateReleased = (dateReleased, funcName) => {
       status: 400,
       function: funcName,
       error: "Date does not exist."
+    }
+  }
+
+  // Do not accept future dates.
+  if (year === currentYear) {
+    if (month > new Date().getMonth() + 1) {
+      throw {
+        status: 400,
+        function: funcName,
+        error: "Invalid date."
+      };
+    } else if (month === new Date().getMonth() + 1) {
+      if (day > new Date().getDate()) {
+        throw {
+          status: 400,
+          function: funcName,
+          error: "Invalid date."
+        };
+      }
     }
   }
 
