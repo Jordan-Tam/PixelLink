@@ -38,3 +38,9 @@ a:active {
 span {
     font-weight: bold;
 }
+
+.nameAndFollowButton{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}

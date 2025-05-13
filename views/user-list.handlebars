@@ -70,19 +70,21 @@
   <div id="usersContainer">
     {{#each users}}
       <div class="userDiv">
+        <div class="nameAndFollowButton">
         <h2><a href="/users/{{this.user._id}}">{{this.user.username}}</a></h2>
         {{#if this.following}}
           <form action = "/users/{{this.user._id}}/following" method="POST">
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="friendId" value="{{this.user._id}}">
-            <input type="submit" value="Unfollow {{this.user.username}}">
+            <input type="submit" value="Unfollow">
           </form>
         {{else}}
           <form action = "/users/{{this.user._id}}/following" method="POST">
             <input type="hidden" name="friendId" value="{{this.user._id}}">
-            <input type="submit" value="Follow {{this.user.username}}">
+            <input type="submit" value="Follow">
           </form>
         {{/if}}
+        </div>
         <ul>
           {{#each this.user.games}}
             <li>
