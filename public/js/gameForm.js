@@ -16,7 +16,7 @@ if (gameForm) {
       if (!value) {
         continue;
       }
-      enteredValue = value.value;
+      enteredValue = value.value.trim();
       if(value.type === "number"){    // If this is a number question, we need to confirm that the number is within the domain
         let domain = value.className.split("-");
         if(parseInt(domain[0]) > parseInt(enteredValue) || parseInt(domain[1]) < parseInt(enteredValue)){   // If the number is outside of the domain
