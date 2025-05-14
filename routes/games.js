@@ -614,7 +614,7 @@ router
             const review = await games.getReviewById(req.params.reviewId);
 
             // Check if the review was made by the logged-in user.
-            if (review.userId.toString() === req.session.user._id.toString()) {
+            if ((review.userId.toString() === req.session.user._id.toString()) || req.session.user.admin) {
                 await games.removeReview(reviewId);
                 console.log("delete-1");
                 return res.redirect(`/games/${gameId}`);
